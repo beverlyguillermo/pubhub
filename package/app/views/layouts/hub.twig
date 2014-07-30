@@ -1,0 +1,38 @@
+{% extends "layouts/global.twig" %}
+{% import "macros/hub.twig" as hubMacros %}
+
+{% block title %}
+    {{ page_title|capitalize|striptags }}
+{% endblock %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" type="text/css" rel="stylesheet" href="/assets/css/hub-015e0f604d91eff5fa9d2960dbd8b610748085df.css" />
+
+	<link rel="stylesheet" type="text/css" media="print" rel="stylesheet" href="/assets/css/print-e11789a1d3eafb41ef2f7f39b5926d6c9688f8d8.css" />
+
+	{% if request.params.printerfriendly is not null %}
+		<link rel="stylesheet" type="text/css" media="screen" rel="stylesheet" href="/assets/css/print-e11789a1d3eafb41ef2f7f39b5926d6c9688f8d8.css" />
+	{% endif %}
+
+{% endblock %}
+
+{% block body_classes %}{{ parent() }} main {% endblock %}
+
+
+{% block site_content %}
+
+	<div class="content-area section">
+		<div class="center force">
+
+			<div class="hub-header">
+				{% include "partials/hub-header.twig" %}
+            </div>
+
+			{% block page_content %}
+
+			{% endblock %}
+
+		</div>
+	</div>
+	
+{% endblock %}

@@ -1,0 +1,48 @@
+{% set articleCount = 0 %}
+
+{% if results.related_content is not empty %}
+
+	{% set articleCount = results.related_content|length %}
+
+	{% for item in results.related_content %}
+
+		{# figure out some classes #}
+		{% set thumb = item.image_thumbnail %}
+		{% set classes = ["article"] %}
+
+		{% if thumb is not null %}
+			{% set classes = classes|merge(["has-image"]) %}
+		{% endif %}
+
+		<div class="{{ classes|join(' ') }} force">
+			
+			{% if item.kicker is not null %}
+				<h5 class="overline">{{ item.kicker }}</h5>
+			{% endif %}
+
+			<h2><a href="{{ item.url }}">{{ globalMacros.getHeadline(item, true) }}</a></h2>
+			<p class="meta">{{ article.publish_date|date("F jS, Y") }}</p>
+
+			{% if thumb is not null %}
+				<a href="{{ item.url }}"><img class="thumbnail" src="{{ thumb }}" /></a>
+			{% endif %}
+
+			{% if item.excerpt is not null %}
+				<div class="summary">{{ item.excerpt }}</div>
+			{% endif %}
+
+			{% if item.source is not null and item.source.name is not null %}
+				<p class="source">
+					<a href="{{ item.source.url }}">
+						<i class="icon-cog hub-mark"></i> 
+						{{ item.source.name }}
+						<i class="icon-external-link external-link"></i>
+					</a>
+				</p>
+			{% endif %}
+
+		</div>
+
+	{% endfor %}
+
+{% endif %}

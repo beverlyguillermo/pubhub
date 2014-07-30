@@ -1,0 +1,116 @@
+{% extends "layouts/magazine.twig" %}
+
+{% block title %}
+	Johns Hopkins Magazine
+{% endblock %}
+
+{% block page_content %}
+    
+    <div class="magazine-issue">
+        <div class="toc force" id="toc-load">
+            <div class="toc-inner force">
+
+                <h1><span class="site-title">Johns Hopkins Magazine</span> <span class='sep'>|</span> {{ results.edition }} {{ results.publish_date|date("Y") }} Contents</h1>
+
+                <div class="link-row force">
+                    {% if results._embedded.pdf is not null %}
+            	  	<a href="{{ results._embedded.pdf.0.url }}" class="pdf-version download">Download the PDF version &raquo;</a>
+                    {% endif %}
+            	  	<a href="https://itunes.apple.com/us/app/johns-hopkins-magazine-for/id523796097" class="ipad-app download">Have an iPad? Download the free app »</a>
+            	</div>
+
+                <div class="col">
+
+
+                    <ul class="toc-group toc-front">
+                        <li><h2>Front</h2></li>
+
+                        {% set departments = ["Message", "Contributors", "Note", "Dialogue"] %}
+
+                        {% for department in departments %}
+                            {% for article in attribute(results.contents, department) %}
+                                <li><a href="{{ article.url }}">{{ article.headline }}</a></li>
+                            {% endfor %}
+                        {% endfor %}
+
+                    </ul>
+
+
+                    <ul class="toc-group toc-front">
+                        <li><h2>Departments</h2></li>
+
+                        {% set departments = ["Idea", "Artifact", "Forefront", "Evidence", "Text", "Who Is", "Colloquy", "Campus", "Golomb\\'s Gambits"] %}
+
+                        {% for department in departments %}
+
+                            {% for article in attribute(results.contents, department) %}
+
+                                {% if loop.length > 1 and loop.first %}
+                                    <li class="contents-section"><span><b>{{ department }}</b></span>
+                                        <ul>
+                                {% endif %}
+
+                                <li><a href="{{ article.url }}">
+                                    {% if loop.length == 1 %}
+                                        <b>{{ department|replace({"\\": ""}) }}</b>
+                                    {% endif %}
+                                    {{ globalMacros.getPrintHeadline(article) }}
+                                </a></li>
+
+                                {% if loop.length > 1 and loop.last %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+
+                            {% endfor %}
+                            
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+
+                <div class="col wide end">
+
+                    <ul class="toc-features toc-group toc-front">
+                        <li><h2>Features</h2></li>
+
+                        {% set departments = ["Features"] %}
+
+                        {% for department in departments %}
+                            {% for article in attribute(results.contents, department) %}
+                                <li class="force">
+                                    <a href="{{ article.url }}">
+                                    {{ globalMacros.getImage(article._embedded.image_thumbnail[0], "thumbnail", false) }}
+                                    <h5 class="hasauthor">{{ globalMacros.getPrintHeadline(article) }}</h5>
+                                    <p class="author">{{ article.author }}</p>
+                                    <p>{{ article.excerpt }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+
+                    </ul>
+                    
+
+                    <ul class="toc-group toc-front">
+                        <li><h2>Alumni</h2></li>
+
+                        {% set departments = ["Alumni"] %}
+
+                        {% for department in departments %}
+                            {% for article in attribute(results.contents, department) %}
+                                {% set department = article._embedded.departments[0] %}
+                                <li><a href="{{ article.url }}"><b>{{ department.name }}</b> {{ globalMacros.getPrintHeadline(article) }}</a></li>
+                            {% endfor %}
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

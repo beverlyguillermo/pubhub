@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+	<!-- project (root element of the build file) -->
+	<project name="hub" default="build" basedir=".">
+
+		<!-- directory to create to hold the package -->
+		<property name="package.dir" value="./package" override="true" />
+
+		<!-- directory in which build bundles are located -->
+		<property name="bundles.dir" value="./build/bundles" />
+
+		<!-- files that belong in the package -->
+		<fileset dir="." id="package.files">
+			<include name="**" />
+			<exclude name="package/**" />
+			<exclude name="build/**" />
+			<exclude name="icons/**" />
+			<exclude name="database/**" />
+			<exclude name="tmp/**" />
+			<exclude name="sublime/**" />
+			<exclude name="tests/**" />
+			<exclude name="config/deploy/**" />
+			<exclude name="config/migrations/**" />
+			<exclude name="vendor/**" />
+			<exclude name="**/*.DS_STORE" />
+			<exclude name="**/factory/sites/**/files/**" />
+			<exclude name="**/factory/sites/**/private/**" />
+			<exclude name=".vagrant/**" />
+			<exclude name="Vagrantfile" />
+			<exclude name="puppet/**" />
+		</fileset>
+
+
+		<fileset id="views" dir="${package.dir}/app/views">
+			<include name="**/*.twig" />
+		</fileset>
+		
+
+		<!-- custom tasks -->
+		<taskdef name="gitcurrentbranch" classname="build.tasks.GitCurrentBranch" />
+		<taskdef name="bumpversion" classname="build.tasks.BumpVersion" />
+		<taskdef name="gitadd" classname="build.tasks.GitAdd" />
+		<taskdef name="linkpaths" classname="build.tasks.LinkPaths" />
+		<taskdef name="replaceless" classname="build.tasks.ReplaceEmbeddedLess" />
+
+
+
+		<!-- yuicompressor minification -->
+		<target name="minify.file" description="Minifies a file using YUI Compressor.">
+			<echo msg="Minifying ${absfilename}" />
+			<exec command="java -jar build/tools/yuicompressor-2.4.7.jar ${absfilename} -o ${absfilename}" />
+		</target>
+
+
+
+	    <!-- import target bundles -->
+	    <!-- Disabled unit testing until we can properly mock database in all models -->
+	    <!-- <import file="${bundles.dir}/unittest.xml"/> -->
+		<import file="${bundles.dir}/package.xml"/>
+		<import file="${bundles.dir}/jsbuild.xml"/>
+		<import file="${bundles.dir}/cssbuild.xml"/>
+		<import file="${bundles.dir}/rev.xml"/>
+		<import file="${bundles.dir}/git.xml"/>
+		<import file="${bundles.dir}/deploy.xml"/>
+
+
+
+		<!-- main build targets -->
+		<target
+			name="build"
+			description="Creates the minified hub package."
+			depends="copy, css.build, js.build, rev.files">
+		</target>
+
+		<target
+			name="deploy"
+			description="Deploys the current branch (uncommit changes and all) to the staging server."
+			depends="git.look.for.uncommitted.changes, copy, rev.files, git.autocommit, cap.deploy, cleanup, git.autocommit.cleanup">
+		</target>
+
+		<target
+			name="deploy.preview"
+			description="Previews exactly what will be deploy to production, but on staging."
+			depends="build, git.autocommit, cap.deploy, cleanup, git.autocommit.cleanup">
+		</target>
+
+		<target
+			name="deploy.production"
+			description="Deploys the master branch to production, with files concatenated and minified."
+			depends="git.merge.master, git.tag, git.merge.into.develop, git.merge.into.master, git.push, build, git.autocommit, cap.production.deploy, cleanup, git.autocommit.cleanup">
+		</target>
+
+
+	</project>

@@ -1,0 +1,46 @@
+{% for tweet in tweets %}
+    
+    {% set li_classes = ["force"] %}
+
+    {% if loop.first %}
+        {% set li_classes = li_classes|merge(["active"]) %}
+    {% else %}
+        {% set li_classes = li_classes|merge(["hidden"]) %}
+    {% endif %}
+        
+    <li class="{{ li_classes|join(' ') }}" data-created="{{ tweet.created_at|date("m-d-Y G:i") }}">
+            <div class="user-info col narrow">
+
+                <div class="container">
+                    <a target='_newtab' class="avatar-username" href="http://twitter.com/{{ tweet.user.screen_name}}"><img class="avatar" alt="{{ tweet.user.name}}" src="{{ tweet.user.profile_image_url}}" /> @{{ tweet.user.screen_name}}</a>
+                    <a target='_newtab' class="created-at" href='http://www.twitter.com/{{ tweet.user.screen_name}}/statuses/{{ tweet.id_str }}'>{{ tweet.created_at|date("M j, Y \\a\\t g:i a") }}</a>
+                    <i class="icon-chevron-right icon-large"></i>
+                </div>
+
+            </div>
+            <div class="tweet-body col half">
+                <table>
+                <tr>
+                <td>
+                    {{ tweet.text }}
+
+                    <span class="actions">
+                        <a class="reply twitter-action" href='https://twitter.com/intent/tweet?in_reply_to={{ tweet.id_str }}'><i class='icon-share-alt'></i> <span>Reply</span></a>
+
+                        <a class="retweet twitter-action" href='https://www.twitter.com/intent/retweet?tweet_id={{ tweet.id_str }}'><i class='icon-retweet'></i> <span>Retweet</span></a>
+
+                        <a class="favorite twitter-action" href='https://twitter.com/intent/favorite?tweet_id={{ tweet.id_str }}'><i class='icon-star'></i> <span>Favorite</span></a>
+                    </span>
+                </td>
+                </tr>
+                </table>
+            </div>
+
+    </li>
+    
+{% endfor %}
+
+<div class="follow-actions">
+    <a href="http://twitter.com/hubjhu"><i class="icon icon-twitter"></i> Follow @hubjhu &raquo;</a>
+    <a href="/about#tweets"><i class="icon icon-list-ul"></i> All collected tweets &raquo;</a>
+</div>

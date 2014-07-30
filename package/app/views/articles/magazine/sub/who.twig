@@ -1,0 +1,33 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block magazine_article %}
+
+	<h5 class="overline">Hollis Interviews</h5>
+	{{ magazineMacros.getTitle(results) }}
+
+
+	<div class="body-content">
+
+		{% block magazine_inset %}
+			{{ parent() }}
+		{% endblock %}
+		
+		{% block magazine_body %}
+			
+			<div class="who-is-facts">
+				{{ results.publication_content.whois_facts }}
+			</div>
+			{{ results.body }}
+
+		{% endblock %}
+
+	</div>
+
+	{{ globalMacros.getAside(results) }}
+
+	<div class="interviewer-image force">
+		<img src="/assets/img/magazine/portrait_hollis.png" />
+     	<p class="caption"><b>Hollis Robbins</b>, A&amp;S '83, is chair of the Humanities Department at the Peabody Institute; she teaches courses in literature, drama, film, and aesthetics. She has a joint appointment in the Center for Africana Studies at Homewood, where she teaches African-American poetry and civil rights.</p>
+    </div>
+
+{% endblock %}

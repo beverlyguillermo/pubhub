@@ -1,0 +1,33 @@
+{% extends "articles/global-article.twig" %}
+
+{% block title %}
+    {{ results.headline|striptags }}
+{% endblock %}
+
+{% block article_content %}
+	
+	<h1>{{ results.headline }}</h1>
+
+	{% if results.subheadline is not null %}
+		<h2 class="subheadline">{{ results.subheadline }}</h2>
+	{% endif %}
+
+	{{ globalMacros.getAuthorDateTopicLine(results) }}
+
+	{% if results.type != "summary" %}
+		{{ globalMacros.getEmphasis(results) }}
+	{% endif %}
+
+	<div class="body-content force">
+        {{ globalMacros.printInset(results) }}
+		{{ results.body }}
+	</div>
+
+	{# Summary button #}
+	{% if results.type == "summary" %}
+		<p class="source-line">
+			<a href="{{ results.source.url }}">Read more from <em class="source-name">{{ results.source.name }}</em></a>
+		</p>
+	{% endif %}
+
+{% endblock %}

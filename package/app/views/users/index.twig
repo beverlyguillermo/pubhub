@@ -1,0 +1,42 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+<div class="row">
+
+{% include "users/nav.twig" with {"subactive": "index"} %}
+
+<div class="span9">
+	<h1>Current Users</h1>
+	{% include "partials/messages.twig" %}
+	<table class="table">
+	<thead>
+		<tr>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+
+	{% for u in users %}
+		<tr>
+			<td>{{ u.username|default("<span class='badge badge-warning'>Pending</span>") }}</td>
+			<td>{{ u.email }}</td>
+			<td>{{ u.role }}</td>
+			<td>
+				{% if u.id != user.id %}
+				<a href="/manager/users/{{ u.id }}/delete"><i class="icon-trash"></i></a>
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+
+	</tbody>
+	</table>
+
+</div>
+</div>
+
+{% endblock %}

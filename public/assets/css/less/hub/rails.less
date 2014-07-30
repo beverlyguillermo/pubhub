@@ -1,0 +1,126 @@
+.rails {
+	padding-bottom: 50px;
+	.center {
+		position: relative;
+	}
+
+}
+
+.rail {
+	padding: 20px 0;
+	border-top: 1px solid rgba(0,0,0,0.2);
+	overflow: hidden;
+
+	// BACKGROUND MANAGEMENT
+	background-position: top left;
+	background-repeat: repeat;
+	background-image: url("/assets/img/bg-textures/bright_squares_a50.png");
+	background-color: #fff;
+	.transition(background-color, 0.3s, ease-out);
+	&:nth-child(2n) {		
+		background-color: darken(@light_tan, 10%);
+	}
+
+	.inner-rail-nav {
+		float: left;
+		margin: 9px 0 0 10px;
+	}
+
+	&.odd {			
+		background-color: darken(@light_tan, 10%);
+	}
+
+	&.events_rail {
+		background-color: lighten(@hopkins_blue, 35%);
+	}
+
+
+	.rail-description {
+		
+	}
+	.rail-title {
+		font-family: @sans_condensed;
+		font-weight: 100;
+		text-transform: uppercase;
+		font-size: @medium;
+		letter-spacing: 2px;
+		float: left;
+	}
+	.content {
+		margin-top: 10px;
+		.hidden {
+			position: absolute;
+			top: 5000px;
+			width: 100%;
+		}
+	}
+	
+
+	// Styles in slide-navigation should be uncommented when the JavaScript
+	// swapping issue is solved.
+	.slider-navigation {
+		display: none;
+		background-position: right -90px;
+		background-repeat: no-repeat;
+		list-style: none;
+		margin: 0;
+		font-size: @x-small;
+		li {
+			span {
+			}
+			.icon-chevron-right {
+			}
+		}
+		a {
+			display: block;
+			height: 34px;
+			line-height: 34px;
+			padding-left: 10px;
+			color: black;
+			background-color: fade(@white, 40%);
+			border-bottom: 1px solid fade(@black, 25%);
+			.border-radius(18px);
+			.transition(background-color, 0.15s, ease-out);
+			i {
+				margin-right: 5px;
+			}
+			i.icon-chevron-right {
+				display: none;
+			}
+			&:hover {
+				background-color: fade(@white, 95%);
+			}
+			&:active {
+				.box-shadow(none);
+				position: relative;
+				top: 1px;
+				border: none;
+			}
+			&.active {
+				background-color: fade(@black, 10%);
+				border-top: 1px solid @white;
+			}
+		}
+	}
+
+	// event rail only
+	&.events_rail {
+		.content {
+
+			.col {
+				&.teaser-4 {
+					display: none;
+				}
+				&.teaser-5 {
+					display: none;
+				}
+				&.teaser-6 {
+					display: none;
+				}
+			}
+		}
+		.slider-navigation {
+			float: right;
+		}
+	}
+}

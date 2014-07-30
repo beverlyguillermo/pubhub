@@ -1,0 +1,1053 @@
+{#### Global ####}
+
+
+{% macro getHeadline(article, alt) %}
+	
+	{% if alt is not defined or alt is null %}
+		{% set alt = false %}
+	{% endif %}
+	
+	{% if alt == true and article.alt_headline is not null %}
+		{{ article.alt_headline }}
+
+	{% else %}
+		{{ article.headline }}
+		
+	{% endif %}
+
+{% endmacro %}
+
+
+
+{% macro getSubheadline(article) %}
+	{% if article.subheadline is not null %}
+		<h2 class="subheadline">{{ article.subheadline }}</h2>
+	{% endif %}
+{% endmacro %}
+
+
+{% macro getImage(imageObject, style, showCaption, class) %}
+
+	{% if showCaption is not defined or showCaption is null %}
+		{% set showCaption = true %}
+	{% endif %}
+
+	{% if imageObject is not null %}
+
+		{% set styleObject = attribute(imageObject.sizes, style) %}
+
+		{% if styleObject is defined %}
+		    
+		    <div class="{{ class }}">
+			    
+			    <img src="{{ styleObject }}" alt="{{ imageObject.title }}" />
+
+			    {% set imageCaption = imageObject.caption %}
+			    {% set imageCredit = imageObject.credit %}
+
+			    {% if showCaption == true %}
+
+			    	<p class="caption">
+			    		{% if imageCaption is not null %}
+			    			{{ imageCaption|striptags("<i><b><strong><em><a>") }}
+					    {% endif %}
+
+					    {% if imageCredit is not null %}
+					      <b class="credit"><span class="prefix">Image: </span>{{ imageCredit }}</b>
+					    {% endif %}
+			    	</p>
+
+			    {% endif %}
+
+		    </div>
+
+		{% endif %}
+
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro getKicker(article) %}
+	{% if article.kicker is not null %}
+		<h5 class="overline">{{ article.kicker }}</h5>
+	{% endif %}
+{% endmacro %}
+
+
+{% macro getPublishDate(article) %}
+	{% set stamp = article.publish_date|date("F j, Y g:i:s a") %}
+	<span class="meta publish-date" data-stamp="{{ stamp }}">{{ stamp }}</span>
+{% endmacro %}
+
+
+{% macro getAuthor(article, prefix) %}
+	{% if article.author is not null %}
+	<span class="author">
+		{% if prefix is not null %}
+			{{ prefix }}
+		{% endif %}
+		{{ article.author }}</span>
+	<span class="sep">/</span>
+	{% endif %}
+{% endmacro %}
+
+
+{% macro getTopics(article) %}	
+	{% set topicList = [] %}
+	{% for topic in article._embedded.topics %}
+		{% set topicLink %}
+		<a href="{{ topic.url }}">{{ topic.name }}</a>
+		{% endset %}
+		{% set topicList = topicList|merge([topicLink|trim]) %}
+	{% endfor %}
+	{% if topicList is not empty %}
+		<span class="topics-in">Posted in {{ topicList|join(", ") }}</span>
+	{% endif %}
+{% endmacro %}
+
+
+{% macro getTags(article) %}	
+	{% set tagList = [] %}
+	{% for tag in article._embedded.tags %}
+		{% set tagLink %}
+		<a href="{{ tag.url }}">{{ tag.name }}</a>
+		{% endset %}
+		{% set tagList = tagList|merge([tagLink|trim]) %}
+	{% endfor %}
+	{% if tagList is not empty %}
+		<span class="tags-in">Tagged {{ tagList|join(", ") }}</span>
+	{% endif %}
+{% endmacro %}
+
+
+{% macro getAuthorDateTopicLine(article, authorPrefix) %}
+	<p class="author pubdate topics tags">
+		{{ _self.getAuthor(article, authorPrefix) }}
+		{{ article.publish_date|date("F j, Y") }}
+		{{ _self.getTopics(article) }}
+		{{ _self.getTags(article) }}
+	</p>	
+{% endmacro %}
+
+
+{% macro getSourceLine(article) %}
+	
+	{% if article.type == "magazine_article" %}
+		{% 
+			set source = {
+				"name": "Johns Hopkins Magazine",
+				"url": article.url,
+				"internal": true
+			} 
+		%}
+	{% elseif article.type == "gazette_article" %}
+		{% 
+			set source = {
+				"name": "Gazette",
+				"url": article.url,
+				"internal": true
+			} 
+		%}
+	{% else %}
+		{% set source = article.source %}
+	{% endif %}
+
+	{% if source is not null and source.name is not null %}
+		<span class="source">
+			<a href="{{ source.url }}">
+				<span class="source-separator">/</span>&nbsp;{{ source.name }}
+			</a>
+		</span>
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro multimediaPromo(article) %}
+	<div class="media-promo">
+		{% if article._embedded.videos is not null %}
+			&nbsp;&nbsp;|&nbsp;&nbsp;<i class="icon-facetime-video"></i>&nbsp;Video
+		{% endif %}
+		{% if article._links.galleries is defined %}
+			&nbsp;&nbsp;|&nbsp;&nbsp;<i class="icon-camera"></i>&nbsp;Photos
+		{% endif %}
+	</div>
+{% endmacro %}
+
+
+{###
+
+Create an article teaser.
+
+@var object [article] Article payload
+@var string [position] Location of teaser
+	"main" - homepage main feature
+	"secondary" - homepage secondary features
+	"topic" - topic page article
+@var array [additionalClasses] Array of additional classes to put on the teaser div
+@var hash [data] Hash of additional key=value pairs to put on the teaser div
+
+###}
+{% macro articleTeaser(article, position, additionalClasses, data) %}
+	
+	{# setup classes on the main div #}
+	{% set classes = ["teaser", "article", "force"] %}
+	{% set classes = classes|merge(additionalClasses|default([])) %}
+
+
+	{# set classes and imageSize based on the position of the article #}
+	{% set position = position|default("secondary") %}
+	{% if position == "secondary" or position == "topic" %}
+		{% set image = "thumbnail" %}
+		{% set imageSize = "thumbnail" %}
+	{% elseif position == "main" %}
+		{% set image = "impact" %}
+		{% set imageSize = "landscape" %}
+		{% set classes = classes|merge(["article-featured"]) %}
+	{% endif %}
+
+
+	{# setup image shortcut, classes related to image #}
+	{% set imageKeyName = "image_" ~ image %}
+	{% set image = attribute(article._embedded, imageKeyName) %}
+	{% set image = image[0] %}
+	{% if image is null %}
+		{% set classes = classes|merge(["no-image"]) %}
+	{% else %}
+		{% set classes = classes|merge(["has-image"]) %}
+	{% endif %}
+
+
+	{# get the correct excerpt depending on the position #}
+	{% set excerpt = article.excerpt %}
+	{% if position == "main" and article.long_excerpt is not null %}
+		{% set excerpt = article.long_excerpt %}
+	{% endif %}
+
+
+	{# data #}
+	{% set dataAttrs = [] %}
+	{% for key, value in data %}
+		{% set dataAttrs = dataAttrs|merge([key ~ "=" ~ value]) %}
+    {% endfor %}
+
+
+    {# output the div #}
+	<div class="{{ classes|join(" ") }}" {{ dataAttrs|join(" ") }}>
+
+		{% if position == "secondary" %}
+			<div class="teaser-text">
+				{{ _self.getKicker(article) }}
+				<h2><a href="{{ article.url }}">{{ _self.getHeadline(article, true) }}</a></h2>
+				<div class="force">
+					<div>{{ _self.getPublishDate(article) }}</div>
+					{{ _self.multimediaPromo(article) }}
+				</div>
+			</div>
+			{% if image is not null %}
+				<div class="{{ imageSize }}">
+					<a href="{{ article.url }}">{{ _self.getImage(image, imageSize, false) }}</a>
+				</div>
+			{% endif %}
+			<div class="summary">{{ excerpt }} {{ _self.getSourceLine(article) }}</div>
+		{% endif %}
+
+		
+
+		{% if position == "main" %}
+			{% if image is not null %}
+				<div class="{{ imageSize }}">
+					<a href="{{ article.url }}">{{ _self.getImage(image, imageSize, false) }}</a>
+				</div>
+			{% endif %}
+			<div class="teaser-text">
+				{{ _self.getKicker(article) }}
+				<h2><a href="{{ article.url }}">{{ _self.getHeadline(article, true) }}</a></h2>
+				<div class="force">
+					<div>{{ _self.getPublishDate(article) }}</div>
+					{{ _self.multimediaPromo(article) }}
+				</div>
+				<div class="summary">{{ excerpt }} {{ _self.getSourceLine(article) }}</div>
+			</div>
+		{% endif %}
+
+		
+
+		{% if position == "topic" %}
+			{% if image is not null %}
+				<div class="{{ imageSize }}">
+					<a href="{{ article.url }}">{{ _self.getImage(image, imageSize, false) }}</a>
+				</div>
+			{% endif %}
+			<div class="teaser-text">
+				{{ _self.getKicker(article) }}
+				<h2><a href="{{ article.url }}">{{ _self.getHeadline(article, true) }}</a></h2>
+				<div>{{ _self.getPublishDate(article) }}</div>
+				{{ _self.multimediaPromo(article) }}
+				<div class="summary">{{ excerpt }} {{ _self.getSourceLine(article) }}</div>
+			</div>
+		{% endif %}
+
+	</div>
+	
+{% endmacro %}                                     
+
+
+{# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # } 
+
+
+
+{#	Gallery
+ #	
+ #	@param array (gallery) All gallery information as sent through API
+ #	@param string (placement) Either "top" (gallery emphasis) of "inset" (article inset box). "inset" is default.
+ #  @param integer (maxRows) Maximum number of rows of three images to display
+ #}	
+{% macro getGallery(gallery, placement, maxRows) %}
+	
+	{% set placement = placement|default("inset") %}
+	{% set maxRows = maxRows|default(3) %}
+
+	{% set classes = ["gallery"] %}
+
+	{% if placement == "emphasized" %}
+		{% set classes = classes|merge(["featured"]) %}
+	{% else %}
+		{% set classes = classes|merge(["article-inset-gallery", "article-inset-section", "inset-element"]) %}
+	{% endif %}
+	
+	{% if gallery is not null %}
+
+		<div class="{{ classes|join(" ") }}">
+		
+			<div class="js-gallery force" data-gallery-title="{{ gallery.headline }}" data-gallery-id="{{ gallery.id }}">
+
+				{% if placement == "inset" %}
+					<h5>
+						<i class="icon icon-camera"></i> 
+						{% if gallery.headline is not null %}
+						<b>Photos / </b><span>{{ gallery.headline }}</span></h5>
+						{% else %}
+						Photo Gallery
+						{% endif %}
+					</h5>
+				{% endif %}
+
+				{# calculate rows #}
+				{% set imagesPerRow = 3 %}
+				{% set rowsPossible = gallery._embedded.image_gallery|length // imagesPerRow %}
+				{% set rowsToDisplay = (rowsPossible > maxRows) ? maxRows : rowsPossible %}
+				{% set imagesToDisplay = imagesPerRow * rowsToDisplay %}
+				
+				{% for image in gallery._embedded.image_gallery %}
+
+					{% set hide = "" %}
+					{% if loop.index > imagesToDisplay %}
+						{% set hide = " hide" %}
+					{% endif %}
+
+					<a href="#image={{ image.filename }}&id={{ image.id }}&gid={{ gallery.id}}"><img src="{{ image.sizes.square_thumbnail }}" title="{{ image.title }}" alt="{{ image.caption|default(image.title) }}" data-credit="{{ image.credit|default("") }}" class="{{ hide }}" /></a>
+
+				{% endfor %}
+
+				{% if placement == "emphasized" %}
+					<a href="#image={{ gallery._embedded.image_gallery.0.filename }}&id={{ image.id }}&gid={{ gallery.id}}" data-credit="{{ image.credit|default("") }}" class="gallery-open"><i class="icon icon-camera"></i> View Gallery &raquo;</a>
+				{% endif %}
+
+			</div>
+
+		</div>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+
+{# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # } 
+
+
+
+{# Video #}
+
+{% macro mainVideo(video) %}
+	
+	{% if video is not null %}
+
+		<div class="main-video video">
+
+			<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ video.youtube_id }}?rel=0&autohide=1&modestbranding=1&wmode=transparent" frameborder="0" allowfullscreen></iframe>
+
+			{% if video.description is not null or video.credit is not null %}
+		    	<p class="caption">
+
+		    		{% if video.description is not null %}
+		    			{{ video.description|striptags("<i><b><strong><em><a>") }}
+				    {% endif %}
+
+				    {% if video.credit is not null %}
+				      <b class="credit"><span class="prefix">Video: </span>{{ video.credit }}</b>
+				    {% endif %}
+
+		    	</p>
+		    {% endif %}
+
+		</div>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro articleRailVideo(video, label) %}
+
+	{% if video is not null %}
+
+		<div class="article-inset-video article-inset-section">
+			{{ video._embedded.image_thumbnail.sizes.thumbnail }}
+			<h5><i class="icon icon-play-circle"></i> Video{% if video.headline is not null %}: {{ video.headline }}{% endif %}</h5>
+			<div class="video">
+				<a onclick="_gaq.push(['_trackEvent', 'Video', 'Play', '{{ label }}']);" href="http://www.youtube.com/watch?v={{ video.youtube_id }}" class="videopow">
+
+					<img src="{{ video._embedded.image_thumbnail.0.sizes.thumbnail }}" alt="{{ video.headline }}" />
+					<i class="icon icon-play"></i>
+				
+				</a>
+				{#
+
+				We could just play the video small here and let users click 'Watch on YouTube'
+				to watch it larger, but Dave doesn't want that so he's going to assign a
+				video thumbnail image to every inset video or the video will not show up.
+
+				<iframe style="position: relative; z-index: 99;" width="420" height="315" src="http://www.youtube.com/embed/{{ video.youTubeId }}" frameborder="0" allowfullscreen></iframe>
+
+				#}
+
+			</div>
+
+		</div>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+
+{# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # }
+
+
+
+{# Related Content #}
+
+{% macro getRelatedContent(relatedArticles) %}
+
+	{% if relatedArticles is not empty %}
+
+		<div class="article-inset-related article-inset-section">
+
+		<h5><!-- <i class="icon icon-magnet"></i>  -->Related Articles</h5>
+
+		{% for article in relatedArticles %}
+
+			{# figure out some classes #}
+			
+			{% set classes = ["teaser", "article"] %}
+			{% set thumb = article._embedded.image_thumbnail[0] %}
+
+			{% if thumb is not null %}
+				{% set classes = classes|merge(["has-image"]) %}
+			{% endif %}
+
+			{{ _self.articleTeaser(article, "secondary", classes) }}
+
+		{% endfor %}
+
+		</div>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+
+{# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # }
+
+
+
+{# Magazine and Gazette #}
+
+
+{% macro getAuthorBio(article) %}
+	{% if article.publication_content.author_bio is not null %}
+		<div class="author-bio">
+			{{ article.publication_content.author_bio }}
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro getAside(article) %}
+	{% if article.publication_content.aside is not null %}
+		<div class="aside">{{ article.publication_content.aside }}</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro getPrintHeadline(article) %}
+	
+	{% if article.publication_content.headline is defined and article.publication_content.headline is not null %}
+		{{ article.publication_content.headline }}
+	{% else %}
+		{{ _self.getHeadline(article) }}
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro getMagazineImpact(article) %}
+	
+	{% if article._embedded.image_impact[0] is not null %}
+
+		{# Setup div class(es) #}
+
+		{% set classes = ["impact"] %}
+
+		 {% if article.publication_content.impact_zoom == 1 %}
+			{% set classes = classes|merge([" epic-zoom"]) %}
+		{% endif %}
+
+		{% set impact = article._embedded.image_impact[0] %}
+
+
+		{# Setup image URL #}
+
+		{# defaultimpact image URL #}
+		{% set url = impact.sizes.landscape %}
+
+		{# reset image URL if we need the full_width style of an image (artifact image zoom) #}
+		{% if article.publication_content.impact_use_ratio == 1 %}
+			{# include slashes in the replace (vs. using just "large") to make
+			   sure we get the actual style and not part of the image name #}
+			{% set url = url|replace({ "/landscape/": "/full_width/"}) %}
+		{% endif %}
+
+
+		{# Output! #}
+	    
+	    <div class="{{ classes|join(" ") }}">
+		    
+		    <img class="impact" src="{{ url }}" alt="{{ image.title }}" />
+
+		    {% if article.publication_content.impact_caption is not null %}
+		    	{% set caption = article.publication_content.impact_caption %}
+		    {% elseif impact.caption is not null %}
+		   		{% set caption = impact.caption %}
+		   	{% endif %}
+
+		   	 {% if article.publication_content.impact_credit is not null %}
+		    	{% set credit = article.publication_content.impact_credit %}
+
+		    {% elseif impact.credit is not null %}
+		    	{% set credit = impact.credit %}
+		    {% endif %}
+
+		    {% if caption is defined or credit is defined %}
+
+		    	<p class="caption">
+
+		    		{% if caption is defined %}
+		    			{{ caption|striptags("<i><b><strong><em><a>") }}
+				    {% endif %}
+
+				    {% if credit is defined %}
+				    	<b class="credit"><span class="prefix">Image: </span>{{ credit }}</b>
+				    {% endif %}
+
+		    	</p>
+		    	
+		    {% endif %}
+
+	    </div>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+
+
+{# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # }
+
+
+
+{# Other #}
+
+
+{% macro printInsetSection(item) %}
+	
+	{% if item.type is null %}
+
+		{{ item.value }}
+
+	{% elseif item.type == "gallery" %}
+
+		{{ _self.getGallery(item.value, item.galleriesPosition, item.maxRows) }}
+
+	{% elseif item.type == "video" %}
+
+		{{ _self.articleRailVideo(item.value, item.headline) }}
+
+	{% elseif item.type == "related_articles" %}
+
+		{{ _self.getRelatedContent(item.value) }}
+
+	{% elseif item.type == "inline_image" %}
+
+		{{ _self.getImage(item.value, "medium", true, "inline article-inset-section inset-element" ) }}
+
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro printInset(article) %}
+
+	{# create inset items #}
+	{% set emphasis = article.format %}
+
+	{% if emphasis == "Video Emphasis" %}
+	    {% 
+	        set insetItems = [
+	            { type: "inline_image", value: article._embedded.image_other[0] },
+	            { type: "gallery", value: article._links.galleries[0], maxRows: 1 },
+	            { type: "related_articles", value: article._links.related_content }
+	        ]
+	    %}
+
+	{% elseif emphasis == "Gallery Emphasis" %}
+	    {% 
+	        set insetItems = [
+	            { type: "inline_image", value: article._embedded.image_other[0] },
+	            { type: "video", value: article._embedded.videos[0] },
+	            { type: "related_articles", value: article._links.related_content }
+	        ]
+	    %}
+
+	{% else %}
+	    {% 
+	        set insetItems = [
+	            { type: "inline_image", value: article._embedded.image_other[0] },
+	            { type: "video", value: article._embedded.videos[0] },
+	            { type: "gallery", value: article._links.galleries[0], maxRows: 1 },
+	            { type: "related_articles", value: article._links.related_content }
+	        ]
+	    %}
+	{% endif %}
+
+	
+	{% set has_items = false %}
+	{% set existing = [] %}
+
+	{% for item in insetItems %}
+		{% if item.value is not null and item.value is not empty %}
+			{% set has_items = true %}
+			{% set existing = existing|merge([item]) %}
+		{% endif %}
+	{% endfor %}
+		
+		{% if has_items %}
+			<div class="article-inset">
+			{% for item in existing %}
+				{{ _self.printInsetSection(item) }}
+			{% endfor %}
+			</div>
+		{% endif %}
+
+{% endmacro %}
+
+
+{# Get the article emphasis (main video, gallery or image) #}
+{% macro getEmphasis(article) %}
+
+	{% set emphasis = article.format %}
+
+	{% if emphasis == "Video Emphasis" %}
+	    {{ _self.mainVideo(article._embedded.videos[0]) }}
+	{% elseif emphasis == "Gallery Emphasis" %}
+	    {{ _self.getGallery(article._links.galleries[0], "emphasized", 2) }}
+	{% else %}
+		{% if article.type == "magazine_article" %}
+	    	{{ _self.getMagazineImpact(article) }}
+		{% else %}
+		    {{ _self.getImage(article._embedded.image_impact[0], "landscape", true, "impact") }}
+	    {% endif %}
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro printMenu(menu, currentPageId, level) %}
+	
+	{% set level = level|default(0) %}
+	{% for item in menu %}
+
+    	{% set classes = ["menu-level-" ~ level] %}
+    	{% if item.id is defined and item.id == currentPageId %}
+    		{% set classes = classes|merge(["current"]) %}
+    	{% endif %}		
+
+    	{% if item.type is defined and item.type == "section heading" %}
+			<li><h5><span>{{ item.text }}</span></h5></li>
+    	{% else %}
+    		<li class="{{ classes|join(' ') }}"><a href="{{ item.href }}">{{ item.text }}
+
+    		{% if item.subpages is defined and item.subpages is not empty %}
+    			<i class="icon icon-caret-down"></i></a>
+    			<ul class="submenu">{{ _self.printMenu(item.subpages, currentPageId, level + 1) }}</ul>
+    		{% else %}
+    			</a>
+    		{% endif %}
+    			
+    		</li>
+
+    	{% endif %}
+
+    {% endfor %}
+
+{% endmacro %}
+
+
+{# Hubstagram #}
+{% macro photo_classes(photo) %}
+	{% spaceless %}
+
+		{% set classes = ["photo"] %}
+
+		{% set size = random(["1x1", "2x2", "3x3", "4x4"]) %}
+	    {% set classes = classes|merge(["size-" ~ size]) %}
+
+		{% for tag in photo.tags|default([]) %}
+			{% set classes = classes|merge(["tag-" ~ tag]) %}
+		{% endfor %}
+
+		{% if photo.location.id is defined %}
+			{% set classes = classes|merge(["location-" ~ photo.location.id]) %}
+		{% endif %}
+
+		{{- classes|join(" ") -}}
+
+	{% endspaceless %}
+{% endmacro %}
+
+
+
+
+{# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # }
+
+
+
+{# Events #}
+
+
+
+
+{% macro eventTeaser(event, additionalClasses, data) %}
+	{# setup classes on the main div #}
+	{% set classes = ["teaser", "event", "force"] %}
+	{% set classes = classes|merge(additionalClasses|default([])) %}
+
+
+	{# setup image shortcut, classes related to image #}
+
+	{% set image = attribute(event._embedded, "image_thumbnail") %}
+	{% set image = image[0] %}
+
+	{% set classes = classes|merge(["has-image"]) %}
+
+
+	{# data #}
+	{% set dataAttrs = [] %}
+	{% for key, value in data %}
+		{% set dataAttrs = dataAttrs|merge([key ~ "=" ~ value]) %}
+    {% endfor %}
+
+
+    {# output the div #}
+	<div class="{{ classes|join(" ") }}" {{ dataAttrs|join(" ") }}>
+
+		{% if event.featured == true %}
+			<div class="featured-tag"><i class="icon-star"></i> <span>Featured</span></div>
+		{% endif %}
+		
+		
+		<div class="thumbnail">
+			{% if image is not null %}
+				<a href="{{ event.url }}">{{ _self.getImage(image, "thumbnail", false) }}</a>
+			{% else %}
+				{{ _self.topicThumbnail(event) }}
+			{% endif %}
+		</div>
+
+		<div class="teaser-text">
+			<h5 class="overline">{{ _self.eventDate(event) }}</h5>
+			<h2><a href="{{ event.url }}">{{ event.name }}</a></h2>
+			{{ _self.eventTime(event) }}
+			{{ _self.eventLocation(event) }}
+			{{ _self.eventRegistration(event) }}
+
+			{% if event.excerpt is not null %}
+				<div class="summary">
+					<span class="summary-text">{{ event.excerpt }}</p></span>
+				</div>
+			{% endif %}
+		</div>
+
+	</div>
+
+{% endmacro %}
+
+
+{% macro topicThumbnail(event) %}
+
+	{% set topics = event._embedded.topics %}
+
+	{% if topics is not empty %}
+
+		{% set randomTopic = random(topics) %}
+
+		<div class="placeholder">
+			<a href="{{ event.url }}"><img src="/assets/img/topics/{{ randomTopic.slug }}.gif" /></a>
+		</div>
+
+	{% endif %}
+
+{% endmacro %}
+
+{% macro eventDate(event) %}
+
+	{% set startDate = event.start_date|date("U") %}
+	{% set endDate = event.end_date|date("U") %}
+
+	{# create today's date in the same format as start_date
+	   and end_date and then convert to unixtime #}
+	{% set todayDate = date("now")|date("Y-m-d") %}
+	{% set todayDate = todayDate|date("U") %}
+
+	
+	{# single day event #}
+	{% if startDate == endDate %}
+
+		{% if startDate == todayDate %}
+			{# today #}
+			{% set niceDate = "Today" %}
+		{% elseif todayDate < startDate %}
+			{# future #}
+			{% set niceDate = event.start_date|date("F j") %}
+		{% else %}
+			{# past (add year) #}
+			{% set niceDate = event.start_date|date("F j, Y") %}
+		{% endif %}
+
+	{# multi-day event #}
+	{% else %}
+
+		{% if todayDate >= startDate and todayDate <= endDate or startDate >= todayDate %}
+			{# future #}
+			{% set niceDate = event.start_date|date("F j") ~ " - " ~ event.end_date|date("F j") %}
+
+		{% else %}
+			{# past (add year) #}
+			{% set niceDate = event.start_date|date("F j, Y") ~ " - " ~ event.end_date|date("F j, Y") %}
+		{% endif %}
+
+	{% endif %}
+
+	{# display #}
+
+	{% set months = {
+			"January": "Jan",
+			"February": "Feb",
+			"August": "Aug",
+			"September": "Sept",
+			"October": "Oct",
+			"November": "Nov",
+			"December": "Dec"
+		}
+	%}
+
+	<div class="meta date">
+		<i class="icon icon-calendar"></i>
+		<div class="text">
+			{{ niceDate|replace(months) }}
+		</div>
+	</div>
+
+{% endmacro %}
+
+
+{% macro eventTime(event) %}
+
+	{% if event.start_time is not null %}
+
+		{% set startTime = event.start_time|date("g:i a") %}
+
+		{% if event.start_time|date("i") == "00" %}
+			{% set startTime = event.start_time|date("ga") %}
+		{% endif %}
+
+		{% set niceTime = startTime %}
+
+		{% if event.end_time is not null and event.end_time != event.start_time %}
+
+			{% if event.start_time|date("a") == event.end_time|date("a") %}
+    			{% set niceTime = event.start_time|date("g:i") %}
+
+    			{% if event.start_time|date("i") == "00" %}
+					{% set niceTime = event.start_time|date("g") %}
+				{% endif %}
+    		{% endif %}
+
+			{% set endTime = event.end_time|date("g:i a") %}
+
+			{% if event.end_time|date("i") == "00" %}
+				{% set endTime = event.end_time|date("ga") %}
+			{% endif %}
+
+			{% set niceTime = niceTime ~ " - " ~ endTime %}
+
+		{% endif %}
+
+		<div class="meta time">
+			<i class="icon icon-time"></i>
+			<div class="text">
+				{{ niceTime }}
+			</div>
+		</div>
+
+	{% endif %}
+	
+{% endmacro %}
+
+
+{% macro eventLocation(event) %}
+	
+	{% set niceLocation = "" %}
+
+	{% if event._embedded.locations is not null %}
+		
+		<div class="meta location">
+
+			{% set location = event._embedded.locations.0 %}
+
+			{% set mainLocation = location.name %}
+			{% set campus = location.parent ? location.parent.name : null %}
+			{% set supplement = event.supplemental_location_info %}
+
+			<i class="icon icon-map-marker"></i>
+
+			<div class="text">
+
+				<div class="building">
+				{% if supplement is not null %}
+					{{ supplement }}, 
+				{% endif %}
+
+				{% if mainLocation is not null %}
+					<a href="#map">{{ mainLocation }}</a>
+					<span class="nolink">{{ mainLocation }}</span>
+				{% endif %}
+				</div>
+
+				{% if campus is not null %}
+					<span class="campus">{{ campus }}</span>
+				{% endif %}
+
+				<div class="address">
+					<a href="http://maps.google.com/?q={{ location.address }} {{ location.city }} {{ location.state }} {{ location.zipcode }}">
+						{{ location.address }}<br />
+						{{ location.city }}, {{ location.state }} {{ location.zipcode }}
+					</a>
+				</div>
+
+			</div>
+			
+		</div>
+
+	{% elseif event.supplemental_location_info is not null %}
+
+		<div class="meta location">
+			<i class="icon icon-map-marker"></i>
+			<div class="text">{{ event.supplemental_location_info }}</div>
+		</div>
+
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro eventRegistration(event) %}
+
+	{% if event.registration_required == true %}
+		<div class="meta registration">
+			<span>Registration is required</span>
+		</div>
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro latitude(event) %}
+
+	{% if event._embedded.locations is not null %}
+		{% set location = event._embedded.locations.0 %}
+		{{ location.latitude }}
+	{% endif %}
+
+{% endmacro %}
+
+{% macro longitude(event) %}
+
+	{% if event._embedded.locations is not null %}
+		{% set location = event._embedded.locations.0 %}
+		{{ location.longitude }}
+	{% endif %}
+
+{% endmacro %}
+
+
+{% macro eventMeta(event) %}
+	
+	{#
+	Find out if the event happened before today.
+	If so, add the robots:noindex meta tag.
+	#}
+
+	{% set today = date() %}
+	{% set expired = false %}
+
+	{% if event.end_date is not null %}
+		{% set date = event.end_date %}
+	{% else %}
+		{% set date = event.start_date %}
+	{% endif %}
+
+
+	{# if past year #}
+	{% if today|date("Y") > date|date("Y") %}
+		{% set expired = true %}
+	{% endif %}
+
+	{# if past month in this year #}
+	{% if today|date("Y") == date|date("Y") and today|date("n") > date|date("n") %}
+		{% set expired = true %}
+	{% endif %}
+
+	{# if past day in this month in this year #}
+	{% if today|date("Y") == date|date("Y") and today|date("n") == date|date("n") and today|date("d") > date|date("d") %}
+		{% set expired = true %}
+	{% endif %}
+
+	{% if expired == true %}
+		<meta name="robots" content="noindex">
+	{% endif %}
+
+{% endmacro %}

@@ -1,0 +1,77 @@
+.carousel {
+    .container {
+        position: relative;
+        width: 84%;
+        margin-right: 3%;
+        float: left;
+        overflow: hidden;
+        min-height: 400px;
+    }
+    .panel {
+        float: left;
+        clear: none;
+        width: 30.952381%;          // 312px image / 1008px container at 1200px wide
+        margin-right: 3.5714286%;   // 36px gutter / 1008px container at 1200px wide
+        img {
+            float: none;
+            width: 100%;
+        }
+        h5 {
+            font-size: 22px;
+            line-height: 120%;
+            margin: 0.3em 0;
+        }
+        a {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+        a {
+            p {
+                color: @black !important; // Keep the summary black
+            }
+        }
+        .summary {
+            display: block;
+        }
+        &.end {
+            margin-right: 0;
+        }
+    
+        &.no-image {
+            border-top: 10px solid @black;
+            h5 {
+                font-size: 22px;
+            }
+            .summary {
+                font-size: 110%;
+            }
+        }
+    }
+    .carousel-nav {
+        .transition(all, 0.3s);
+        display: block;
+        height: 200px;
+        width: 5%;
+        background-color: transparent;
+        float: left;
+        text-indent: -9999px;
+        cursor: default;
+        opacity: 0.1;
+        background-repeat: no-repeat;
+        &.previous {
+            margin-right: 3%;
+            background-position: left 20px;
+            background-image: url(/assets/img/magazine/arrow-left.png);
+        }
+        &.next {
+            float: right;
+            background-position: right 20px;
+            background-image: url(/assets/img/magazine/arrow-right.png);
+        }
+        &.activate {
+            cursor: pointer;
+            opacity: 1;
+        }
+    }
+}

@@ -1,0 +1,59 @@
+#slide-message {
+    z-index: 600;
+    position: relative;
+    height: 40px;
+    a.message {
+        display: none; // To keep this off small screens
+        width: 100%;
+        background-color: darken( @hopkins_blue, 20% );
+        color: @white;
+        height: 40px;
+        font-family: @sans;
+        font-weight: bold;
+        font-size: @small;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+        &:hover {
+            background-color: @hopkins_blue;
+            color: @white;
+        }
+    }
+    
+    .message-text {
+        //padding: 5px 0 5px 30px;
+        //background: url(/assets/img/magazine/icon-ipad.png?hioh) left center no-repeat;
+    }
+}
+
+#close-slide-message {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    height: 40px;
+    width: 40px;
+    z-index: 601;
+    text-indent: -9999px;
+    background: url(/assets/img/magazine/x-white-small.png) center center no-repeat;
+    cursor: pointer;
+    &:hover {
+        background-color: @hub_blue;
+    }
+}
+
+.overlay-open #slide-message {
+    z-index: 500;
+}
+.overlay-open #close-slide-message {
+    visibility: none;
+}
+
+@media all and (min-width:760px) and (min-device-width:600px) {
+    #slide-message a.message {
+        display: block;
+    }
+    #close-slide-message {
+        display: block;
+    }
+}

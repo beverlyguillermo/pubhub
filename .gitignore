@@ -1,0 +1,25 @@
+# Ignore paths that contain user-generated content.
+public/factory/sites/*/files
+public/factory/sites/*/private
+
+# Mac specific files
+*.DS_Store
+
+# Weird error logs that get generated
+*-1
+
+# Overly aggressive config files are unhelpful
+*.sublime-workspace
+*codekit-config.json
+
+# Removing the vendor directory! Goodbye cruel world!
+/vendor
+
+# Don't save logs in the repo
+logs
+
+# Vagrant
+.vagrant
+
+!*.gitkeep
+!*.gitignore

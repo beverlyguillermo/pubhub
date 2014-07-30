@@ -1,0 +1,10 @@
+{% if messages is not empty %}
+	{% for type, list in messages %}
+	    {% for message in list %}
+            <div class="alert alert-{{ type }} fade in">
+                {# <button class="close" data-dismiss="alert">×</button> #}
+	            {{ message }}
+            </div>  
+	    {% endfor %}
+	{% endfor %}
+{% endif %}

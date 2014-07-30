@@ -1,0 +1,234 @@
+.input-group {
+    margin-left: 0;
+    margin-bottom: 22px;
+    padding: 2px 0;
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 15px 0;
+        border-bottom: 1px solid #efefef;
+    }
+    hr {
+        margin: 15px 0;
+    }
+    .control-group {
+        margin-bottom: 0;
+        input {
+            margin-bottom: 0;
+        }
+        .help-inline {
+            margin-bottom: 0;
+        }
+    }
+    .expanded-details {
+        padding: 20px 0 5px;
+        .control-row {
+            
+        }
+        input, textarea, select { margin-bottom: 15px; }
+    }
+    &.features, &.tags, &.locations {
+        li {
+            height: 50px;
+            margin-bottom: 15px;
+            clear: left;
+            .control-group {
+                float: left;
+                width: 375px;
+                input {
+                    position: relative;
+                    top: 10px;
+                }
+                i {
+                    position: relative;
+                    top: 10px;
+                }
+            }
+            .preview {
+                float: left;
+                width: 480px;
+                // border-left: 3px solid #d2d2d2;
+                padding-left: 25px;
+                img {
+                    // height: 50px;
+                    width: 75px;
+                    border: none;margin-right: 10px;
+                }
+                table {
+                    td.thumbnail {
+                        padding: 0 15px 0 0;
+                        border: none;
+                    }
+                    p {
+                        font-size: 12px;
+                    }
+                }
+                p {
+                    float: left;
+                    width: 390px;
+                    margin-bottom: 0;
+                    a {
+                        color: @black;
+                        &:hover {
+                            color: @hopkins_blue;
+                            text-decoration: none;
+                        }
+                    }
+                    .action-link {
+                        color: #fff;
+                        font-size: 10px;
+                        // text-transform: uppercase;
+                        margin: 0 0 0 3px;
+                        &:hover {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.input-group {
+    .expanded {
+        padding: 15px 15px 5px;
+        margin: 10px 0;
+        border-top: 2px solid rgba(0,0,0,0.3);
+        border-bottom: 2px solid rgba(0,0,0,0.3);
+        background-color: lighten(@hopkins_blue, 40%);
+        .control-group.active {
+            input {
+                border-color: transparent;
+                background-color: transparent;
+                font-weight: bold;
+                box-shadow: none;
+                padding: 0;
+                width: 362px;
+            }
+            .help-inline {
+                color: @hopkins_blue;
+            }
+        }
+    }
+}
+
+.actions {
+    position: relative;
+    top: 4px;
+    width: 150px;
+    float: left;
+    .action-delete {
+        color: red;
+    }
+
+    .action-delete, .action-expand {
+        cursor: pointer;
+    }
+
+    .action-move {
+        cursor: move;
+    }
+}
+
+input.transparent {
+	border: 0;
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+    font-style: italic;
+    &:focus {
+        box-shadow: none;
+        border: 0;
+    }
+    &.hasDatepicker {
+        border: 1px solid rgba(0,0,0,0.1);
+        margin: 0 8px;
+        width: 170px;
+    }
+}
+
+.form-vertical {
+    padding-bottom: 80px;
+    .form-actions {
+        padding-left: 25px;
+    }
+    legend {
+        margin-bottom: 5px;
+    }
+}
+
+.action-link {
+    margin: 0 10px;
+}
+
+.action-expand {
+    cursor: pointer;
+}
+
+.action-add-new {
+    margin: -10px 0 30px;
+    &.prepend {
+        margin: 20px 0 10px;
+    }
+    display: block;
+    cursor: pointer;
+}
+
+.action-preview {
+    float: right;
+    cursor: pointer;
+}
+
+.form-actions {
+    margin: 0;
+    position: fixed;
+    width: 900px;
+    bottom: 0;
+    background-color: darken(@hopkins_blue, 40%);
+    border-top: 3px solid darken(@hopkins_blue, 20%);
+    .box-shadow(0 -2px 4px rgba(0,0,0,0.3));
+    img {
+        margin-left: 10px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.schedule-changes {
+    a {
+        background-color: fade(@hopkins_blue, 10%);
+    }
+}
+
+// rails
+.form-elements {
+    width: 60%;
+    float: left;
+}
+
+.preview {
+    table {
+        height: 50px;
+        td {
+            vertical-align: middle;
+        }
+        td.thumbnail {
+            width: 75px; 
+        }
+        p {
+            font-size: 12px;
+        }
+        &.timeout-error {
+            color: red;
+            a { 
+                color: darken(red, 10%);
+                text-decoration: underline;
+                &:hover {
+                    color: red;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,58 @@
+{% extends "layouts/global.twig" %}
+
+{% block stylesheet %}
+	<style type="text/less">
+		{% include "partials/styles/gazette.less" %}
+	</style>
+{% endblock %}
+
+{% block head %}
+	<link rel="alternate" type="application/rss+xml" title="Gazette" href="{{ request.rootUri }}/gazette/feed" />
+	{{ parent() }}
+{% endblock %}
+
+{% block body_classes %}{{ parent() }} gazette {% endblock %}
+
+{% block global_nav %}
+	{% set section_id = { "nav_section" : "gazette" } %}
+	{{ parent() }}
+{% endblock %}
+
+{% block site_content %}
+
+	{# gazette header #}
+
+	<div class="gazette-header header{% if section != "homepage" %} interior{% endif %} section force">
+		<div class="center">
+				
+			<div class="title-line force">
+
+				{% if object == "issues" and section == "homepage" %}<h1>{% endif %}
+				<div class="masthead"><a href="/gazette"><span>Gazette</span><img src="/assets/img/gazette/masthead.png" alt="Gazette"></a></div>
+				{% if object == "issues" and section == "homepage" %}</h1>{% endif %}
+
+			</div>
+
+
+			{% include "partials/gazette-main-menu.twig" %}
+
+		</div>
+	</div>
+
+	{# page content #}
+
+	<div class="content-area section">
+		<div class="center force">
+
+			{% block page_content %}
+
+			{% endblock %}
+
+		</div>
+	</div>
+
+	{# table of contents overlay #}
+
+	<div id="toc-overlay" class="toc-overlay hidden"></div>
+
+{% endblock %}

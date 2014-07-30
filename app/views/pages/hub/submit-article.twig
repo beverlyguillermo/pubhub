@@ -1,0 +1,78 @@
+{% extends "layouts/hub.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block stylesheet %}
+	{{ parent() }}
+	<style type="text/less">
+		{% include "partials/styles/developers.less" %}
+	</style>
+
+{% endblock %}
+
+{% block page_content %}
+
+	{# used as-is on static pages #}
+
+	{% set classes = ["page"] %}
+
+	{% set classes = ["page"] %}
+	{% if slug is defined %}
+		{% set classes = classes|merge([slug ~ "-page"]) %}
+	{% endif %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			<div class="col measure wide">
+
+				{% include "partials/messages.twig" %}
+				
+				<h1>{{ page_title }}</h1>
+
+				{{ html }}
+
+				{{ form }}
+
+				<p class="helper submit-helper force">Fields marked with <strong>*</strong> are required.</p>
+
+			</div>
+
+		</div>
+
+		{% include "partials/article-sidebar.twig" %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-new-tab">
+	{% include "partials/new-tab.js" %}
+	</script>
+	<script type="text/template" id="template-trending-tab">
+	{% include "partials/trending-tab.js" %}
+	</script>
+	<script type="text/template" id="template-hubpix-promo">
+    {% include "partials/hubpix-promo.js" %}
+    </script>
+	{{ parent() }}
+
+	{% include "partials/scripts/developers.twig" %}
+
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+	    hubster.activateNewTrending();
+
+	    hubstagram.init({
+			container: ".hubpix-promo .pix",
+			template: "#template-hubpix-promo"
+		}).promote(6);
+
+		tinymcelib.init(("textarea.wysiwyg"));
+	});
+	</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+<div class="row">
+
+	{% include "users/nav.twig" with {"subactive": "create"} %}
+
+	<div class="span9">
+		<h1>Create User</h1>
+		{% include "partials/messages.twig" %}
+		<p>Use this world's shortest form to create a "pending" user. Rather than having you create the person's username and password, add their email to our database here and we'll send them an email explaining how they can set up their own account information from there.</p>
+		<p><strong>Note:</strong> Filling out this form will send an email to the new user immediately.</p>
+
+		{% import "macros/forms.twig" as forms %}
+		<form action="" method="post">
+			{{ forms.input("email", "Email Address", request.email) }}
+
+			<button class="btn btn-primary" type="submit" name="new_user">Create</button>
+		</form>
+
+	</div>
+
+</div>
+{% endblock %}

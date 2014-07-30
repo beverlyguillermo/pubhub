@@ -1,0 +1,201 @@
+RewriteEngine On
+
+# ------------------------------------------------------------------------------
+# | /factory(.*) should redirect to api.hub.jhu.edu$1                          |
+# ------------------------------------------------------------------------------
+RewriteCond %{HTTP_HOST} ^local
+RewriteRule ^factory(.*) http://local.api.hub.jhu.edu/factory$1 [L,R=301]
+
+RewriteCond %{HTTP_HOST} ^staging
+RewriteRule ^factory(.*) http://staging.api.hub.jhu.edu/factory$1 [L,R=301]
+
+RewriteCond %{HTTP_HOST} ^hub
+RewriteRule ^factory(.*) https://api.hub.jhu.edu/factory$1 [L,R=301]
+
+
+# ------------------------------------------------------------------------------
+# | Articles that were updated and URL changed                                 |
+# ------------------------------------------------------------------------------
+Redirect 301 /2012/10/26/hurricane-sandy-coverage http://hub.jhu.edu/2012/10/30/hurricane-sandy-coverage
+Redirect 301 /2012/10/28/hurricane-sandy-coverage http://hub.jhu.edu/2012/10/30/hurricane-sandy-coverage
+Redirect 301 /2012/11/20/womens-cross-country-champions http://www.hub.jhu.edu/gazette/2012/december/womens-cross-country-national-title
+Redirect 301 /2013/03/04/winter-weather-snow-jhu http://hub.jhu.edu/2013/03/05/winter-storm-update
+
+
+# ------------------------------------------------------------------------------
+# | Content type changed                                                       |
+# ------------------------------------------------------------------------------
+Redirect 301 /2013/06/10/nsa-prism-data-mining http://hub.jhu.edu/2013/06/10/matt-green-nsa-prism-surveillance
+
+
+# ------------------------------------------------------------------------------
+# | Found a lot of 404s in webmaster tools for the following                   |
+# ------------------------------------------------------------------------------
+Redirect 301 /magazine/2012/summer/making-waves-fight-cancer http://hub.jhu.edu/magazine/2012/summer/making-waves-to-fight-cancer
+
+
+
+
+# ------------------------------------------------------------------------------
+# | Hub/Pix redirects                                                          |
+# ------------------------------------------------------------------------------
+
+Redirect 301 /pics http://hub.jhu.edu/pix
+Redirect 301 /hubpix http://hub.jhu.edu/pix
+Redirect 301 /hubpics http://hub.jhu.edu/pix
+Redirect 301 /2013/03/14/introducing-hubpix http://hub.jhu.edu/pix
+
+
+
+
+# ------------------------------------------------------------------------------
+# | Compression                                                                |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_deflate.c>
+
+    # Force compression for mangled headers.
+    # http://developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping
+    <IfModule mod_setenvif.c>
+        <IfModule mod_headers.c>
+            SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+            RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+        </IfModule>
+    </IfModule>
+
+    # Compress all output labeled with one of the following MIME-types
+    # (for Apache versions below 2.3.7, you don't need to enable `mod_filter`
+    #  and can remove the `<IfModule mod_filter.c>` and `</IfModule>` lines
+    #  as `AddOutputFilterByType` is still in the core directives).
+    <IfModule mod_filter.c>
+        AddOutputFilterByType DEFLATE application/atom+xml \
+                                      application/javascript \
+                                      application/json \
+                                      application/rss+xml \
+                                      application/vnd.ms-fontobject \
+                                      application/x-font-ttf \
+                                      application/x-web-app-manifest+json \
+                                      application/xhtml+xml \
+                                      application/xml \
+                                      font/opentype \
+                                      image/svg+xml \
+                                      image/x-icon \
+                                      text/css \
+                                      text/html \
+                                      text/plain \
+                                      text/x-component \
+                                      text/xml
+    </IfModule>
+
+</IfModule>
+
+
+
+
+# ------------------------------------------------------------------------------
+# | ETag removal                                                               |
+# ------------------------------------------------------------------------------
+
+# Since we're sending far-future expires headers (see below), ETags can
+# be removed: http://developer.yahoo.com/performance/rules.html#etags.
+
+# `FileETag None` is not enough for every server.
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+
+FileETag None
+
+
+
+
+# ------------------------------------------------------------------------------
+# | Expires headers (for better cache control)                                 |
+# ------------------------------------------------------------------------------
+
+# The following expires headers are set pretty far in the future. If you don't
+# control versioning with filename-based cache busting, consider lowering the
+# cache time for resources like CSS and JS to something like 1 week.
+
+<IfModule mod_expires.c>
+
+    ExpiresActive on
+    ExpiresDefault                                      "access plus 1 month"
+
+  # CSS
+    ExpiresByType text/css                              "access plus 1 year"
+
+  # Data interchange
+    ExpiresByType application/json                      "access plus 0 seconds"
+    ExpiresByType application/xml                       "access plus 0 seconds"
+    ExpiresByType text/xml                              "access plus 0 seconds"
+
+  # Favicon (cannot be renamed!)
+    ExpiresByType image/x-icon                          "access plus 1 week"
+
+  # HTML components (HTCs)
+    ExpiresByType text/x-component                      "access plus 1 month"
+
+  # HTML
+    ExpiresByType text/html                             "access plus 0 seconds"
+
+  # JavaScript
+    ExpiresByType application/javascript                "access plus 1 year"
+
+  # Manifest files
+    ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
+    ExpiresByType text/cache-manifest                   "access plus 0 seconds"
+
+  # Media
+    ExpiresByType audio/ogg                             "access plus 1 month"
+    ExpiresByType image/gif                             "access plus 1 month"
+    ExpiresByType image/jpeg                            "access plus 1 month"
+    ExpiresByType image/png                             "access plus 1 month"
+    ExpiresByType video/mp4                             "access plus 1 month"
+    ExpiresByType video/ogg                             "access plus 1 month"
+    ExpiresByType video/webm                            "access plus 1 month"
+
+  # Web feeds
+    ExpiresByType application/atom+xml                  "access plus 1 hour"
+    ExpiresByType application/rss+xml                   "access plus 1 hour"
+
+  # Web fonts
+    ExpiresByType application/font-woff                 "access plus 1 month"
+    ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
+    ExpiresByType application/x-font-ttf                "access plus 1 month"
+    ExpiresByType font/opentype                         "access plus 1 month"
+    ExpiresByType image/svg+xml                         "access plus 1 month"
+
+</IfModule>
+
+
+
+
+# ------------------------------------------------------------------------------
+# | Filename-based cache busting                                               |
+# ------------------------------------------------------------------------------
+
+# If you're not using a build process to manage your filename version revving,
+# you might want to consider enabling the following directives to route all
+# requests such as `/css/style.12345.css` to `/css/style.css`.
+
+# To understand why this is important and a better idea than `*.css?v231`, read:
+# http://stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring
+
+ <IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)-([a-f0-9]+)\.(js|css|png|jpg|gif)$ $1.$3 [L]
+ </IfModule>
+
+
+
+
+# ------------------------------------------------------------------------------
+# | Redirect all requests to index.php                                         |
+# ------------------------------------------------------------------------------
+
+RewriteRule index.php - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]

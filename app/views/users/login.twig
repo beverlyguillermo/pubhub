@@ -1,0 +1,17 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+<div class="row">
+	<form action="" method="post" class="form-vertical span5" style="margin: 50px auto; float: none; padding: 20px; background-color: #efefef;">
+		{% include "partials/messages.twig" %}
+		<label>Username</label>
+		<input name="username" type="text" class="span5" value="{{ request.username }}" />
+		<label>Password</label>
+		<input name="password" type="password" class="span5" />
+		<br><br>
+		<button type="submit" class="btn btn-primary btn-large">Log In</button>
+	</form>
+</div>
+
+{% endblock %}

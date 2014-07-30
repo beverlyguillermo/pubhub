@@ -1,0 +1,34 @@
+{% set nav_elements = {
+	"Magazine Home" : "/magazine",
+	"Past Issues" : "/magazine/past-issues",
+	"About" : "/magazine/about",
+	"Contact" : "/magazine/contact",
+	"Giving" : "/magazine/giving",
+	"Subscribe" : "/magazine/subscribe"
+} %}
+
+{% if section == "article" %}
+	{% set nav_elements = nav_elements|merge({ "Contents" : issue.url }) %}
+{#}
+{% else %}
+	{% set nav_elements = nav_elements|merge({ "Current Issue" : "http://what" }) %}
+{#}
+{% endif %}
+
+{#}
+<select class="main-navigation visible" id="main-navigation">
+{% for key, value in nav_elements %}
+	<option value="{{ value }}">{{ key }}</option>
+{% endfor %}
+</select>
+{#}
+
+<div class="magazine-navigation section-navigation">
+{% for key, value in nav_elements %}
+	{% if key == "Contents" %}
+		<a id="toc-button" class="toc-button open-toc" href="{{ value }}"><i class="icon icon-list-ul"></i> {{ key }}: {{ issue.edition }} {{ issue.publish_date|date("Y") }}</a>
+	{% else %}
+		<a href="{{ value }}">{{ key }}</a>
+	{% endif %}
+{% endfor %}
+</div>

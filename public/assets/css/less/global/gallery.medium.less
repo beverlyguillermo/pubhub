@@ -1,0 +1,126 @@
+.gallery-overlay {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/assets/img/overlay_bg.png) left top repeat;
+    z-index: 2000;
+    text-align: center;
+    .close-gallery {
+        text-align: right;
+        font-size: @large;
+        padding: 10px;
+        a {
+            color: @white;
+        }
+    }
+    .gallery-container {
+        .gallery-next, .gallery-prev {
+            position: absolute;
+            top: 0;
+            display: block;
+            .transition( all, 0.2s, ease-in-out);
+        }
+        .gallery-next, .gallery-prev {
+            top: 30%;
+            font-size: @x-large;
+            i {
+                color: @white;
+            }
+        }
+        .gallery-next {
+            right: 20px;
+        }
+        .gallery-prev {
+            left: 20px;
+        }
+        .image-container {
+            position: absolute;
+            // top: 50%;
+            left: 50%;
+            top: 80px;
+            .box-shadow(0, 6px, 10px, rgba(0,0,0,0.3));
+            .gallery-next, .gallery-prev {
+                position: absolute;
+                top: 0;
+                display: block;
+                text-indent: -9999px;
+                width: 50%;
+                height: 100%;
+                .transition( all, 0.2s, ease-in-out);
+                background: none;
+            }
+            .gallery-next {
+                right: 0;
+            }
+            .gallery-prev {
+                left: 0;
+            }
+            .image-box {
+                img {
+                    vertical-align: top;
+                    width: auto;
+                    height: auto;
+                }
+            }
+            .caption-container {
+                background: @black;
+                color: darken(@white, 20%);
+                padding: 10px;
+                text-align: center;
+                position: relative;
+                a {
+                    color: #fff;
+                    &:hover {
+                        color: @hopkins_blue;
+                    }
+                    span {
+                        display: none;
+                    }
+                }
+                .caption {
+                    margin-bottom: 10px;
+                    text-align: left;
+                    // font-size: @small;
+                    .credit {
+                        display: inline;
+                    }
+                }
+                .social {
+                    .item {
+                        width: 100px;
+                        float: left;
+                        text-align: left;
+                    }
+                    img {
+                        width: auto;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Default styles of thumbnails (in article body)
+.js-gallery {
+    display: block;
+    a {
+        width: 32%;
+        margin: 0 1% 0 0;
+        float: left;
+        .transition(all, 0.5s, ease-in-out);
+        img {
+            width: 100%;
+        }
+    }
+}
+
+// Magazine rail
+.article-rail-gallery {
+    .js-gallery {
+        a {
+            width: 30%;
+            margin-right: 3.3%;
+        }
+    }
+}

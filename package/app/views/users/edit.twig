@@ -1,0 +1,14 @@
+{% extends "layouts/manager.twig" %}
+{% import "macros/forms.twig" as forms %}
+
+{% block content %}
+<h1>Set up your user account</h1>
+{% include "partials/messages.twig" %}
+
+<form action="" method="post">
+	{{ forms.input("username", "Pick a username", request.username) }}
+	{{ forms.input("password", "Create a password", "", "password") }}
+	{{ forms.input("verify_password", "Enter your password again", "", "password") }}
+
+	<button class="btn btn-primary" type="submit">Setup Account</button>
+{% endblock %}

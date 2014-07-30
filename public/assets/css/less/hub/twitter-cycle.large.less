@@ -1,0 +1,105 @@
+.twitter-cycle {
+	height: 90px;
+	.tweet-list {
+		li {
+			display: block;
+			line-height: 125%;
+			.user-info {
+				text-align: right;
+				font-size: @x-small;
+				padding-right: 0;
+				height: 90px;
+				position: relative;
+				.container {
+					position: absolute;
+					top: 50%;
+					margin-top: -20px;
+					height: 40px;
+					right: 0;
+				}
+				// background: url("/assets/img/twitterbird-blue-smaller.png") left center no-repeat;
+				i.icon-chevron-right {
+					display: block;
+					color: rgba(0,0,0,0.2);
+					font-size: 24px;
+					line-height: 24px;
+					position: absolute;
+					top: 50%;
+					margin-top: -12px;
+					right: -25px;
+					font-weight: normal;
+				}
+				.created-at {
+					font-style: italic;
+					display: block;
+					position: relative;
+					top: -4px;
+				}
+				.avatar-username {
+					position: relative;
+					top: -1px;
+				}
+				.avatar {
+					margin-right: 3px;
+					margin-left: 30px;
+					border: 1px solid rgba(0,0,0,0.1);
+					opacity: 0.6;
+				}
+				a:hover {
+					color: @brighter_blue;
+					.avatar {
+						opacity: 1;
+					}
+				}
+			}
+
+			.tweet-body {
+				width: 48.75%; // to match the wider feature area column above, which is 65% of 75%
+				position: relative;
+				
+				font-size: @small - 1px;
+				table {
+					height: 90px;
+					margin: 0;
+					td {
+						vertical-align: middle;
+					}
+				}
+				.actions {
+					white-space: nowrap;
+				}
+				.twitter-action {
+					&:hover i {
+						color: @brighter_blue;
+					}
+					&.reply {
+						margin-left: 5px;
+					}
+					span {
+						position: absolute;
+						left: -9999px;
+					}
+				}
+			}
+		}
+		.hidden {
+			display: none;
+		}
+		.follow-actions {
+			text-align: center;
+			width: 22.5%;
+			position: absolute;
+			margin-top: -20px;
+			padding: 0;
+			top: 50%;
+			right: 0;
+			text-align: left;
+			a {
+				display: block;
+				line-height: 20px;
+				margin: 0;
+			}
+		}
+		
+	}
+}

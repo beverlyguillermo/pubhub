@@ -1,0 +1,116 @@
+.media {
+    a.btn {
+        color: @hopkins_blue;
+    }
+    .section {
+        margin-bottom: 25px;
+    }
+    .overline {
+        margin-top: 0;
+        a {
+            color: @medium_text;
+            &:hover {
+                color: @hopkins_blue;
+            }
+        }
+        
+    }
+    .feed {
+        padding: 0;
+        li {
+            padding: 0;
+            margin: 0 0 20px 0;
+            list-style: none;
+            line-height: 120%;
+            h2 {
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+            .summary {
+                font-size: @small;
+            }
+            a {
+                color: @black;
+                &:hover {
+                    color: @hopkins_blue;
+                }
+            }
+        }
+    }
+    .photos {
+        .photo {
+            float: left;
+            position: relative;
+            margin: 0 2% 10px 0;
+            &.landscape {
+                width: 49%;
+            }
+            &.portrait {
+                width: 32%;
+            }
+            &.end {
+                margin-right: 0;
+            }
+            a {
+                color: #000;
+                &:hover {
+                    color: #000;
+                }
+            }
+
+            div.caption {
+                position: absolute;
+                background: #fff;
+                .opacity(.90);
+                width: 100%;
+                bottom: 0;
+                left: 0;
+            }
+            p {
+                padding: 10px;
+                line-height: 120%;
+            }
+        }
+    }
+
+    .media-feature-area {
+        margin-bottom: 50px;
+        a {
+            color: @black;
+            &:hover {
+                color: @hopkins_blue;
+            }
+        }
+    }
+
+    .video {
+        @dark: fade(@black, 60%);
+        a {
+            position: relative;
+            display: block;
+            img {
+                display: block;
+                max-width: 100%;
+                height: auto;
+            }
+            i {
+                font-size: 100px;
+                line-height: 100px;
+                color: @white;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                margin-left: -28px;
+                margin-top: -50px;
+                text-shadow: 0 1px 0 @dark;
+                opacity: 0.6;
+                .transition(all, 0.2s, ease-out);
+            }
+            &:hover {
+                i { 
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+}

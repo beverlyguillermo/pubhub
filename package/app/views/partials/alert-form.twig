@@ -1,0 +1,27 @@
+{% import "macros/forms.twig" as forms %}
+
+{% 
+	set color_options = [
+		{ label: "Blue (Info)", value: "#4074A4" },
+		{ label: "Yellow (Warning)", value: "#ECB700" },
+		{ label: "Red (EMERGENCY)", value: "#9d0b0e" }
+	]
+%}
+
+<form action="{{ action }}" method="post">
+	{{ forms.input("text", "Text", alert.text, "textarea", "xxlarge") }}
+	{{ forms.input("link", "Link URL", alert.link, "text", "xxlarge") }}
+	
+	<div style="width: 230px; float: left;">
+	{{ forms.select("color", "Color", alert.color, color_options) }}
+	</div>
+	{% for color in color_options %}
+	<div style="width:15px;height:15px;margin:30px 10px 10px 0; float:left;background-color:{{ color.value }}; border:2px solid rgba(0,0,0,0.1);{% if alert.color == color.value %} border-color:rgba(255,255,255,0.5);{% endif %}"></div>
+	{% endfor %}
+	<div style="clear:both; margin-bottom: 1em;"></div>
+
+	{{ forms.input("start_time", "Scheduled <strong>Start</strong> Time (optional, leave blank for NOW)", alert.start_time, "text", "xlarge", "datetimepicker") }}
+	{{ forms.input("end_time", "Scheduled <strong>End</strong> Time (optional)", alert.end_time, "text", "xlarge", "datetimepicker") }}
+
+	<button class="btn btn-primary" type="submit">Save Changes</button>
+</form>

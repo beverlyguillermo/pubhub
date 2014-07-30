@@ -1,0 +1,144 @@
+/**
+ * Global header, or the "Blue Bar of Fun!!!"
+ *
+ * The blue header that is at the top of every page in the Hub, explaining
+ * the Johns Hopkins news network (or news force, ACTIVATE!)
+ */ 
+
+.header-fixed-buffer {
+    display: none;
+}
+.header-global {
+    position: relative;
+    text-align: center;
+    height: auto;
+    border: none;
+    // &.search-on {
+    //     .global-navigation {
+    //         li.current a {
+    //             background-color: transparent;
+    //         }
+    //         li.search a {
+    //             background-color: darken(@hopkins_blue, 10%);
+    //         }
+    //     }
+    // }
+    .alt-global-navigation {
+        display: none;
+    }
+    .global-navigation {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        li {
+            list-style: none;
+            display: inline-block;
+            margin: 0;
+            position: relative;
+            color: @white;
+            
+            &.intro {
+                padding-right: 10px;
+                font-size: @x-small;
+                line-height: 30px;
+                height: 30px;
+            }
+            a {
+                display: inline-block;
+                letter-spacing: 1px;
+                line-height: 30px;
+                height: 30px;
+                font-family: @sans;
+                font-size: @xx-small;
+                font-weight: bold;
+                padding: 1px 10px;
+                text-transform: uppercase;
+                color: @white;
+                .transition(all 0.2s ease-out);
+            }
+            &.search {
+                a {
+                    font-size: @x-small;
+                    line-height: 27px;
+                    span {
+                        position: absolute;
+                        left: -9999px;
+                    }
+                    i {
+                        position: relative;
+                        left: -4px;
+                        top: 1px;
+                    }
+                }
+            }
+            &.current, &:hover { 
+                > a {
+                    background-color: darken(@hopkins_blue, 10%);
+                } 
+            }
+
+            &.search {
+                > a {
+                    background-color: transparent;
+                }
+            }
+
+            .submenu {
+                @submenu_blue: lighten(@hopkins_blue_dark, 5%);
+
+                background-color: @submenu_blue;
+                width: 250px;
+                position: absolute;
+                top: 32px;
+                border-top: 1px solid #fff;
+                left: -9999px;
+                margin: 0;
+                padding: 10px 0;
+                li {
+                    display: list-item;
+                    padding: 0;
+                    margin: 0;
+                    a {
+                        text-transform: none;
+                        letter-spacing: 0;
+                        display: block;
+                        padding: 4px 15px;
+                        text-align: left;
+                        font-size: @x-small;
+                        font-weight: normal;
+                        line-height: 120%;
+                        height: auto;
+                        &:hover {
+                            background-color: lighten(@hopkins_blue_dark, 15%);
+                        }
+                    }
+                    h5 {
+                        font-size: 13px;
+                        text-transform: uppercase;
+                        border-bottom: 8px solid rgba(80, 145, 205, 0.5);
+                        position: relative;
+                        color: #ffffff;
+                        clear: left;
+                        text-align: left;
+                        padding: 0;
+                        margin: 5px 15px 5px;
+                        span {
+                            position: relative;
+                            top: 10px;
+                            background-color: @submenu_blue;
+                            padding-right: 5px;
+                        }
+                    }
+                }
+            }
+
+            &:hover, .hover {
+                .submenu {
+                    left: 0;
+                }
+            }
+
+        }
+    }
+}

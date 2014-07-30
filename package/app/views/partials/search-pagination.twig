@@ -1,0 +1,23 @@
+{% if pagination.pageCount > 1 %}
+{% set classes = classes|merge(["search-pagination"]) %}
+<ul class="{{ classes|join(' ') }}">
+	{% if pagination.hasPrevious %}
+	<li><a class="prev-next prev" href="{{ search_url }}&page={{ pagination.currentPage - 1 }}">Previous</a></li>
+	{% endif %}
+
+	{% for page in pagination.pageLinks %}
+		<li>
+			{% if page == pagination.currentPage %}
+				<span class="page-number">{{ page }}</span>
+			{% else %}
+				<a class="page-number link" href="{{ search_url }}&page={{ page }}">{{ page }}</a>
+			{% endif %}
+		</li>
+	{% endfor %}
+
+	{% if pagination.hasNext %}
+	<li><a class="prev-next next" href="{{ search_url }}&page={{ pagination.currentPage + 1 }}">Next</a></li>
+	{% endif %}
+	{# <li>Page {{ pagination.currentPage }} of {{ pagination.pageCount }}</li> #}
+</ul>
+{% endif %}

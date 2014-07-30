@@ -1,0 +1,84 @@
+#!/usr/bin/php
+<?php
+
+# Help/usage dialog
+if (count($argv) > 1 && ($argv[1] == "-h" || $argv[1] == "--help")) {
+	echo <<<EOD
+usage: s3upload [--bucket=my_bucket_name] [--file=/path/to/file] 
+                [--name=name-of-file.extension]
+
+  --bucket  The name of the bucket to upload into
+  --file    Fully qualified path location to upload
+  --name    File name when uploading, required for
+            S3 SDK upload method
+
+
+EOD;
+
+	exit;
+}
+
+
+# Set up parameters
+array_shift($argv);
+$params = array();
+
+# Break apart --bucket=my-bucket into $params["bucket"] = "my-bucket", etc.
+foreach ($argv as $arg) {
+	$split = explode("=", $arg);
+	$params[str_replace("--", "", $split[0])] = $split[1];
+}
+
+# Handle errors for missed required params
+$required = array_fill_keys(array("bucket", "file", "name"), "--");
+$diff = array_diff_key($required, $params);
+$diffCount = count($diff);
+$missed = "--" . join(", --", array_keys($diff));
+if ($diffCount > 0) {
+	echo <<<EOD
+You forgot {$diffCount} required parameters: [{$missed}].
+
+Run 's3upload --help' for more details.
+
+EOD;
+
+	exit;
+}
+
+# Set up absolute path to project root
+$dir = "/var/www/html/hub/current/";
+if (file_exists("/Users/jason")) {
+	$dir = "/Users/jason/vhosts/local.hub.jhu.edu/";
+}
+if (file_exists("/Users/jwachter")) {
+	$dir = "/Users/jwachter/vhosts/local.hub.jhu.edu/";
+}
+
+if (!file_exists($params["file"])) {
+	echo <<<EOD
+File {$params['file']} doesn't exist.
+
+Make sure you passed in an absolute path.
+
+
+EOD;
+
+	exit;
+}
+
+# Now that we know we have the right params, require the AWS SDK
+require "{$dir}vendor/autoload.php";
+
+# Instantiate an S3 object, passing credentials here instead
+# of using the config file to avoid sticky problems with 
+# multiple servers, etc.
+$s3 = new \AmazonS3(array(
+	"key" => "AKIAIWYLZYECRJNIRDIA",
+	"secret" => "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"
+));
+
+$response = $s3->create_object($params["bucket"], $params["name"], array(
+	"fileUpload" => $params["file"]
+));
+
+

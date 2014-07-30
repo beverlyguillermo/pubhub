@@ -1,0 +1,6 @@
+127.0.0.1   localhost
+::1         localhost
+192.168.12.34 localhost
+
+127.0.0.1   	local.hub.jhu.edu
+192.168.12.35   local.api.hub.jhu.edu

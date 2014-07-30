@@ -1,0 +1,26 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block magazine_article %}
+
+	{{ magazineMacros.getTitle(results) }}
+	{{ globalMacros.getSubheadline(results) }}
+	{{ globalMacros.getAuthorDateTopicLine(results) }}
+	{{ globalMacros.getEmphasis(results) }}
+	
+	<div class="body-content">
+		
+		{% block magazine_inset %}
+			{# no inset in this template #}
+		{% endblock %}
+		
+		{% block magazine_body %}
+			
+			{{ results.body }}
+
+		{% endblock %}
+
+	</div>
+
+	{{ globalMacros.getAuthorBio(results.magazine.author_bio) }}
+	{{ globalMacros.getAside(results.magazine.aside) }}
+{% endblock %}

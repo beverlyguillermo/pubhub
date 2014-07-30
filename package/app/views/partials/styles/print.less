@@ -1,0 +1,141 @@
+@import "../../../../../public/assets/css/less/global/variables.less";
+
+body {
+	background-color: #fff;
+}
+
+.header-fixed-buffer {
+	display: none;
+}
+
+.header-global {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	position: relative;
+	height: auto;
+	.alt-global-navigation {
+        display: none;
+    }
+	.global-navigation {
+		display: block;
+		margin: 0;
+		li {
+			list-style: none;
+            display: inline-block;
+            margin: 0 5px;
+            position: relative;
+			a {
+				color: #999;
+				display: inline-block;
+                letter-spacing: 1px;
+                line-height: 30px;
+                font-family: @sans;
+                font-size: @xx-small;
+                font-weight: bold;
+                padding: 1px 10px;
+                text-transform: uppercase;
+			}
+			&.current {
+				a {
+					background-color: transparent;
+					border-bottom: 3px solid @hopkins_blue;
+				}
+			}
+			&.search, &.intro {
+				display: none;
+			}
+
+			&.intro {
+                padding-right: 10px;
+                font-size: @x-small;
+                line-height: 30px;
+            }
+		}
+	}
+}
+
+.hub-header {
+	.hubmark {
+		display: none;
+	}
+}
+
+.hub-navigation {
+	display: none;
+}
+
+.related, .share-bar, .article-inset {
+	display: none;
+}
+
+.col.measure.wide {
+	width: 90%;
+	max-width: 900px;
+}
+
+div.impact {
+	width: 35%;
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.topics-in, .tags-in {
+	font-weight: normal;
+	display: block;
+	text-align: left;
+	float: none;
+	a {
+		color: @black;
+	}
+}
+
+.body-content {
+	p {
+		font-size: 120%;
+	}
+	a {
+		color: @black;
+	}
+}
+
+#comments {
+	display: none;
+}
+
+.footer {
+	padding: 15px 0;
+	margin-top: 15px;
+	border-top: 1px solid #ccc;
+	background-color: @white;
+	color: @black;
+	a {
+		color: @black;
+	}
+	.top-shelf {
+		display: none;
+	}
+	.bottom-shelf {
+		span {
+			display: inline;
+			&.sep {
+				display: inline;
+				margin: 0;
+			}
+		}
+		p {
+			margin-bottom: 0;
+		}
+		.mark {
+			display: none;
+		}
+		.social-media {
+			display: none;
+		}
+	}
+}

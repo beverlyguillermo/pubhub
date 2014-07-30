@@ -1,0 +1,47 @@
+.header {
+	.issue-meta {
+		display: block;
+		margin-top: 30px;
+		font-weight: bold;
+		text-transform: uppercase;
+		position: relative;
+		float: right;
+		h2 {
+		    font-family: @sans_condensed;
+		    font-size: @medium;
+		    font-weight:  normal;
+		    margin: -2px 0 0;
+		    line-height: 100%;
+		}
+		&:hover, &.hover, &:hover h2, &.hover h2, &:hover p, &.hover p {
+			color: @hopkins_blue;
+		}
+		p {
+		    line-height: 100%;
+		    font-size: @small;
+		    font-family: @sans;
+		    font-weight: bold;
+		    margin: 0 0 0 10px;
+		}
+		.volume-contents {
+		    margin-top: 5px;
+		    float: left;
+		}
+	}
+	.toc-button {
+		width: 120px;
+		line-height: 32px;
+	}
+	.nav-bar {
+		height: 32px;
+		ol.main-navigation {
+			display: block;
+			.home {
+				display: inline;
+			}
+			li {
+				margin-right: 25px;
+			}
+		}
+	}
+}

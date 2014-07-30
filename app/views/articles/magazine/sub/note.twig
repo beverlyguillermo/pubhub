@@ -1,0 +1,39 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block title %}
+    {{ results.headline|striptags }} | Johns Hopkins Magazine
+{% endblock %}
+
+{% block magazine_article %}
+    {{ globalMacros.getEmphasis(results) }}
+
+    <div class="body-content">
+    
+        {% block magazine_inset %}
+            <div class="article-inset">
+                <div class="editor-bio">
+                <img src="/assets/img/magazine/CatherinePierre.png" alt="Catherine Pierre, editor" />
+                <p class="credit alt">
+                    <span class="name line"><strong>Catherine Pierre</strong></span>
+                    <span class="title line">Editor</span>
+                </p>
+                </div>
+                
+                <p class="special-note">Give us your feedback by sending a letter to the editor via email to <a href="mailto:cpierre@jhu.edu">cpierre@jhu.edu</a>. (We reserve the right to edit letters for length, style, clarity, and civility.)</p>
+            </div>
+        {% endblock %}
+
+        {% block magazine_body %}
+
+            {{ parent () }}
+
+            <img src="/assets/img/magazine/Catherine_signature.png" alt="Signed, Catherine Pierre" />
+            <p class="signature-title attribution"><span class="name line">Catherine Pierre</span> <span class="title line">Editor</span></p>
+
+        {% endblock %}
+
+    </div>
+
+    {{ globalMacros.getAside(results) }}
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layouts/hub.twig" %}
+
+{# Which media page are we on? #}
+{% set media_page = slug|replace({ "media/": ""}) %}
+
+{# If we're on the homepage, we'll be left with "media". Let's change it to "home" #}
+{% set media_page = media_page|replace({ "media" : "home" }) %}
+
+
+{# Onto the goods... #}
+
+{% block head %}
+	{{ parent() }}
+	<link rel="alternate" type="application/rss+xml" title="For Media - Hub" href="{{ request.rootUri }}/media/feed" />
+{% endblock %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+	
+	<div class="media-{{ media_page }} media page">
+
+		<div class="col measure wide">
+
+			<div class="body-content">
+
+				{% include "partials/messages.twig" %}
+
+				{# Add an overline to let people know what section they are in #}
+				{% if media_page != "home" %}
+					<h5 class="overline"><a href="/media">For Media</a></h5>
+				{% endif %}
+
+				<h1>{{ page_title }}</h1>
+
+				{{ html }}
+
+			</div>
+
+		</div>
+
+		{% include "partials/media-sidebar.twig" %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+	    hubster.convertDates();
+	});
+	</script>
+{% endblock %}

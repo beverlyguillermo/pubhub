@@ -1,0 +1,29 @@
+{% extends "layouts/global.twig" %}
+{% import "macros/hub.twig" as hubMacros %}
+
+{% block title %}
+    {{ page_title|capitalize|striptags }}
+{% endblock %}
+
+{% block stylesheet %}
+	<style type="text/less">
+		{% include "partials/styles/hub.less" %}
+	</style>
+{% endblock %}
+
+{% block body_classes %}{{ parent() }} main {% endblock %}
+
+
+{% block site_content %}
+
+	<div class="content-area section">
+		<div class="center force">
+
+			{% block page_content %}
+
+			{% endblock %}
+
+		</div>
+	</div>
+	
+{% endblock %}

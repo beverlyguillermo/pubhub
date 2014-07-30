@@ -1,0 +1,113 @@
+{% extends "pages/hub/developers/static.twig" %}
+{% import "macros/forms.twig" as forms %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+
+	{# used as-is on static pages #}
+
+	{% set classes = ["page"] %}
+
+	{% set classes = ["page"] %}
+	{% if slug is defined %}
+		{% set classes = classes|merge(["developers-widget-page"]) %}
+	{% endif %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			<div class="col measure wide">
+				
+				<h1>{{ page_title }}</h1>
+
+				{{ html }}
+
+				{% if form.code is null %}
+
+					<div class="widget-form force">
+					
+						<div class="col half">
+							<h4>Customize</h4>
+							{{ form.form }}
+						</div>
+
+						<div class="widget-preview col half end">
+							<h4>Preview</h4>
+
+							<link rel="stylesheet" href="http://hub.jhu.edu/assets/shared/css/widget-light.css?v=0" />
+
+							<div class="hubWidgetContainer">
+								<div id="hubWidget" version="0" key="d9dc617e3c52275069213ad4381c1431897cace3"></div>
+							</div>
+							
+							<script src="http://hub.jhu.edu/assets/shared/js/hubwidget.2.1.min.js"></script>
+						</div>
+
+					</div>
+
+				{% endif %}
+
+				<div class="widget-code force">
+					<a name="code"></a>
+					{% if form.code is not null %}
+						<p><strong>Copy the following HTML snippet and place it in the desired place within your site's HTML:</strong></p>
+						{{ form.code }}
+					{% endif %}
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id="tagsQuestion" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Tags?</h3>
+			</div>
+			<div class="modal-body">
+				<p>To alter the article request to only get articles in specific tags, enter the slugs of those tags in the textbox.</p>
+				<p>The easiest way to find a tag slug is to visit it's page on the Hub. To find a tag page, find an article that is tagged with the tag you are looking for. Click on the tag's name under the byline, which will take you to the tag page. Once you have found the tag page you are looking for, the slug is located in the URL. Here are some examples:</p>
+
+				<table>
+					<tbody>
+						<tr>
+							<th>URL</th>
+							<th>Slug</th>
+						</tr>
+						<tr>
+							<td><a href="http://hub.jhu.edu/tags/film-and-media-studies">http://hub.jhu.edu/tags/film-and-media-studies</a></td>
+							<td>film-and-media-studies</td>
+						</tr>
+						<tr>
+							<td><a href="http://hub.jhu.edu/tags/community">http://hub.jhu.edu/tags/community</a></td>
+							<td>community</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+			<div class="modal-footer force">
+				<button class="btn btn-primary" data-dismiss="modal">Okay</button>
+			</div>
+		</div>
+
+		{% include "partials/article-sidebar.twig" %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+
+	<script>
+	jQuery(document).ready(function ($) {
+		hubWidgetForm.init().updateWidget();
+	});
+	</script>
+
+{% endblock %}

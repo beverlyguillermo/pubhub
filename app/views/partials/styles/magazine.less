@@ -1,0 +1,82 @@
+/**
+ * Magazine styles, including all the global styles from global.less
+ */
+
+// Global stuff
+@import "/assets/css/less/global.less";
+@import "/assets/css/less/global/publication-homepage.less";
+
+
+
+// Magazine global styles
+@import "/assets/css/less/magazine/header-magazine.less";
+// @import "/assets/css/less/magazine/needs-review-layout.less";
+// @import "/assets/css/less/magazine/needs-review-mq.small.less";
+@import "/assets/css/less/magazine/table-of-contents.less";
+@import "/assets/css/less/magazine/carousel.less";
+@import "/assets/css/less/magazine/side-nav.less";
+
+// Subtemplates
+@import "/assets/css/less/magazine/side-nav.less";
+@import "/assets/css/less/magazine/sub.artifact.less";
+@import "/assets/css/less/magazine/sub.campus.less";
+@import "/assets/css/less/magazine/sub.class-notes.less";
+@import "/assets/css/less/magazine/sub.dialogue.less";
+@import "/assets/css/less/magazine/sub.evidence.less";
+@import "/assets/css/less/magazine/sub.golombs-gambits.less";
+@import "/assets/css/less/magazine/sub.message.less";
+@import "/assets/css/less/magazine/sub.note.less";
+@import "/assets/css/less/magazine/sub.who-is.less";
+
+
+
+// Media Query Overrides
+ 
+// Portrait iPad -- medium
+@media screen
+and (min-width:760px) {
+	@import "/assets/css/less/global/grid.medium.less";
+	@import "/assets/css/less/global/header-global.medium.less";
+	@import "/assets/css/less/global/teaser.medium.less";
+	@import "/assets/css/less/global/article-single.medium.less";
+	@import "/assets/css/less/global/gallery.medium.less";
+	@import "/assets/css/less/global/footer.medium.less";
+	@import "/assets/css/less/global/static-page.medium.less";
+	@import "/assets/css/less/global/widgets.medium.less";
+	@import "/assets/css/less/global/publication-homepage.medium.less";
+	@import "/assets/css/less/magazine/header-magazine.medium.less";
+	@import "/assets/css/less/magazine/table-of-contents.medium.less";
+	@import "/assets/css/less/hub/new-trending.medium.less";
+	@import "/assets/css/less/global/forms.medium.less";
+}
+
+// iPad landscape, small desktop -- large
+@media only screen
+and (min-width:1000px),
+only screen
+and (min-device-width:768px)
+and (max-device-width : 1024px) 
+and (orientation: landscape) {
+	@import "/assets/css/less/global/publication-homepage.large.less";
+	@import "/assets/css/less/magazine/carousel.large.less";
+}
+
+// ONLY small desktop
+@media only screen
+and (min-width:1000px) {
+	@import "/assets/css/less/global/grid.large.less";
+	@import "/assets/css/less/global/header-global.large.less";
+	@import "/assets/css/less/global/teaser.large.less";
+	@import "/assets/css/less/global/sidebar.large.less";
+	@import "/assets/css/less/global/share-bar.large.less";
+	@import "/assets/css/less/hub/new-trending.large.less";
+}
+
+// large desktop -- xlarge
+@media screen
+and (min-width:1300px) {
+	@import "/assets/css/less/global/grid.xlarge.less";
+}
+
+// Theming Overrides
+@import "/assets/css/less/theming/theme.less";

@@ -1,0 +1,59 @@
+.share-bar {
+	//background-color: fade(@hopkins_blue, 5%);
+	
+	//border-bottom: 1px solid rgba(0,0,0,0.1);
+	padding: 0;
+	margin-bottom: 20px;
+	.fb-like {
+		//width: 95px;
+		height: 24px;
+		//overflow: hidden;
+		float: left;
+	}
+	.share-icons {
+		width: 175px;
+		float: right;
+		text-align: right;
+		a {
+			font-size: 18px;
+			line-height: 120%;
+			color: @black;
+			&:hover {
+				color: @hopkins_blue;
+			}
+			i {
+				margin-left: 5px;
+			}
+			span {
+				position: absolute;
+				left: -9999px;
+			}
+		}	
+	}
+	// Facebook "Be the first of your friends to recommend this!" text
+	.uiIconText {
+		display: none;
+	}
+	iframe {
+		
+	}
+}
+
+
+// Magazine legacy share styles
+.social-share {
+  padding: 10px 0 0;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  iframe {
+    margin-bottom: 4px;
+  }
+}
+.twitter-share-button {
+  float: left;
+  margin-right: 15px;
+}
+.facebook-like-button {
+  float: left;
+  margin-top: 2px;
+}

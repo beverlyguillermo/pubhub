@@ -1,0 +1,37 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block magazine_article %}
+	<h5 class="overline"><span class="interviewer">President Daniels Interviews</span> {{ results.publication_content.interviewee_name }}</h5>
+	{{ magazineMacros.getTitle(results) }}
+	
+	<div class="body-content">
+
+		{% block magazine_inset %}
+			{{ parent() }}
+		{% endblock %}
+
+		{% block magazine_body %}
+			{{ parent() }}
+		{% endblock %}
+
+	</div>
+
+	{{ globalMacros.getAside(results) }}
+
+	<div class="interviewer-image force">
+		<img src="/assets/img/magazine/portrait_daniels.png" width="200" align="left" />
+     	<p class="caption"><b>Ron Daniels</b> is president of Johns Hopkins University</p>
+    </div>
+
+     {% if results._embedded.audio is not null %}
+     	<div class="audio-files">
+     		<h4>Audio</h4>
+			<ol class="colloquy-audio">
+				{% for file in results._embedded.audio %}
+					<li><a href="{{ file.url }}">{{ file.title|default("Click here to listen") }}</a></li>
+				{% endfor %}
+			</ol>
+		</div>
+	{% endif %}
+	
+{% endblock %}

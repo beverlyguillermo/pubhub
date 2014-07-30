@@ -1,0 +1,29 @@
+.section-navigation {
+	clear: left;
+	border-bottom: 3px solid @black;
+	padding-bottom: 4px;
+	margin-top: -4px;
+	margin-bottom: 5px;
+	a {
+        font-family: @sans;
+        font-size: @x-small;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-right: 2em;
+        &:hover {
+            color:@hopkins_blue;
+        }
+    }
+}
+
+.feature-area .section-navigation {
+	border-bottom: 0;
+	margin-top: 4px;
+	padding-bottom: 0;
+	a {
+		margin-right: 0.7em;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}

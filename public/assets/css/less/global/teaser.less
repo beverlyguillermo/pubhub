@@ -1,0 +1,427 @@
+.teaser {
+    margin: 0;
+    .overline {
+        color: @medium_text;
+    }
+    h2 {
+        margin: 0;
+        font-size: @medium;
+    }
+    .summary {
+        font-size: @small;
+        line-height: 120%;
+        margin: 0;
+        p:last-child {
+            margin-bottom: 0;
+        }
+        .summary-text {
+            margin-right: 0.5em;
+        }
+    }
+    
+    &.has-image {
+        border: none;
+        padding-top: 0;
+    }
+    img {
+        margin-bottom: 5px;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+    .publish-date, .media-promo {
+        font-size: @x-small;
+        // color: desaturate(@accent_red, 25%);
+        color: @medium_text;
+        margin: 0.3em 0 0.2em 0;
+        line-height: 120%;
+        white-space: nowrap;
+        float: left;
+    }
+
+    span.source {
+        margin: 0;
+        a{
+            color: @medium_text;
+            &:hover{
+                color: @hopkins_blue;
+            }
+            .source-separator{
+            }
+        }
+    }
+
+    .source {
+        font-size: @x-small;
+        font-weight: 500;
+        line-height: 140%;
+        font-style: italic;
+        clear: left;
+        a {
+            .external-link {
+                opacity: 0;
+                position: relative;
+                top: 1px;
+                margin-left: 0.4em;
+                font-weight: bold;
+                .transition(all, 0.1s, ease-out);
+            }
+            &:hover {
+                .external-link {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    // event teasers
+    &.event {
+
+        h2, h3 {
+            margin-bottom: 15px;
+        }
+
+        .overline {
+            margin: 0 0 2px 0;
+        }
+
+        .summary {
+            margin-top: 5px;
+        }
+        
+        .meta {
+
+            line-height: 120%;
+            position: relative;
+            margin-top: 5px;
+
+            .icon {
+                position: absolute;
+            }
+
+            .text {
+                position: relative;
+                left: 18px;
+                margin-right: 18px;
+            }
+
+            &.date {
+                
+            }
+
+            &.time {
+
+            }
+
+            &.location {
+
+                .icon {
+                    left: 2px;
+                }
+
+                span {
+                    display: block;
+                }
+
+                .building {
+                    a {
+                        display: none;
+                    }
+                }
+
+                .campus {
+                    color: @light_text;
+                    font-size: @x-small;
+                }
+
+                .address {
+                    display: none;
+                }
+            }
+        }
+
+        .thumbnail {
+            &.placeholder {
+                display: none;
+            }
+        }
+    }
+}
+
+
+
+// Homepage feature
+.teaser.article-featured {
+    margin-bottom: 3em;
+    h2 {
+        font-size: @large;
+    }
+    img {
+        margin-bottom: 0.2em;
+        width: 100%;
+        float: none;
+    }
+    .summary {
+        font-size: @small;
+    }
+}
+
+// Homepage secondary features, related content in article sidebar and in article inset
+.secondary-features, .sidebar, .article-inset, .issues {
+    .teaser {
+        margin: 0 0 1.5em;
+        img {
+            margin: .2em .4em 0 0;
+            width: 30%;
+            float: left;
+        }
+    }
+}
+
+.taxonomy {
+    .teaser {
+        margin: 0 0 1.5em;
+        clear: left;
+        .thumbnail {
+            float: left;
+            margin-right: 3%;
+            width: 20%;
+        }
+        &.has-image {
+            .teaser-text {
+                float: left;
+                width: 77%;
+            }
+        }
+        .source {
+            clear: none;
+        }
+        .overline {
+            margin-top: 0;
+        }
+        .summary {
+            clear: left;
+        }
+    }
+    .no-image {
+        margin: 35px 0;
+        border-left: 4px solid @black;
+        padding-left: 10px;
+    }
+}
+
+// event teasers on /events
+.events-multi-view {
+
+    .content-col {
+
+        .teaser {
+
+            width: 96%;
+            padding: 0 2% 0 2%;
+            margin: 0 !important;
+
+            background: none;
+            border-bottom: 1px dotted @border_light_blue;
+
+            h2 {
+                margin-bottom: 7px;
+            }
+
+            .summary {
+                margin-top: 7px;
+            }
+
+            .meta {
+
+                &.date {
+                    margin: 0;
+                }
+            }
+
+            .thumbnail {
+                display: none;
+            }
+
+            &.featured {
+                background: @border_light_blue;
+                border-bottom: 0;
+                padding-top: 15px;
+                margin: 0 0 15px 0 !important;
+
+                .featured-tag {
+                    position: absolute;
+                    top: 5px;
+                    right: 10px;
+                    color: fade(@hub_blue, 30%);
+                    span {
+                        display: none;
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+.article-sidebar {
+    .teaser {
+        .overline {
+            font-size: @x-small;
+        }
+        .thumbnail {
+            clear: left;
+        }
+        .summary {
+            font-size: @small;
+        }
+    }
+}
+
+.content-col {
+    .teaser {
+        width: 94%;
+        margin: 0 0 0.5em 0;
+        padding: 15px 3%;
+        background: fade(@black, 10%);
+        div.thumbnail {
+            width: 30%;
+            float: right;
+            padding-left: 5%;
+        }
+        h3 {
+            font-size: @medium;
+            margin: 0 0 5px 0;
+            a {
+                color: @black;
+                &:hover {
+                    color: @hopkins_blue;
+                }
+            }
+        }
+        p {
+            margin-bottom: 0;
+        }
+        .summary {
+            font-size: @small;
+        }
+    }
+}
+
+.rail {
+    .teaser {
+        margin-bottom: 1em;
+        .overline {
+            display: none;
+        }
+        h2, h3 {
+            font-size: @small;
+            margin: 0;
+        }
+        .summary {
+            font-size: @small;
+        }
+        &.no-image {
+        }
+        img {
+            display: none;
+        }
+        .source {
+            display: none;
+        }
+
+        // event teasers on homepage rail
+        &.event {
+            .overline {
+                display: block;
+                font-size: @x-small;
+            }
+            h2, h3 {
+                margin-bottom: 3px; // makes up for meta having 120% line height instead of 150%
+            }
+        }
+    }
+
+    &.events_rail {
+        .latest {
+            .summary {
+                display: none;
+            }
+        }
+    }
+}
+
+// event teasers on /events
+.events-multi-view {
+    .content-col {
+        .teaser {
+            margin: 0 0 1.5em;
+            clear: left;
+            padding: 2%;
+            .overline {
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+.topic-page {
+    .rail {
+        .teaser {
+            clear: left;
+            overflow: hidden;
+            margin-bottom: 1em;
+            .summary {
+                clear: left;
+            }
+        }
+        img {
+            display: block;
+            width: 100px;
+            margin-left: 10px;
+            float: right;
+        }
+    }
+    .content-col {
+        .teaser {
+            .summary {
+                clear: left;
+            }
+        }
+    }
+}
+
+.article-inset {
+    .teaser {
+        h2 {
+            font-size: @small;
+        }
+        .overline {
+            font-size: @x-small !important;
+        }
+    }
+}
+
+.media {
+    .article-sidebar {
+        .teaser {
+            margin: 0 0 .3em;
+        }
+    }
+    .media-feature-area {
+        .teaser {
+            margin-bottom: 2em;
+            .summary {
+                clear: left;
+            }
+        }
+    }
+    .feed {
+        .teaser {
+            .publish-date {
+                margin: 0;
+                line-height: 140%;
+                margin-right: 5px;
+            }
+        }
+    }
+}

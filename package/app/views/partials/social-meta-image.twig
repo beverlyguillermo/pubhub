@@ -1,0 +1,16 @@
+{# facebook-specific #}
+
+<meta property="fb:app_id"               content="{{ facebookAppId }}"> 
+<meta property="og:type"                 content="hopkinshub:photo">
+<meta property="og:title"                content="Photo from {{ gallery.headline }}">
+<meta property="og:image:url"			 content="{{ results.sizes.thumbnail }}">
+
+{# Adds like page button to any shares of this content on Facebook #}
+{# See: https://developers.facebook.com/blog/post/2013/06/19/platform-updates--new-open-graph-tags-for-media-publishers-and-more/ #}
+<meta property="article:publisher"       content="https://www.facebook.com/johnshopkinsuniversity" />
+
+{% if results.caption is not null %}
+	<meta property="og:description"		 content="{{ results.caption}} ">
+{% endif %}
+
+<meta property="og:site_name"            content="The Hub">

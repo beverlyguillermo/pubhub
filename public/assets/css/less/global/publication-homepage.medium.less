@@ -1,0 +1,73 @@
+.issues {
+	.issue {
+		.col {
+	        &.half {
+	            width: 47.5%;
+	        }
+	    }
+	    &.archive {
+            .issue-cover {
+                display: block;
+            }
+        }
+	}
+}
+
+.magazine {
+	.issues {
+		.issue {
+			.archive {
+				.cover-description {
+		            background: none;
+		        }
+		        .issue-meta {
+		            margin-top: 10px;
+		        }
+			}
+		}
+		.cover-description {
+	        padding: 0 0 3px 85px;
+	        margin: 20px 0 10px;
+	        position: relative;
+	        left: -85px;
+	        z-index: 200;
+	        background: url(/assets/img/magazine/notch.png) 12px bottom no-repeat;
+	    }
+		.secondary-stories {
+			display: block;
+			border-top: 1px solid @border_light;
+	        padding: 20px 0 0 0;
+	        margin: 8px 0;
+	        font-family: @sans;
+	        font-size: @small;
+	        line-height: 135%;
+	        font-weight: bold;
+	        li {
+	            display: inline;
+	            &:last-child {
+	            padding-right: 0;
+	                list-style: none;
+	                background: none;
+	            }
+	        }
+			.title-style-1, .title-style-6, .title-style-11 {
+		        font-weight: 100; 
+		    }
+		    .title-style-2, .title-style-7, .title-style-12 {
+		        font-weight: bold;
+		    }
+		    .title-style-3, .title-style-8, .title-style-13 {
+		        font-weight: 100;
+		        font-style: italic;
+		    }
+		    .title-style-4, .title-style-9, .title-style-14 {
+		        font-family: myriad-pro-condensed;
+		        font-weight: bold;
+		        text-transform: uppercase;
+		    }
+		    .title-style-5, .title-style-10 {
+		        font-weight: normal;
+		    }
+		}
+	}
+}

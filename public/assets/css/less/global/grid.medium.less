@@ -1,0 +1,51 @@
+.center {
+    max-width: 1200px;
+}
+
+// Grid columns
+.col {
+	width: 30%;
+	margin-right: 5%;
+	float: left;
+	// Standard, global over-rides
+	&.right {
+	  float: right;
+	}
+	&.front-wide {
+	  width: 65%;
+	}
+	&.wide {
+		width: 65%;
+		max-width: 900px;
+	}
+	&.extra-wide {
+		width: 65%;
+	}
+	&.narrow {
+		// width: 30%;
+	}
+	&.half {
+		width: 47%;
+	}
+	&.full {
+	  width: 100%;
+	  margin-right: 0;
+	}
+	&.measure {
+	  max-width: 900px;
+	  //float: none;
+	  //margin: 0 auto;
+	}
+	&.end {
+		margin-right: 0;
+	}
+	&.first {
+		clear: left;
+	}
+}
+
+.single-view.col.wide.measure, .page .col.wide.measure {
+	float: none;
+	width: 100%;
+	margin-right: 0;
+}

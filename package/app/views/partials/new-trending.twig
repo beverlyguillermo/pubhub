@@ -1,0 +1,39 @@
+<div class="new-trending">
+
+	<div class="mobile-open-tabs closed force"><span>New/Trending</span><i class="icon-caret-down"></i><i class="icon-remove"></i></div>
+
+	<div class="quick-tabs tabbable">
+
+		<ul class="navigation">
+			<li class="new active" data-title="new"><a href="#"><i class="icon-refresh"></i> <span>New</span></a></li>
+			<li class="trending inactive" data-title="trending"><a href="#"><i class="icon-signal"></i> <span>Trending</span></a></li>
+			{# icon-signal is another option for trending #}
+		</ul>
+
+		<div class="tabs">
+
+			<div class="new tab active" id="latest"
+				data-title="new"
+				data-type="latest" 
+				data-endpoint="articles" 
+				data-per_page="7" 
+				data-template="template-new-tab">
+				<h2 class="tab-header"><i class="icon-refresh"></i> <span>New</span></h2>
+				<ul class="headline-list payload"></ul>
+			</div>
+
+			<div class="trending tab inactive" id="trending"
+				data-title="trending" 
+				data-type="popular" 
+				data-endpoint="articles" 
+				data-per_page="7"
+				data-template="template-trending-tab">
+				<h2 class="tab-header"><i class="icon-signal"></i> <span>Trending</span></h2>
+				<ul class="headline-list payload"></ul>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

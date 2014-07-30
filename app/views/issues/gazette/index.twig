@@ -1,0 +1,129 @@
+{% extends "layouts/gazette.twig" %}
+
+{% block title %}
+	Gazette
+{% endblock %}
+
+{% block page_content %}
+
+<div class="issues force">
+
+{% for issue in results %}
+	
+	{# Setup classes #}
+	
+	{% set issueClasses = ["issue", "cover-all", "force"] %} {# container surrounding the issue #}
+	{% set coverClasses = ["issue-cover", "col"] %} {# container surrounding the cover image #}
+	{% set infoClasses = ["issue-information", "end", "right", "col"] %} {# container surrounding the text #}
+
+	{% if loop.first %} {# current issue #}
+		{% set issueClasses = issueClasses|merge(["current"]) %}
+		{% set coverClasses = coverClasses|merge(["half"]) %}
+		{% set infoClasses = infoClasses|merge(["half"]) %}
+	
+	{% else %} {# archive issues #}
+		{% set issueClasses = issueClasses|merge(["archive", "half", "col"]) %}
+		{% set infoClasses = infoClasses|merge(["front-wide"]) %}
+	{% endif %}
+
+	{% if loop.index == 3 or loop.index == 5 %} {# end of the row #}
+		{% set issueClasses = issueClasses|merge(["end"]) %}
+	{% endif %}
+
+	{% if loop.last %}
+		{% set issueClasses = issueClasses|merge(["last"]) %}
+	{% endif %}
+
+
+
+	<div class="{{ issueClasses|join(" ") }}">
+
+		<div class="{{ coverClasses|join(" ") }}">
+			<a href="{{ issue.url }}">{{ globalMacros.getImage(issue._embedded.image_cover[0], "large", false, "cover") }}</a>
+		</div>
+
+		<div class="{{ infoClasses|join(" ") }}">
+
+			<div class="issue-meta force">
+				{% if loop.first %}
+					<a href="{{ issue.url }}">
+					<h3>{{ issue.edition }} {{ issue.publish_date|date("Y") }}</h3>
+					<div class="volume-contents">
+						<p>Volume {{ issue.volume }}</p>
+						<p>Contents &raquo;</p>
+					</div>
+					</a>
+				{% else %}
+					<h3><a href="{{ issue.url }}">{{ issue.edition }} {{ issue.publish_date|date("Y") }}</a></h3>
+				{% endif %}
+			</div>
+
+			{% if loop.first %} {# current issue #}
+
+			<div class="cover-description">
+
+				<ul class="primary-stories">
+					{% for article in issue._links.web_features %}
+
+						{% set classes = ["teaser", "article", "force"] %}
+						{% if article.image_thumbnail is not null %}
+							{% set classes = classes|merge(["has-image"]) %}
+						{% endif %}
+
+						<li class="{{ classes|join(" ") }}">
+
+							{% if article._embedded.image_thumbnail.0 is not null %}
+								<a href="{{ article.url }}"><img src="{{ article._embedded.image_thumbnail.0.sizes.thumbnail }}" alt="{{ article._embedded.image_thumbnail.0.title }}"></a>
+							{% endif %}
+							
+							<h5><a href="{{ article.url }}">{{ globalMacros.getPrintHeadline(article) }}</a></h5>
+
+							{% if article.excerpt is not empty %}
+								<div class="excerpt">{{ article.excerpt }}</div>
+							{% endif %}
+						</li>
+
+					{% endfor %}     
+				</ul>
+
+			</div>
+
+			{% else %} {# archive issue #}
+			
+				<p class="from-issue"><strong>From this issue:</strong>
+					{% for article in issue._links.web_features %}
+						<a href="{{ article.url }}">{{ globalMacros.getHeadline(article) }}</a>
+						{% if not loop.last %}&nbsp;/&nbsp;{% endif %}
+					{% endfor %}
+				</p>
+				<p class="contents"><a class="btn" href="{{ issue.url }}"><i class="icon-list"></i>&nbsp;&nbsp; Contents</a></p>
+
+			{% endif %}
+
+		</div>
+
+
+	</div>
+
+
+	{% if loop.first %}
+		<h2>Past Issues</h2>
+		{# start the .archives div #}
+		<div class="archives force">
+	{% endif %}
+
+	{% if loop.last %}
+		{# end the .archives div #}
+		</div>
+	{% endif %}
+
+	
+{% endfor %}
+
+	<div class="see-all">
+		<a class="btn" href="/gazette/past-issues"><i class="icon-arrow-left"></i>&nbsp;&nbsp; See all past issues</a>
+	</div>
+
+</div>
+
+{% endblock %}

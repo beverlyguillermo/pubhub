@@ -1,0 +1,36 @@
+{% macro page_info_row(page) %}
+	<tr>
+		<td style='color: #999;'>{{ page.id }}</td>
+		<td><strong><a href="/manager/pages/{{ page.id }}/edit">{{ page.title }}</a></strong></td>
+		<td><a href="{{ _self.make_page_path(page) }}">{{ _self.make_page_path(page) }}</a></td>
+		<td><a href="/manager/pages/{{ page.id }}/edit">Edit <i class="icon-chevron-right"></i></a></td>
+	</tr>
+{% endmacro %}
+
+{% macro page_list_table(pages) %}
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Title</th>
+			<th>Path</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for page in pages %}
+		   	{{ _self.page_info_row(page) }}
+		{% endfor %}
+		</tbody>
+	</table>
+
+{% endmacro %}
+
+{% macro make_page_path(page) %}
+	{% spaceless %}
+	{%- if (page.section) != "hub" -%}
+		/{{- page.section -}}
+	{%- endif -%}
+	{{- page.slug != "/" ? "/" ~ page.slug : "/" -}}
+	{% endspaceless %}
+{% endmacro %}

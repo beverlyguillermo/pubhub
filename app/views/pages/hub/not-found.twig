@@ -1,0 +1,38 @@
+{% extends "pages/hub/static.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+
+	{% set classes = ["page"] %}
+
+	{% set classes = ["page"] %}
+	{% if slug is defined %}
+		{% set classes = classes|merge([slug ~ "-page"]) %}
+	{% endif %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			<div class="col measure wide">
+
+				{% include "partials/messages.twig" %}
+				
+				<h1>{{ page_title }}</h1>
+
+				{{ results }}
+
+				{% include "partials/search-form.twig" %}
+
+			</div>
+
+		</div>
+
+		{% include "partials/article-sidebar.twig" %}
+
+	</div>
+
+{% endblock %}

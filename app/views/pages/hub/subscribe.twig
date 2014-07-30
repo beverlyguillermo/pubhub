@@ -1,0 +1,58 @@
+{% extends "layouts/minimal.twig" %}
+
+{% block title %}Subscribe{% endblock %}
+
+{% block body_classes %}{{ parent() }} subscribe-page {% endblock %}
+
+{% block page_content %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+			<div class="logo" data-filter="">
+    			<a href="http://hub.jhu.edu"><img class="" src="/assets/img/hubmark-all-white.png" onclick="_gaq.push(['_trackEvent', 'Hub Pix', 'Top', 'Header Refresh']);"></a>
+    		</div><!-- end logo -->
+			<h1>News from <span class="headliney-no-wrapy">Johns Hopkins,</span> <span class="headliney-no-wrapy">three times a week.</span></h1>
+
+			<img class="macbook-large" src="/assets/img/subscribe/hub-subscribe-macbook-large.png">
+			<div class="message">Get updates on what's new, what's important, and what’s interesting at Johns Hopkins, 
+delivered directly to your inbox.</div>
+			<div class="subscribe-form">
+				<!-- Begin MailChimp Signup Form -->
+				<div id="mc_embed_signup">
+					<form action="http://jhu.us5.list-manage.com/subscribe/post?u=bd75ef1a5cad0cbfd522412c4&amp;id=d8bf41c16e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+						<div class="mc-field-group">
+							<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+							<label for="mce-EMAIL">Email address  <span class="asterisk">*</span>
+							</label>
+						</div>
+						<div class="mc-field-group">
+							<input type="text" value="" name="FNAME" class="" id="mce-FNAME">
+							<label for="mce-FNAME">First name </label>
+						</div>
+						<div class="mc-field-group">
+							<input type="text" value="" name="LNAME" class="" id="mce-LNAME">
+							<label for="mce-LNAME">Last name </label>
+						</div>
+						<div id="mce-responses" class="clear">
+							<div class="response" id="mce-error-response" style="display:none"></div>
+							<div class="response" id="mce-success-response" style="display:none"></div>
+						</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+						<div style="position: absolute; left: -5000px;"><input type="text" name="b_bd75ef1a5cad0cbfd522412c4_d8bf41c16e" value=""></div>
+						<div class="clear submit-button"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+					</form>
+				</div>
+
+				<!--End mc_embed_signup-->
+			</div>
+		</div>
+
+		{#{% include "partials/article-sidebar.twig" %}#}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+{% endblock %}

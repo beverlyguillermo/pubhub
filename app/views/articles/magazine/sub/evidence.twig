@@ -1,0 +1,32 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block magazine_article %}
+
+	{{ magazineMacros.getTitle(results) }}
+	{{ globalMacros.getSubheadline(results) }}
+	{{ globalMacros.getAuthorDateTopicLine(results) }}
+	{{ globalMacros.getEmphasis(results) }}
+	
+	<div class="body-content">
+
+		{% block magazine_inset %}
+			{{ parent() }}
+		{% endblock %}
+		
+		{% block magazine_body %}
+			{{ parent() }}
+		{% endblock %}
+
+	</div>
+
+	{% if results.publication_content.elsewhere_jhu is not null %}
+	<div class="elsewhere">
+			<h3>Elsewhere at Hopkins &hellip;</h3>
+		{{ results.publication_content.elsewhere_jhu }}
+	</div>
+	{% endif %}
+
+	{{ globalMacros.getAuthorBio(results) }}
+	{{ globalMacros.getAside(results) }}
+
+{% endblock %}

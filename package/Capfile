@@ -1,0 +1,154 @@
+# Capfile
+load 'deploy' if respond_to?(:namespace) # cap2 differentiator
+
+
+# ----------------------------------------------
+# :application HAS TO BE DEFINED BEFORE 
+# REQUIRING 'ash/drupal'
+# ----------------------------------------------
+set :application, "hub.jhu.edu"
+
+
+# ----------------------------------------------
+# Must be set for the password prompt
+# from Git to work
+# ----------------------------------------------
+default_run_options[:pty] = true
+
+
+# ----------------------------------------------
+# Define multistage settings
+#
+# This uses JamisBuck's capistrano-ext gem
+# $ gem install capistrano-ext
+# Read more here: http://weblog.jamisbuck.org/2007/7/23/capistrano-multistage
+# and here: http://paulschreiber.com/blog/2011/02/12/howto-setup-multistage-deployment-with-capistrano/
+# ----------------------------------------------
+require 'capistrano/ext/multistage'
+set :stages, %w(staging production dartest beta)
+set :default_stage, "staging"
+
+
+# ----------------------------------------------
+# Allows the deployment of a subdirectory in a git repo
+# Courtesy: http://stackoverflow.com/a/2047574
+# ----------------------------------------------
+require 'capistrano/recipes/deploy/strategy/remote_cache'
+set :deploy_subdir, "package"
+class RemoteCacheSubdir < Capistrano::Deploy::Strategy::RemoteCache
+
+  private
+
+  def repository_cache_subdir
+    if configuration[:deploy_subdir] then
+      File.join(repository_cache, configuration[:deploy_subdir])
+    else
+      repository_cache
+    end
+  end
+
+  def copy_repository_cache
+    logger.trace "copying the cached version to #{configuration[:release_path]}"
+    if copy_exclude.empty? 
+      run "cp -RPp #{repository_cache_subdir} #{configuration[:release_path]} && #{mark}"
+    else
+      exclusions = copy_exclude.map { |e| "--exclude=\"#{e}\"" }.join(' ')
+      run "rsync -lrpt #{exclusions} #{repository_cache_subdir}/* #{configuration[:release_path]} && #{mark}"
+    end
+  end
+
+end
+
+set :strategy, RemoteCacheSubdir.new(self)
+
+
+# ----------------------------------------------
+# Composer tasks
+# ----------------------------------------------
+namespace :composer do
+
+  # Download Composer-managed dependencies via `composer install`
+  task :install do 
+    run "cd #{current_release} && php composer.phar self-update && php composer.phar install"
+  end
+
+  # Download Composer-managed dependencies via `composer update`
+  task :update do 
+    run "cd #{current_release} && php composer.phar self-update && php composer.phar update"
+  end
+
+end
+
+
+# ----------------------------------------------
+# Deploy tasks
+# ----------------------------------------------
+namespace :deploy do
+
+  # Put the site in maintenance mode
+  task :maintenance do 
+    deploy.default
+    run "cd #{current_release} && mv public/index.php public/index.down.php && mv public/uh-oh.php public/index.php && ls -la public"
+  end
+
+  # Symlink a master logs directory from the latest release root into the shared path
+  task :symlink_logs do 
+    run "ln -s #{shared_path}/logs #{latest_release}"
+  end
+
+  task :symlink_shared_assets do 
+    run "mkdir -p #{shared_path}/assets"
+    run "ln -s #{shared_path}/assets #{latest_release}/public/assets/shared"
+  end
+
+  # Overwrite cron from our own cli/crontab.txt
+  task :update_cron do
+    run "crontab #{latest_release}/cli/crontab.txt"
+  end
+
+  # adjusted finalize_update, removed rails-specific stuff
+  task :finalize_update, :except => { :no_release => true } do
+    run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
+  end
+ 
+  task :restart do
+    # nothing to do here since we're on mod-php
+  end
+
+end
+
+
+# ----------------------------------------------
+# Capistrano settings
+# ----------------------------------------------
+set :deploy_to, "/var/www/html/hub"
+set :keep_releases, 10
+set :use_sudo, false
+set :user, "webuser" # SSH login credentials
+
+
+# ----------------------------------------------
+# Version control settings
+# ----------------------------------------------
+set :scm, :git
+set :repository, "git@github.com:johnshopkins/hub.git"
+set :deploy_via, :remote_cache
+set :git_enable_submodules, 1
+set :ssh_options, { :forward_agent => true }
+
+
+# ----------------------------------------------
+# Tasks to run
+# ----------------------------------------------
+
+# After making sure Capistrano can deploy to our server...
+after 'deploy:setup', 'drupal:setup'
+
+# Before updating the symlink to the most recently deployed version...
+before "deploy:create_symlink", "composer:install"
+
+# After updating the symlink to the most recently deployed version...
+after 'deploy:create_symlink', 'deploy:symlink_logs'
+
+# Remove old releases
+after "deploy:restart", "deploy:cleanup"

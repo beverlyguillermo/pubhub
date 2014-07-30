@@ -1,0 +1,41 @@
+#!/usr/bin/php
+<?php
+$file = file_get_contents("README.md");
+$versionPattern = "/Version: ([0-9.]+)/";
+$type = (count($argv) > 1) ? strtolower($argv[1]) : "";
+$type = str_replace("-", "", $type);
+
+if (!$type || !in_array($type, array("major", "minor", "hotfix", "hot", "fix"))) {
+	echo "\r\nPlease choose a bump type (major, minor, or hotfix)\r\n\r\n";
+	exit;
+}
+$type = ($type == "hot" || $type == "fix") ? "hotfix" : $type;
+
+preg_match($versionPattern, $file, $matches);
+$version = $matches[1];
+$splits = explode(".", $version);
+
+if ($type == "hotfix") {
+	$splits[2] += 1;
+}
+elseif ($type == "minor") {
+	$splits[1] += 1;
+	$splits[2] = 0;
+}
+elseif ($type == "major") {
+	$splits[0] += 1;
+	$splits[1] = 0;
+	$splits[2] = 0;
+}
+
+$bumped = implode(".", $splits);
+
+$file = preg_replace($versionPattern, "Version: " . $bumped, $file);
+file_put_contents("README.md", $file);
+
+echo "\r\n" . $file;
+
+echo "\r\n";
+echo "Current version: " . $version . "\r\n";
+echo "Bumped version: " . $bumped . "\r\n";
+echo "\r\n";

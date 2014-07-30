@@ -1,0 +1,16 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+<h1>Alert Manager</h1>
+{% include "partials/messages.twig" %}
+
+<p><strong>{{ admin.message }}</strong></p>
+{% include "partials/alert.twig" %}
+<a style="position: relative; top: -12px;" href="alerts/{{ alert.id }}/delete">{{ admin.link_text }}</a>
+
+<h4 style="margin-top: 2em;">Edit Current Alert</h4>
+
+{% set action = "alerts/" ~ alert.id ~ "/update" %}
+{% include "partials/alert-form.twig" %}
+
+{% endblock %}

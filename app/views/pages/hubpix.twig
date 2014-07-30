@@ -1,0 +1,35 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+	<div class="page-header"><h1>{{ page_title }}</h1></div>
+
+	{% include "partials/messages.twig" %}
+
+	<h3>Ban Photos and Users</h3>
+
+	<p>To ban a photo, select "photo" from the drop-down and enter the photo ID in the "ID" field. You can find the ID of a photo by viewing the photo on instagram.com. See the below examples where the ID is shown in bold.</p>
+
+	<ul>
+		<li>http://instagram.com/p/<strong>WUf6mhuZ-N</strong>/</li>
+		<li>http://instagram.com/p/<strong>QSP91XHjG-</strong>/</li>
+	</ul>
+
+	<p>To ban a user, select "user" from the drop-down and enter the username in the "ID" field.</p>
+
+	<br>
+
+	{{ forms.banUsersForm() }}
+
+{% endblock content %}
+
+{% block jsfoot %}
+	{{ parent() }}
+{% endblock %}
+
+
+
+{% block jsdocready %}
+    {{ parent() }}
+    manager.pages.edit.init();
+{% endblock %}

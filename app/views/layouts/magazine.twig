@@ -1,0 +1,56 @@
+{# used for magazine issue templates. #}
+
+{% extends "layouts/global.twig" %}
+{% import "macros/magazine.twig" as magazineMacros %}
+
+{% block stylesheet %}
+	<style type="text/less">
+		{% include "partials/styles/magazine.less" %}
+	</style>
+{% endblock %}
+
+{% block head %}
+	<link rel="alternate" type="application/rss+xml" title="Johns Hopkins Magazine" href="{{ request.rootUri }}/magazine/feed" />
+	{{ parent() }}
+{% endblock %}
+
+{% block body_classes %}{{ parent() }} magazine {% endblock %}
+
+{% block global_nav %}
+	{% set section_id = { "nav_section" : "magazine" } %}
+	{{ parent() }}
+{% endblock %}
+
+{% block site_content %}
+
+	{# magazine header #}
+
+	<div class="magazine-header header{% if section != "homepage" %} interior{% endif %} section force">
+		<div class="center">
+
+			<div class="title-line force">
+				{% if object == "issues" and section == "homepage" %}<h1>{% endif %}
+				<div class="masthead"><a href="{{ request.rootUri ~ "/magazine/" }}"><span>Johns Hopkins Magazine</span><img src="{{ request.rootUri }}/assets/img/magazine/masthead.gif" alt="Johns Hopkins Magazine"></a></div>
+				{% if object == "issues" and section == "homepage" %}</h1>{% endif %}
+			</div>
+
+			{% include "partials/magazine-main-menu.twig" %}
+
+		</div>
+	</div>
+
+	{# page content #}
+
+	<div class="content-area section">
+		<div class="center force">
+
+			{% block page_content %}{% endblock %}
+
+		</div>
+	</div>
+
+	{# table of contents overlay #}
+
+	<div id="toc-overlay" class="toc-overlay hidden"></div>
+
+{% endblock %}

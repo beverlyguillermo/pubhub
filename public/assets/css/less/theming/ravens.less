@@ -1,0 +1,68 @@
+// Variables
+@ravens_purple: #421773;
+@lighter_purple: lighten(@ravens_purple, 15%);
+
+.hubmark {
+
+    .asterisk {
+        background-image: url(/assets/img/Hub-Football-Small.gif);
+    }
+}
+
+.wf-loading {
+
+    .hubmark {
+        height: 56px;
+        display: block;
+        background-image: none;
+    }
+}
+
+.hubmark.loading {
+    background: url(/assets/img/Hub-Football-Large.gif) left center no-repeat;
+    height: 56px;
+
+    .asterisk {
+        display: none;
+    }
+}
+
+.header-global {
+    background-color: @ravens_purple;
+}
+
+.header-global {
+    
+    .global-navigation {
+
+        li {
+
+            &.current, &:hover { 
+                > a {
+                    background-color: @lighter_purple;
+                } 
+            }
+
+            .submenu {
+                background-color: @ravens_purple;
+                
+                li {
+
+                    a {
+
+                        &:hover {
+                            background-color: @lighter_purple;
+                        }
+                    }
+                    h5 {
+                        border-color: @lighter_purple;
+
+                        span {
+                            background-color: @ravens_purple;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+{% extends "layouts/" ~ layout ~ ".twig" %}
+
+{% block head %}
+	{{ parent() }}
+	<link rel="alternate" type="application/rss+xml" title="Events - Hub" href="{{ request.rootUri }}/events/feed" />
+{% endblock %}
+
+{% block meta %}
+	<meta name="description" content="{{ results.excerpt|replace('"', "'") }}">
+	{{ globalMacros.eventMeta(results) }}
+{% endblock %}
+
+{% block title %}
+    Submit an Event
+{% endblock %}
+
+{% block stylesheet %}
+	{{ parent() }}
+	<style type="text/less">
+		{% include "partials/styles/developers.less" %}
+	</style>
+{% endblock %}
+
+{% block page_content %}
+	
+	{% set classes = ["page", "submit-event"] %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			<div class="col measure wide">
+				
+				<h1>{{ page_title }}</h1>
+
+				{{ html }}
+				{{ form }}
+
+				<p class="helper submit-helper force">Fields marked with <strong>*</strong> are required.</p>
+
+			</div>
+
+		</div>
+
+		{% include "partials/event-sidebar.twig" %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-events-related">
+    {% include "partials/related-event.js" %}
+    </script>
+
+	{{ parent() }}
+
+	{% include "partials/scripts/developers.twig" %}	
+
+	<script type="text/javascript">
+    lazy.load([".featured-events"]);
+
+    $("#submitEvent input[name=date]").datepicker({
+		dateFormat: "mm/dd/yy",
+		minDate: 0
+	});
+	</script>
+{% endblock %}

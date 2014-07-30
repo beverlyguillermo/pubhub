@@ -1,0 +1,105 @@
+{% extends "layouts/" ~ layout ~ ".twig" %}
+
+{% block meta %}
+<meta name="description" content="{{ results.excerpt|replace('"', "'") }}">
+{% endblock %}
+
+{# Setup container div classes #}
+{% set classes = ["article", "single-view", "col", "measure", "wide"] %}
+
+{% if results.type == "summary" %}
+	{% set classes = classes|merge(["summary"]) %}
+
+{% elseif results.type == "article" %}
+	{% set classes = classes|merge(["hub-article", "full-view"]) %}
+
+{% elseif results.type == "magazine_article" or results.type == "gazette_article" %}
+
+	{% set article_type = results.type|replace({"_": "-"}) %}
+
+	{% set classes = classes|merge([article_type, "full-view"]) %}
+
+	{% if results._embedded.departments[0].parent is not null %}
+		{% set department_slug = results._embedded.departments[0].parent.slug %}
+		{% set department_subtitle_slug = results._embedded.departments[0].slug %}
+		{% set classes = classes|merge(["department-" ~ department_slug, "department-subtitle-" ~ department_subtitle_slug]) %}
+	
+	{% else %}
+		{% set department_slug = results._embedded.departments[0].slug %}
+		{% set classes = classes|merge(["department-" ~ department_slug]) %}
+	{% endif %}
+
+{% endif %}
+
+{# and... go! #}
+{% block page_content %}
+
+	<div>
+
+		<div class="{{ classes|join(" ") }}" data-api="/articles/{{ results.id }}">
+			{% 
+				set vars = {
+					"headline": results.headline, 
+					"url": results.url,
+					"thumbnail": results._embedded.image_thumbnail.sizes.thumbnail[0],
+					"summary": results.excerpt,
+					twitter: {
+						"hashtags": ["hubjhu"],
+						"related": ["HubJHU", "JohnsHopkins"]
+					}
+				} 
+			%}
+			{% include "partials/share-bar.twig" with vars %}
+
+
+			{% block article_content %}
+
+			{% endblock %}
+
+
+			<div id="comments">
+				<div class="force">
+					<h3>Comments</h3>
+					<a href="/community-guidelines">Community guidelines</a>
+				</div>
+				<p class="disclaimer">Editor’s note: We welcome your comments; all we ask is that you keep it civil and on-topic, and don't break any laws. We reserve the right to remove any inappropriate comments.</p>
+				{% include "partials/" ~ layout ~ "-disqus.twig" %}
+			</div>
+
+		</div>
+
+		{% include "partials/article-sidebar.twig" %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-new-tab">
+	{% include "partials/new-tab.js" %}
+	</script>
+	<script type="text/template" id="template-trending-tab">
+	{% include "partials/trending-tab.js" %}
+	</script>
+	<script type="text/template" id="template-articles-related">
+    {% include "partials/related.js" %}
+    </script>
+    <script type="text/template" id="template-hubpix-promo">
+    {% include "partials/hubpix-promo.js" %}
+    </script>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	{{ parent() }}
+	<script type="text/javascript">
+	hubster.single.init();
+    lazy.load([".relatedLoad"]);
+
+    {% if preview != true %}
+    hubster.articlesPage.updatePopularity({{ results.id }});
+    {% endif %}
+
+    hubstagram.init({
+    	container: ".hubpix-promo .pix",
+    	template: "#template-hubpix-promo"
+    }).promote(6);
+	</script>
+{% endblock %}

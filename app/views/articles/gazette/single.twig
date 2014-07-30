@@ -1,0 +1,52 @@
+{% extends "articles/global-article.twig" %}
+
+{% if results.publication_content.department.parent is not null %}
+	{% set department = results.publication_content.department.parent.name %}
+{% else %}
+	{% set department = results.publication_content.department.name %}
+{% endif %}
+
+{% block title %}
+	{{ results.headline|striptags }} | {{ department }} | Gazette
+{% endblock %}
+
+{% block article_content %}
+
+	{% block gazette_article %}
+
+		<h1>{{ globalMacros.getHeadline(results) }}</h1>
+		{{ globalMacros.getSubheadline(results) }}
+		{{ globalMacros.getAuthorDateTopicLine(results) }}
+
+		{# Set the the emphasis and inset items #}
+
+		{{ globalMacros.getEmphasis(results) }}
+		
+		<div class="body-content">
+				
+			{% block gazette_inset %}
+		        {{ globalMacros.printInset(results) }}
+			{% endblock %}
+
+			{% block gazette_body %}
+				{{ results.body }}
+			{% endblock %}
+
+		</div>
+
+		{#
+		We don't understand what this part is for so we are killing it for now until
+		someone discovers why it was necessary. JR and JW, 11-16-2012
+
+		{% if results.gazette.section.machine_name == "gallery" %}
+			{{ globalMacros.getGallery(results.galleries.0, "emphasized") }}
+		{% endif %}
+		#}
+
+		{{ globalMacros.getAside(results) }}
+
+	{% endblock %}
+
+	{#{% include "partials/gazette-aside-nav.twig" %}#}
+
+{% endblock %}

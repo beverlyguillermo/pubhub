@@ -1,0 +1,36 @@
+/**
+ * Global header, or the "Blue Bar of Fun!!!"
+ *
+ * The blue header that is at the top of every page in the Hub, explaining
+ * the Johns Hopkins news network (or news force, ACTIVATE!)
+ */ 
+
+.header-global {
+    .global-navigation {
+        li {
+            &.intro {
+                padding-right: 25px;
+            }
+            a {
+                display: inline-block;
+                letter-spacing: 1px;
+                font-family: @sans;
+                font-size: @xx-small;
+                font-weight: bold;
+                padding: 1px 20px 1px 25px;
+                text-transform: uppercase;
+                color: @white;
+            }
+            .submenu {
+                li {
+                    a {
+                        padding: 4px 25px;
+                    }
+                    h5 {
+                        margin: 5px 25px 5px;
+                    }
+                }
+            }
+        }
+    }
+}

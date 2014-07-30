@@ -1,0 +1,31 @@
+{% extends "layouts/hub.twig" %}
+
+{% set page_title = "test" %}
+
+{% if results.title is not null %}
+	{% set page_title = results.title %}
+{% else %}
+	{% set page_title = results.filename %}
+{% endif %}
+
+{% block page_content %}
+
+	<div class="image" data-api="/images/{{ results.id }}">
+		{{ globalMacros.getImage(results, "large", true) }}
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-new-tab">
+	{% include "partials/new-tab.js" %}
+	</script>
+	<script type="text/template" id="template-trending-tab">
+	{% include "partials/trending-tab.js" %}
+	</script>
+	{{ parent() }}
+	<script type="text/javascript" src="/assets/js/hub.min.js"></script>
+	<script type="text/javascript">
+    hubster.lazyLoad([".relatedLoad"]);
+	</script>
+{% endblock %}

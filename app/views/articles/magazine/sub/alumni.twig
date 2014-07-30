@@ -1,0 +1,36 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block magazine_article %}
+
+	{{ magazineMacros.getTitle(results) }}
+
+	{% if results.publication_content.department.slug == "class-notes" %}
+		<p class="special-note">Keep your classmates informed with a submission to alumni notes. Submit your information via email to: <a href="mailto:magnotes@jhu.edu">magnotes@jhu.edu</a>. (Due to production deadlines, your information may not appear for an issue or two. By submitting a class note, you agree that Johns Hopkins can publish your note in the print and online edition.)</p>
+	{% endif %}
+
+	{{ globalMacros.getSubheadline(results) }}
+
+	{% if results.publication_content.department.slug == "colleagues" %}
+		{% set prefix = "Interview by" %}
+	{% else %}
+		{% set prefix = "" %}
+	{% endif %}
+
+	{{ globalMacros.getAuthorDateTopicLine(results, prefix) }}
+
+	{{ globalMacros.getEmphasis(results) }}
+	
+	<div class="body-content">
+		{% block magazine_inset %}
+			{{ parent() }}
+		{% endblock %}
+		
+		{% block magazine_body %}
+			{{ parent() }}
+		{% endblock %}
+	</div>
+	
+	{{ globalMacros.getAuthorBio(results) }}
+	{{ globalMacros.getAside(results) }}
+
+{% endblock %}

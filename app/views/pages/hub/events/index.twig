@@ -1,0 +1,190 @@
+{% extends "layouts/hub.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block head %}
+	{{ parent() }}
+	<link rel="alternate" type="application/rss+xml" title="{{ page_title }} - Hub" href="{{ request.rootUri }}{{ request.resourceUri }}/feed" />
+{% endblock %}
+
+{% block site_content %}
+
+	<div class="topic-page events-multi-view content-area section">
+		
+		<div class="hub-header">
+			<div class="center force">
+				{% include "partials/hub-header.twig" %}
+			</div>
+		</div>
+
+		<div class="topic-feature-area rail">
+			<div class="center force page-header">
+				<h1 class="rail-title">{{ page_title }}</h1>
+				<p class="submit-event">
+					<a class="btn" href="/submit-event"><i class="icon-plus"></i>&nbsp;&nbsp; Submit an Event</a>
+				</p>
+			</div>
+		</div>
+		
+		{% if results.endpoint is defined %}
+				
+			<div class="page-container center force">
+
+				<div class="col narrow filters-col force">
+
+					<div class="filters-container closed force">
+						
+						<div class="display-nav">
+							<span>Show Filters</span>
+							<i class="icon-caret-down"></i>
+							<i class="icon-remove"></i>
+						</div>
+
+						<div class="filters closed">
+
+							<div class="section">
+
+								<form id="filters">
+									
+									<fieldset data-group="date" class="singleselect">
+										<legend>Date</legend>
+										
+										{% for date in results.dates %}
+											{% set classes = ["form-field", date.slug] %}
+
+											{% if date.count == 0 %}
+												{% set classes = classes|merge(["hide"]) %}
+											{% endif %}
+
+											<div class="{{ classes|join(" ") }}">
+												<input name="dategroup" type="radio" id="{{ date.slug }}" value=".{{ date.slug }}"
+
+												{% if date.slug == "next-two-weeks" %}
+													checked="checked"
+												{% endif %}
+
+												>
+												<label for="{{ date.slug }}">{{ date.name }}</label>
+											</div>
+										{% endfor %}
+
+										<div class="form-field">
+											<input name="dategroup" type="radio" id="range" value="range">
+											<label for="range">Custom Range</label>
+										</div>
+
+									</fieldset>
+
+									{% if results.locations is not empty %}
+
+									<fieldset data-group="campus" class="multiselect">
+										<legend>Location</legend>
+										
+										<div class="form-field">
+											<input type="checkbox" id="all-locations" class="all" checked="checked">
+											<label for="all-locations">All</label>
+										</div>
+
+										{% for location in results.locations %}
+
+											{% set classes = ["form-field", location.slug] %}
+
+											<div class="{{ classes|join(" ") }}">
+												<input type="checkbox" value=".{{ location.slug }}" id="{{ location.slug }}">
+												<label for="{{ location.slug }}">{{ location.name }}</label>
+											</div>
+
+										{% endfor %}
+
+									</fieldset>
+
+									{% endif %}
+
+									{% if results.topics is not empty %}
+
+									<fieldset data-group="topic" class="multiselect">
+										<legend>Topic</legend>
+										
+										<div class="form-field">
+											<input type="checkbox" id="all-topics" class="all" checked="checked">
+											<label for="all-topics">All</label>
+										</div>
+
+										{% for topic in results.topics %}
+
+											{% set classes = ["form-field", topic.slug] %}
+
+											<div class="{{ classes|join(" ") }}">
+												<input type="checkbox" value=".{{ topic.slug }}" id="{{ topic.slug }}">
+												<label for="{{ topic.slug }}">{{ topic.name }}</label>
+											</div>
+
+										{% endfor %}
+
+									</fieldset>
+
+									{% endif %}
+
+								</form>
+
+							</div>
+
+						</div>
+
+						<div class="section other-calendars">
+							{{ html }}
+						</div>
+
+					</div>
+
+				</div>
+				
+				<div class="col extra-wide end content-col">
+
+					<div class="events-container">
+					
+						{% for event in results.endpoint %}
+
+							{% set data = { "data-start": event.start_date, "data-end": event.end_date } %}
+							{% set classes = event.filterClasses %}
+
+							{% if event.featured == true %}
+								{% set classes = classes|merge(["featured"]) %}
+							{% endif %}
+
+							{# output the teaser #}
+							{{ globalMacros.eventTeaser(event, classes, data) }}
+
+						{% endfor %}
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{% endif %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-topic-page-articles">
+	{% include "partials/topic-page-article.js" %}
+	</script>
+
+	<script type="text/template" id="template-events-home-more">
+	{% include "partials/events-home-more.js" %}
+	</script>
+
+	{{ parent() }}
+	
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		hubevents.init();
+	});
+	</script>
+{% endblock %}

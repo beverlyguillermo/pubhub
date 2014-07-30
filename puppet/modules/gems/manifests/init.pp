@@ -1,0 +1,3 @@
+class gems {
+	include capistrano
+}

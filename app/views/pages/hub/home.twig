@@ -1,0 +1,216 @@
+{% extends "layouts/hub.twig" %}
+{% import "macros/hub.twig" as hub %}
+
+{% block body_classes %}{{ parent() }}home{% endblock %}
+
+{% block site_content %}
+
+<div class="content-area section">
+	<div class="feature-area">
+		<div class="center force">
+			
+			<div class="col narrow">
+				{% include "partials/hub-header.twig" %}
+				<h2 class="hub-description">News from Johns Hopkins.</h2>
+				{% include "partials/new-trending.twig" %}
+			</div>
+
+			<div class="col extra-wide end">
+
+				{% if featured is not null %}
+
+					<div class="feature-queue template-a" id="featureQueue">
+
+						{# main feature #}
+						{{ globalMacros.articleTeaser(featured[0], "main", classes) }}
+
+						<div class="secondary-features">
+
+							{# secondary features (slice off the first one (main feature)) #}
+							{% for article in featured|slice(1) %}
+								
+								{% set classes = [] %}
+								
+								{% if loop.first %}
+									{% set classes = classes|merge(["first"]) %}
+								{% endif %}
+
+								{{ globalMacros.articleTeaser(article, "secondary", classes) }}
+
+							{% endfor %}
+
+						</div>
+
+					</div>
+
+				{% endif %}
+
+			</div>
+
+		</div>
+	</div>
+
+	<div class="twitter-cycle">
+		<div class="center force">
+			<div class='tweets'></div>
+		</div>
+	</div>
+
+	{% if rails is not null %}
+		
+		<div class="rails">
+
+			{# piano keys #}
+			<div class="center force">
+				<ul class="rail-navigation topics">
+					
+					<li class="hub-top"><a href="#" data-target="target-top">Hub</a></li>
+					
+					{% for rail in rail_groups.topics %}
+						<li class="{{ hub.makeRailSelector(rail) }}"><a href="/{{ rail.site_path }}" data-target="{{ hub.makeRailSelector(rail) }}">{{ rail.title }}</a></li>
+					{% endfor %}
+
+				</ul>
+			</div>
+
+			{% for rail in rails %}
+
+				{% set template = rail.template ? rail.template|replace(" ", "_") : rail.type ~ '_rail' %}
+
+				{% set classes = ["rail"] %}
+				{% set classes = classes|merge([rail.type ~ "-rail", template]) %}
+
+				{% set feature_list = rail.page.active.feature_queue|slice(0,3)|join(",") %}
+				{% set endpoint = rail.endpoint ? rail.endpoint : rail.page.endpoint %}
+
+				
+
+				{# main rail container: the data-* attributes are used by JavaScript to lazy load articles from the API. #}
+				<div class="{{ classes|join(' ') }}" 
+					id="{{ hub.makeRailSelector(rail) }}"
+					data-section-name="{{ rail.page.slug }}" {# used for pub/sub? #}
+					data-type="recommended"
+					data-endpoint="{{ endpoint }}" 
+					
+				{% if endpoint != "events" %}
+					data-ids="{{ feature_list }}" 
+					data-template="template-default-rail"
+					data-per_page="3"
+				{% else %}
+					data-params="featured=true"
+					data-template="template-events-rail"
+					data-per_page="6"
+					data-backup="true"
+					data-backup-endpoint="{{ endpoint}}"
+					data-backup-params="featured=false"
+				{% endif %}
+					>
+
+					<div class="center force">
+
+						<div class="rail-description force">
+
+							<h2 class="rail-title" title="{{ rail.description }}">{{ rail.title }}</h2>	
+							
+							<div class="inner-rail-nav">
+								<a href="/{{ rail.page.slug }}">See all &raquo;</a>
+							</div>
+
+							{% if rail.type == "page" and endpoint != "events" %}
+								<ul class="slider-navigation">
+									<li><a class="slide-recommended active" data-target="recommended" href="#"><i class="icon-thumbs-up"></i><span> Recommended </span><i class="icon-chevron-right"></i></a></li>
+									<li><a class="slide-latest" data-target="latest" href="#"><i class="icon-refresh"></i><span> New </span><i class="icon-chevron-right icon-white"></i></a></li>
+									<li><a class="slide-popular" data-target="popular" href="#"><i class="icon-signal"></i><span> Trending </span><i class="icon-chevron-right icon-white"></i></a></li>
+								</ul>
+							{% elseif rail.type == "page" and endpoint == "events" %}
+								<ul class="slider-navigation">
+									<li><a class="slide-recommended active" data-target="recommended" href="#"><i class="icon-thumbs-up"></i><span> Recommended </span><i class="icon-chevron-down"></i></a></li>
+									<li><a class="slide-latest" data-target="latest" href="#"><i class="icon-calendar"></i><span> Upcoming </span><i class="icon-chevron-down icon-white"></i></a></li>
+								</ul>
+							{% endif %}
+
+						</div>
+
+						<div class="content">
+
+							{# recommended (lazy loaded with main div data attributes) #}
+							<div class="payload recommended slide force active"></div>
+
+							{# new #}
+							<div class="latest slide force hidden" 
+								data-section-name="{{ rail.page.slug }}-latest" 
+								data-type="recent" 
+								data-endpoint="{{ endpoint }}"
+
+								{% if endpoint != "events" %}
+									data-endpoint="{{ endpoint }}"
+								{% endif %}
+
+
+								{% if endpoint == "events" %}
+									data-per_page="6"
+									data-template="template-events-rail"
+								{% else %}
+									data-per_page="3"
+									data-template="template-default-rail"
+								{% endif %}
+								>
+
+								<div class="payload"></div>
+
+							</div>
+
+							{% if endpoint != "events" %}
+
+								{# trending #}
+								<div class="popular slide force hidden"
+									data-section-name="{{ rail.page.slug }}-popular"
+									data-type="popular" 
+									data-endpoint="{{ endpoint }}"
+									data-per_page="3"
+									data-template="template-default-rail">
+
+									<div class="payload"></div>
+
+								</div>
+
+							{% endif %}
+							
+						</div>
+					</div>
+				</div>
+
+				
+
+			{% endfor %}
+			
+		</div>
+
+	{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-new-tab">
+	{% include "partials/new-tab.js" %}
+	</script>
+	<script type="text/template" id="template-trending-tab">
+	{% include "partials/trending-tab.js" %}
+	</script>
+	<script type="text/template" id="template-default-rail">
+	{% include "rails/page.js" %}
+	</script>
+	<script type="text/template" id="template-events-rail">
+		{% include "rails/events-page.js" %}
+	</script>
+	{{ parent() }}
+	<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+	    hubster.homepage.init();
+	    // tweets.loadTweets($(".twitter-cycle .tweets"), true);
+	});
+	</script>
+{% endblock %}

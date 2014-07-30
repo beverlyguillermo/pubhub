@@ -1,0 +1,120 @@
+{% extends "layouts/hub.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block head %}
+	{{ parent() }}
+	<link rel="alternate" type="application/rss+xml" title="{{ page_title }} - Hub" href="{{ request.rootUri }}{{ request.resourceUri }}/feed" />
+{% endblock %}
+
+{% block site_content %}
+
+	<div class="topic-page content-area section">
+		
+		<div class="hub-header">
+			<div class="center force">
+				{% include "partials/hub-header.twig" %}
+			</div>
+		</div>
+		
+		{# top features #}
+		{% if featured is defined %}
+
+			<div class="topic-feature-area rail">
+				<div class="center force">
+
+					<h1 class="rail-title">{{ page_title }}</h1>
+
+					{% set featured = featured|slice(0,3) %}
+
+					<div class="content count-{{ featured|length }}">
+
+						{% for article in featured %}
+
+							{% set classes = ["col"] %}
+							{% if loop.index == 3 %}
+								{% set classes = classes|merge(["end"]) %}
+							{% endif %}
+
+							{{ globalMacros.articleTeaser(article, "topic", classes) }}
+
+						{% endfor %}
+
+					</div>
+
+				</div>
+			</div>
+
+		{% endif %}
+
+
+		{# the rest of the stories #}
+		{% if results.endpoint is defined %}
+
+			<div class="page-container center force" data-endpoint="{{ endpoint }}" data-excluded-ids="{{ excluded_ids }}">
+
+				<div class="col narrow filters-col force">
+
+					{% if results.tags is not empty %}
+
+					<div class="filters-container closed force">
+
+						<div class="display-nav">
+							<span>Show Filters</span>
+							<i class="icon-caret-down"></i>
+							<i class="icon-remove"></i>
+						</div>
+
+						<div class="filters closed">
+
+							<h3>Filters</h3>
+							<ul class="force">
+								<li><a href="#" data-filter="*" class="selected">show all</a></li>
+								{% for tag in results.tags %}
+								<li><a href="#" data-filter=".{{ tag.slug }}">{{ tag.name }}</a></li>
+								{% endfor %}
+							</ul>
+							
+						</div>
+
+					</div>
+
+					{% endif %}
+				</div>
+				
+				<div class="col extra-wide end content-col">
+					
+					{% for article in results.endpoint %}
+
+						{% set data = { "data-pub": article.publish_date } %}
+						{% set classes = event.filterClasses %}
+
+						{{ globalMacros.articleTeaser(article, "topic", classes, data) }}
+
+					{% endfor %}
+
+				</div>
+
+			</div>
+
+		{% endif %}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-topic-page-articles">
+	{% include "partials/topic-page-article.js" %}
+	</script>
+
+	{{ parent() }}
+	
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		topicsPage.init({{ results.tags|json_encode|raw }});
+	});
+	</script>
+{% endblock %}

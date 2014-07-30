@@ -1,0 +1,86 @@
+{% extends "layouts/hub.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block head %}
+	{{ parent() }}
+
+	{# Google is getting 404s by following URLs for department, channel feeds because we don't have them. #}
+	{% if vocabulary not in ["departments", "channels"] %}
+		<link rel="alternate" type="application/rss+xml" title="{{ page_title }} - Hub" href="{{ request.rootUri }}{{ request.resourceUri }}/feed" />
+	{% endif %}
+
+{% endblock %}
+
+{% block site_content %}
+
+	<div class="{{ vocabulary }}-taxonomy-page content-area section">
+		
+		<div class="hub-header">
+			<div class="center force">
+				{% include "partials/hub-header.twig" %}
+			</div>
+		</div>
+		
+		<div class="">
+			<div class="center force">
+
+				<div class="taxonomy col measure wide">
+					
+					<h5 class="overline">{{ vocabulary|slice(0, -1) }} archive</h5>
+					<h1>{{ page_title }}</h1>
+
+					{% for article in payload %}
+
+						{% set classes = ["article", "teaser", "force"] %}
+
+						{{ globalMacros.articleTeaser(article, "topic", classes) }}
+
+					{% endfor %}
+
+					{# Pagination #}
+					<div class="term-nav force">
+
+						{% if payload.prev is not null %}
+							<span class="prev"><a href="/{{ vocabulary }}/{{ term }}/{{ current_page - 1 }}"><i class="icon-arrow-left" style="position:relative; top: 1px;"></i> previous</a></span>
+						{% endif %}
+
+						{% if payload.next is not null %}
+							<span class="next"><a href="/{{ vocabulary }}/{{ term }}/{{ current_page + 1 }}">next <i class="icon-arrow-right" style="position:relative; top: 1px;"></i></a></span>
+						{% endif %}
+
+					</div>
+
+				</div>
+
+				{% include "partials/article-sidebar.twig" %}
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-new-tab">
+	{% include "partials/new-tab.js" %}
+	</script>
+	<script type="text/template" id="template-trending-tab">
+	{% include "partials/trending-tab.js" %}
+	</script>
+	<script type="text/template" id="template-hubpix-promo">
+    {% include "partials/hubpix-promo.js" %}
+    </script>
+	{{ parent() }}
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		hubster.taxonomyPage.init();
+		hubstagram.init({
+			container: ".hubpix-promo .pix",
+			template: "#template-hubpix-promo"
+		}).promote(6);
+	});
+	</script>
+{% endblock %}

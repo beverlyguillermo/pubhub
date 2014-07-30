@@ -1,0 +1,12 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+<h1>Create a new alert</h1>
+{% include "partials/messages.twig" %}
+
+<p><strong>{{ admin.message }}</strong></p>
+
+{% set alert = [] %}
+{% include "partials/alert-form.twig" %}
+
+{% endblock %}

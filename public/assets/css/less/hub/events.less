@@ -1,0 +1,187 @@
+/**
+ * Events single- and and mult-view (/events) page styles.
+ * Styles for event teasers (including those on the events
+ * multi-view page) can be found in the teaser stylesheets.
+ */
+
+.registrationStyles {
+
+	margin-top: 7px;
+
+	span {
+		background: @hub_blue;
+		text-transform: uppercase;
+		color: #fff;
+		font-size: @x-small;
+		font-weight: bold;
+		padding: 3px 5px;
+	}
+}
+
+.event.single-view {
+
+	.event-inset-section {
+		float: right;
+		width: 40%;
+		margin-left: 5%;
+	}
+
+	.meta-data {
+		margin-bottom: 15px;
+	}
+
+	.meta {
+
+        line-height: 120%;
+        position: relative;
+
+        .icon {
+            position: absolute;
+        }
+
+        .text {
+            position: relative;
+            left: 18px;
+            margin-right: 18px;
+        }
+
+        &.date {
+            
+        }
+
+        &.time {
+
+        }
+
+        &.location {
+
+            .icon {
+                left: 2px;
+            }
+
+            span {
+                display: block;
+            }
+
+            // hide the map link on mobile
+            .building {
+
+            	a {
+	            	display: none;
+	            }
+
+            	span {
+            		display: inline;
+            	}
+            }
+
+            .campus {
+                color: @light_text;
+                font-size: @x-small;
+            }
+        }
+
+        &.registration {
+        	.registrationStyles;
+        }
+    }
+
+	.map-container {
+		display: none;
+	}
+}
+
+.events-multi-view {
+
+	.page-header {
+
+		h1 {
+			float: left;
+		}
+
+		.submit-event {
+			float: right;
+			margin-top: 8px;
+		}
+	}
+	
+
+	.page-container {
+
+		.filters-col {
+
+			width: 100%;
+			float: none;
+
+			form {
+
+				fieldset {
+					padding: 0;
+					margin: 0 0 15px 0;
+					border: none;
+
+					legend {
+						font-weight: bold;
+						margin-bottom: 5px;
+						font-size: @small;
+						border: 0;
+					}
+
+					legend + * {
+					    margin-top: 0 !important; // reset safari bug fix
+					}
+				}
+
+				.form-field {
+					display: block;
+					float: left;
+					font-size: 14px;
+					margin-right: 15px;
+
+					input {
+						margin: 5px 5px 0 0;
+					}
+					label {
+						display: inline;
+						line-height: 120%;
+					}
+
+					&.hide {
+						display: none;
+					}
+				}
+
+                .date-range-selected > .ui-state-active, .date-range-selected > .ui-state-default {
+                    background: none !important;
+                    background-color: @hopkins_blue !important;
+                    color: #fff;
+                }
+
+                .ui-datepicker {
+                    position: relative;
+                    z-index: 3;
+                    font-size: @x-small;
+                }
+
+                // hide 'today' button
+                button.ui-datepicker-current {
+                    display: none;
+                }
+			}
+
+			.other-calendars {
+				display: none;
+			}
+
+		}
+
+		.content-col {
+			width: 100%;
+			float: none;
+
+			.registration {
+	        	.registrationStyles;
+	        }
+		}
+	}
+}

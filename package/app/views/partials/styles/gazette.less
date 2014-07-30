@@ -1,0 +1,77 @@
+/*
+ * @file
+ * style.less
+ *
+ * @description
+ * This is the master .less file. No actual CSS or Less code should live here.
+ * It should be empty in here, except for imports. Kind of like a Pier 1. 
+ *
+ * Think of this file as a Pier 1 Imports. It only has imports.
+ * 
+ * Make sure you import all of the other .less files in the right order.
+ * Just like they do at Pier 1.
+ *
+ */
+
+// Global stuff
+@import "../../../../../public/assets/css/less/global.less";
+@import "../../../../../public/assets/css/less/global/publication-homepage.less";
+
+
+
+// Gazette-specific styles
+
+@import "../../../../../public/assets/css/less/gazette/gazette-header.less";
+@import "../../../../../public/assets/css/less/gazette/table-of-contents.less";
+@import "../../../../../public/assets/css/less/gazette/side-nav.less";
+@import "../../../../../public/assets/css/less/gazette/variables.less";
+
+
+
+// Media Query Overrides
+ 
+// Portrait iPad -- medium
+@media screen
+and (min-width:760px) {
+	@import "../../../../../public/assets/css/less/global/grid.medium.less";
+	@import "../../../../../public/assets/css/less/global/gallery.medium.less";
+	@import "../../../../../public/assets/css/less/global/static-page.medium.less";
+	@import "../../../../../public/assets/css/less/global/header-global.medium.less";
+	@import "../../../../../public/assets/css/less/global/teaser.medium.less";
+	@import "../../../../../public/assets/css/less/global/publication-homepage.medium.less";
+	@import "../../../../../public/assets/css/less/global/footer.medium.less";
+	@import "../../../../../public/assets/css/less/global/widgets.medium.less";
+	@import "../../../../../public/assets/css/less/hub/new-trending.medium.less";
+	@import "../../../../../public/assets/css/less/global/forms.medium.less";
+}
+
+// iPad landscape, small desktop -- large
+@media only screen
+and (min-width:1000px),
+only screen
+and (min-device-width:768px)
+and (max-device-width : 1024px) 
+and (orientation: landscape) {
+	@import "../../../../../public/assets/css/less/global/article-single.medium.less";
+	@import "../../../../../public/assets/css/less/global/publication-homepage.large.less";
+}
+
+// ONLY small desktop
+@media only screen
+and (min-width:1000px) {
+	@import "../../../../../public/assets/css/less/global/grid.large.less";
+	@import "../../../../../public/assets/css/less/global/header-global.large.less";
+	@import "../../../../../public/assets/css/less/global/teaser.large.less";
+	@import "../../../../../public/assets/css/less/global/sidebar.large.less";
+	@import "../../../../../public/assets/css/less/global/share-bar.large.less";
+	@import "../../../../../public/assets/css/less/hub/new-trending.large.less";
+}
+
+// large desktop -- xlarge
+@media screen
+and (min-width:1300px) {
+	@import "../../../../../public/assets/css/less/global/grid.xlarge.less";
+}
+
+// Theming Overrides
+@import "../../../../../public/assets/css/less/theming/theme.less";

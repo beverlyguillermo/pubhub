@@ -1,0 +1,39 @@
+{% extends "articles/magazine/single.twig" %}
+
+{% block title %}
+    {{ results.headline|striptags }} | Johns Hopkins Magazine
+{% endblock %}
+
+{% block magazine_article %}
+
+    {{ magazineMacros.getTitle(results) }}
+    {{ globalMacros.getEmphasis(results) }}
+
+    <div class="body-content">
+    
+        {% block magazine_inset %}
+            <div class="article-inset">
+                <div class="bio">
+                    <img src="/assets/img/magazine/PresidentDaniels.jpg" alt="Ronald J. Daniels, president" />
+                    <p class="credit alt">
+                        <span class="name line"><strong>Ronald J. Daniels</strong></span>
+                        <span class="title line">President</span>
+                    </p>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block magazine_body %}
+
+            {{ parent () }}
+
+            <img src="/assets/img/magazine/daniels-signature.jpg" alt="Signed, Ronald J. Daniels" />
+            <p class="signature-title attribution"><span class="name line">Ronald J. Daniels</span> <span class="title line">President</span></p>
+
+        {% endblock %}
+
+    </div>
+
+    {{ globalMacros.getAside(results) }}
+
+{% endblock %}

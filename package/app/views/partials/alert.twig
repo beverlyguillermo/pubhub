@@ -1,0 +1,7 @@
+{% if alert.status == 1 or admin.auto %}
+<div class="alert" style="padding: 0; background-color:{{ alert.color }};">
+    <div class="center force">
+        <a style="font-size: 18px; padding: 5px 0; text-shadow: none; display: block; text-align: center; font-weight: bold; color: #fff;" href="{{ alert.link }}">{{ alert.text }}</a>
+    </div>
+</div>
+{% endif %}

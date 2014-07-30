@@ -1,0 +1,76 @@
+{% extends "layouts/hub.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="body-content">
+
+		<div class="about-page page">
+
+			{% include "partials/messages.twig" %}
+
+			<div class="col measure wide">
+
+				<h1>{{ page_title }}</h1>
+
+				{{ html }}
+
+				<div class="twitter-cycle" id="tweets">
+					<div class="tweets-header force">
+						<h2>Our recent tweets</h2>
+						<p><a href="http://twitter.com/hubjhu"><i class="icon icon-twitter"></i> Follow @hubjhu &raquo;</a></p>
+					</div>
+
+					<div class="tweets"></div>
+				</div>
+
+			</div>
+
+			<div class="static-sidebar sidebar col end">
+
+				<div class="section">
+					<h3><span>Thoughts?</span></h3>
+					<p>Email your comments and suggestions to Editor Dave Alexander at <a href="mailto:dalexander@jhu.edu">dalexander@jhu.edu</a>.</p>
+				</div>
+
+				<div class="section">
+					<h3><span>Contact</span></h3>
+					<ul>
+						<li><a href="mailto:dalexander@jhu.edu">Contact the Hub</a></li>
+						<li><a href="http://hub.jhu.edu/magazine/contact">Contact Johns Hopkins Magazine</a></li>
+						<li><a href="http://hub.jhu.edu/gazette/contact">Contact the Gazette</a></li>
+					</ul>
+				</div>
+				
+				<div class="section">
+
+					{% include "partials/email-form.twig" %}
+
+				</div>
+
+			</div>
+
+		</div>
+		
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-hubpix-promo">
+    {% include "partials/hubpix-promo.js" %}
+    </script>
+	{{ parent() }}
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+	    // tweets.loadTweets($(".twitter-cycle .tweets"));
+	});
+	hubstagram.init({
+    	container: ".hubpix-promo .pix",
+    	template: "#template-hubpix-promo"
+    }).promote(6);
+	</script>
+{% endblock %}

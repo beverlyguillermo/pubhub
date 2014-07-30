@@ -1,0 +1,60 @@
+{% extends "layouts/gazette.twig" %}
+
+{% block title %}
+	Gazette
+{% endblock %}
+
+{% block page_content %}
+    
+    <div class="gazette-issue">
+        <div class="toc force" id="toc-load">
+            <div class="toc-inner force">
+
+                <h1><span class="site-title">Gazette</span> <span class='sep'>|</span> {{ results.edition }} {{ results.publish_date|date("Y") }} Contents</h1>
+
+                {% if results._embedded.pdf is not null %}
+                <div class="link-row force">
+                	<a href="{{ results._embedded.pdf.url }}" class="pdf-version download">Download the PDF version &raquo;</a>
+                </div>
+                {% endif %}
+
+
+                <div class="col half">
+
+                    {% set num = 1 %}
+                    {% for key, value in results.contents %}
+
+                        <ul class="toc-{{ num }} toc-group toc-front">
+                            <li><h2><span class="number">{{ num }}</span> {{ key }}</h2></li>
+
+                            {% for article in value %}
+
+                                {% set department = article._embedded.departments[0] %}
+
+                                {% if key == "This Month" and department.name|lower|trim != article.headline|lower|trim %}
+                                    <li><a href="{{ article.url }}"><b>{{ department.name }}</b> {{ globalMacros.getPrintHeadline(article) }}</a></li>
+                                {% else %}
+                                    <li><a href="{{ article.url }}">{{ globalMacros.getPrintHeadline(article) }}</a></li>
+                                {% endif %}
+
+                            {% endfor %}
+
+                        </ul>
+
+                        {# new column #}
+                        {% if num == 2 %}
+                            </div>
+                            <div class="col half end">
+                        {% endif %}
+
+                        {% set num = num + 1 %}
+
+                    {% endfor %}
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

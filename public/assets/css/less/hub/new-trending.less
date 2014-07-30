@@ -1,0 +1,131 @@
+.new-trending {
+	background-color: fade(@brighter_blue, 25%);
+	.mobile-open-tabs {
+		display: block;
+		color: black;
+		font-size: @small;
+		font-weight: bold;
+		text-align: center;
+		padding: 5px 10px;
+		&:hover {
+			cursor: pointer;
+			background-color: fade(@brighter_blue, 35%);
+		}
+		i {
+			float: right;
+		}
+		&.closed {
+			margin-bottom: 15px;
+			span {
+				display: inline;
+			}
+			.icon-remove {
+				display: none;
+			}
+			.icon-caret-down {
+				display: inline;
+			}
+		}
+		&.open {
+			background-color: transparent;
+			margin-bottom: 0;
+			span {
+				display: none;
+			}
+			.icon-remove {
+				display: inline;
+			}
+			.icon-caret-down {
+				display: none;
+			}
+		}
+	}
+	.quick-tabs {
+		display:none;
+		padding: 0 10px 10px;
+		overflow: hidden;
+		
+		.tab-header {
+			display: none;
+		}
+		&.open {
+			margin-bottom: 20px;
+		}
+		.navigation {
+			list-style: none;
+			position: relative;
+			top: 0.5em;
+			height: 1.5em;
+			line-height: 1.5em;
+			margin: 0 0 0.5em;
+			padding: 0 10px 0 0;
+			text-align: right;
+			li {
+				text-align: right;
+				display: inline;
+			}
+			a {
+				color: @black;
+			}
+			.active a {
+				cursor: default;
+				padding-right: 10px;
+				border-right: 1px solid @black;
+				margin-right: 30px;
+				font-weight: bold;
+			}
+			.inactive a {
+				position: absolute;
+				right: 10px;
+				top: 0;
+				opacity: 0.5;
+				// color: @accent_red;
+				.transition(all, 0.1s, ease-out);
+				span {
+					display: none;
+				}
+				&:hover {
+					// color: @accent_red;
+					opacity: 1;
+				}
+			}
+		}
+		.tabs {
+			position: relative;
+			overflow: hidden;
+		}
+		.tab.in-transition {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.tab {
+			padding-right: 10px;
+			&.inactive {
+				display: none;
+			}
+		}
+		.headline-list {
+			clear: both;
+			padding-left: 0;
+			list-style: none;
+			font-size: 14px;
+			line-height: 120%;
+			li {
+				margin-bottom: 0.5em;
+				text-align: right;
+				a { display: block; }
+				.ago {
+					color: @accent_red;
+					font-weight: bold;
+					font-size: @x-small;
+				}
+				a:hover {
+					color: @brighter_blue;
+				}
+			}
+		}
+	}
+}
+
+

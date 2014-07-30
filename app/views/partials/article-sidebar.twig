@@ -1,0 +1,49 @@
+<div class="article-sidebar sidebar col end">
+
+	<div class="related around-hub">
+
+		<a href="/"><h2 class="around-hub-heading">Around the Hub</h2></a>
+		
+		{% if object == "articles" %}
+			<div class="tag-related section">
+
+				<h3><span>You might also like</span></h3>
+
+				{# Get the IDs of the directly related content to exclude from the sidebar #}
+				{% set relatedContent = [] %}
+				{% if results._links.related_content is not empty %}
+					{% for article in results._links.related_content %}
+						{% set relatedContent = relatedContent|merge([ article.id ]) %}
+					{% endfor %}
+				{% endif %}
+
+
+				<div class="relatedLoad"
+					data-type="related" 
+					data-endpoint="articles"
+					data-current_id="{{ results.id }}" 
+					data-per_page="4"
+					data-excluded_ids="{{ relatedContent|join(",") }}"
+					data-template="template-articles-related">
+					
+					<div class="payload"></div>
+					
+				</div>
+
+			</div>
+		{% endif %}
+
+		<div class="new-trending section">
+			<h3><span>New &amp; Trending</span></h3>
+			{% include "partials/new-trending.twig" %}
+		</div>
+
+		<div class="hubpix-promo section force">
+			<h3><span>JHU on Instagram</span></h3>
+			<div class="pix data-loading"></div>
+			<p><a href="/pix"><em>More on Hub/Pix &raquo;</em></a></p>
+		</div>
+
+	</div>
+
+</div>

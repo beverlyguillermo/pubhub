@@ -1,0 +1,126 @@
+/* variables.less
+ * ----------------------------------------------------- */
+body {
+  background-color: #fff;
+}
+.header-fixed-buffer {
+  display: none;
+}
+.header-global {
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  height: auto;
+}
+.header-global .alt-global-navigation {
+  display: none;
+}
+.header-global .global-navigation {
+  display: block;
+  margin: 0;
+}
+.header-global .global-navigation li {
+  list-style: none;
+  display: inline-block;
+  margin: 0 5px;
+  position: relative;
+}
+.header-global .global-navigation li a {
+  color: #999;
+  display: inline-block;
+  letter-spacing: 1px;
+  line-height: 30px;
+  font-family: myriad-pro, "Myriad Pro", calibri, helvetica, arial, sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 1px 10px;
+  text-transform: uppercase;
+}
+.header-global .global-navigation li.current a {
+  background-color: transparent;
+  border-bottom: 3px solid #5091cd;
+}
+.header-global .global-navigation li.search,
+.header-global .global-navigation li.intro {
+  display: none;
+}
+.header-global .global-navigation li.intro {
+  padding-right: 10px;
+  font-size: 13px;
+  line-height: 30px;
+}
+.hub-header .hubmark {
+  display: none;
+}
+.hub-navigation {
+  display: none;
+}
+.related,
+.share-bar,
+.article-inset {
+  display: none;
+}
+.col.measure.wide {
+  width: 90%;
+  max-width: 900px;
+}
+div.impact {
+  width: 35%;
+  float: right;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+div.impact img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.topics-in,
+.tags-in {
+  font-weight: normal;
+  display: block;
+  text-align: left;
+  float: none;
+}
+.topics-in a,
+.tags-in a {
+  color: #000000;
+}
+.body-content p {
+  font-size: 120%;
+}
+.body-content a {
+  color: #000000;
+}
+#comments {
+  display: none;
+}
+.footer {
+  padding: 15px 0;
+  margin-top: 15px;
+  border-top: 1px solid #ccc;
+  background-color: #ffffff;
+  color: #000000;
+}
+.footer a {
+  color: #000000;
+}
+.footer .top-shelf {
+  display: none;
+}
+.footer .bottom-shelf span {
+  display: inline;
+}
+.footer .bottom-shelf span.sep {
+  display: inline;
+  margin: 0;
+}
+.footer .bottom-shelf p {
+  margin-bottom: 0;
+}
+.footer .bottom-shelf .mark {
+  display: none;
+}
+.footer .bottom-shelf .social-media {
+  display: none;
+}

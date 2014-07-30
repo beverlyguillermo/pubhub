@@ -1,0 +1,64 @@
+{% import "macros/global.twig" as globalMacros %}
+
+{#
+ # Helpers
+ #
+ # For elements that are repeated throughout multuple templates,
+ # the following helper macros have been developed to prevent
+ # repeating the same code over and over.
+ #
+ #}
+
+
+{% macro getTitle(article) %}
+
+	{% set department = article._embedded.departments[0] %}
+	
+	<div class="magazine-article-title">
+
+		{# Create overline, if the department demands it #}
+
+		{% set overline = null %}
+		{% set overline_heading_level = "h4" %}
+
+		{% if department.slug == "forefront" or department.slug == "text" %}
+			{% set overline = article.publication_content.kicker %}
+
+		{% elseif department.parent.slug == "alumni" %}
+			{% set overline = department.name %}
+			{% set overline_heading_level = "h5" %}
+
+		{% endif %}
+
+
+		{# Output #}
+
+		{% if overline is null %}
+		
+			<h1>{{ article.headline }}</h1>
+
+		{% else %}
+
+			<{{ overline_heading_level }} class="overline">{{ overline }}</{{ overline_heading_level }}>
+			<h1>{{ article.headline }}</h1>
+
+		{% endif %}
+
+	</div>
+	
+{% endmacro %}
+
+{#}
+{% macro getMobileMore(article) %}
+	<div class="mobile-more">
+		<h5>More from {{ article.publication_content.department.name }}</h5>
+		<ul>
+			{% for item in article.publication_content.department_set %}
+				{% if article.id != item.id %}
+					<li><a href="{{ item.url }}">{{  item.headline }}</a></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+{% endmacro %}
+{#}

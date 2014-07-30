@@ -1,0 +1,46 @@
+.sidebar {
+	display: block;
+
+	.around-hub-heading {
+		height: 30px;
+		margin: 0 0 0.5em;
+		text-indent: -9999px;
+		background: url("/assets/img/around-the-hub.png") right center no-repeat;
+	}
+
+	.section {
+		h3 {
+			font-size: @x-small;
+			text-transform: uppercase;
+			border-bottom: 8px solid fade(@hopkins_blue, 50%);
+			position: relative;
+			color: @brighter_blue;
+			margin-top: 0;
+			span {
+				position: relative;
+				top: 10px;
+				background-color: @white;
+				padding-right: 5px;
+			}
+		}
+		margin-bottom: 1.5em;
+	}
+
+	.related-item {
+		margin-bottom: 20px;
+	}
+	.new-trending {
+		margin-top: 1em;
+	}
+
+	.hubpix-promo {
+		.photo {
+			float: left;
+			width: 32%;
+			margin-right: 2%;
+			&.end {
+				margin: 0;
+			}
+		}
+	}
+}

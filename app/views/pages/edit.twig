@@ -1,0 +1,55 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+
+
+<div class="page-header"><h1>Edit Page: {{ page_data.title }} <small>{{ page_data.endpoint }}</small></h1></div>
+
+{% include "partials/messages.twig" %}
+
+	<ul class="nav nav-tabs">
+		{# if the version being edited is the current one #}
+		<li class="active"><a href="#{{ versions.active.id }}">Live Version</a></li>
+		{% if versions.scheduled is not empty %}
+			{% for item in versions.scheduled %}
+			    <li><a href="#{{ item.id }}" data-toggle="tab"><i class="icon-time"></i> {{ item.published|date("n/j \\a\\t g:ia") }}</a></li>
+			{% endfor %}
+		{#
+		{% else %}
+			<li><a href="#{{ item.id }}" data-toggle="tab">No scheduled versions</a></li>
+		#}
+		{% endif %}
+		<li class="schedule-changes"><a href="#new">Schedule Changes</a></li>
+	</ul>
+
+<div class="tab-content">
+
+	<div class="tab-pane active" id="{{ versions.active.id }}">
+		{{ forms.edit_form(versions.active, "live", page_data) }}
+	</div>
+
+	{% for item in versions.scheduled %}
+	    <div class="tab-pane" id="{{ item.id }}">
+	    	{{ forms.edit_form(item, "scheduled", page_data) }}
+	    </div>
+	{% endfor %}
+
+	<div class="tab-pane" id="new">
+    	{{ forms.edit_form(versions.active, "new", page_data) }}
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block jsfoot %}
+	{{ parent() }}
+{% endblock %}
+
+
+
+{% block jsdocready %}
+    {{ parent() }}
+    manager.pages.edit.init();
+{% endblock %}

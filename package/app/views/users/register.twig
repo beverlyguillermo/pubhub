@@ -1,0 +1,16 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+
+<form method="post" action="">
+<label>Choose a Username</label>
+<input name="username" type="text" />
+<label>Password</label>
+<input name="password" type="password" />
+<label>Retype Your Password</label>
+<input name="password_check" type="password" />
+<br>
+<button type="submit" class="btn">Register</button>
+</form>
+{% endblock content %}

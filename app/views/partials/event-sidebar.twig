@@ -1,0 +1,27 @@
+<div class="event-sidebar sidebar sidebar col end">
+
+	<div class="related around-hub">
+
+		<a href="/"><h2 class="around-hub-heading">Around the Hub</h2></a>
+		
+		<div class="tag-related section">
+
+			<h3><span>Featured Events</span></h3>
+
+			<div class="featured-events"
+				data-type="custom" 
+				data-endpoint="events"
+				data-excluded_ids="{{ results.id }}" 
+				data-per_page="6"
+				data-params="featured=true"
+				data-template="template-events-related">
+				
+				<div class="payload"></div>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

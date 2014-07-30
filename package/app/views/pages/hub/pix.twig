@@ -1,0 +1,152 @@
+{% extends "layouts/minimal.twig" %}
+
+{% block title %}Hub/Pix{% endblock %}
+
+{% block body_classes %}{{ parent() }} hub-pix {% endblock %}
+
+{% block page_content %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			{#<div class="col measure wide">#}
+
+				<div class="col narrow">
+					<div class="logo" data-filter="">
+		    			<img class="pix" src="/assets/img/hubstagram/hub-pix.png" onclick="_gaq.push(['_trackEvent', 'Hub Pix', 'Top', 'Header Refresh']);">
+		    			<div class="camera">
+		    				<img src="/assets/img/hubstagram/camera.png">
+		    				<img class="camera-gear" src="/assets/img/hubstagram/camera-gear.png">
+		    			</div>
+		    		</div><!-- end logo -->
+
+		    		<p class="hub-description">What you're picturing now.</p>
+
+		    		<a href="http://instagram.com/johnshopkinsu/" target="_blank" onclick="_gaq.push(['_trackEvent', 'Hub Pix', 'Top', 'Follow JHU']);"><div class="follow">follow JHU on Instagram</div></a>
+
+		    		<hr class="nav-rule">
+
+		    		<div class="left-nav">
+		                <div class="nav-divider">
+		                    <hr class="nav-rule">
+		                    <img class="nav-icon force" src="/assets/img/hubstagram/tag-nav-icon.png">
+		                </div><!-- end nav-divider -->
+
+		                <div class="tag-set">
+		        			<ul>
+		        				<li><a class="all" href="#" data-filter="" onclick="_gaq.push(['_trackEvent', 'Hub Pix', 'Top', 'All button Refresh']);"><i class="icon-camera"></i> All</a></li>
+		        			</ul>
+		                    <!-- <a class="more" href="#">more...</a> -->
+		                </div><!-- end tag-set -->
+
+		                <!-- <div class="nav-divider">
+		                    <hr class="nav-rule">
+		                    <img class="nav-icon force" src="/assets/img/hubstagram/location-nav-icon.png">
+		                </div> --><!-- end nav-divider -->
+
+		                <!-- <div class="location-set">
+		                    <ul>
+		                        {% for location in filters.locations %}
+		                            <li>{{ location.name }}</li>
+		                        {% endfor %}
+		                    </ul>
+		                    <a class="more" href="#">more...</a>
+		                </div> --><!-- end location-set -->
+
+		    		</div><!-- end left-nav -->
+		    	</div><!-- end col narrow -->
+
+	    		<div class="photo-container col extra-wide end force">
+
+	    		{% for photo in media %}
+
+	    		<div class="{{ globalMacros.photo_classes(photo) }}" data-username="{{ photo.user.username}}" data-id="{{ photo.urlId }}" data-tags="{{ photo.tags|join(" ") }}">
+
+	    			<a href="{{ photo.link }}" target="_blank"><img class="main" src="{{ photo.images.standard_resolution.url }}" /></a>
+
+	                {% set profile_url = "http://instagram.com/" ~ photo.user.username %}
+
+	                <div class="drawer force">
+	                    <div class="top-drawer force">
+	                        <a href="{{ profile_url }}"><img class="profile" src="{{ photo.user.profile_picture }}" /></a>
+
+	                        <div class="username">
+	                            <a href="{{ profile_url }}">{{ photo.user.username }}</a>
+	                        </div>
+	                    </div><!-- end top-drawer -->
+
+	                    <hr class="drawer-divider">
+
+	                    <div class="bottom-drawer">
+	                        <div class="likes">
+	                            <div class="icon-container">
+	                                <img class="icon" src="/assets/img/hubstagram/like-icon.png">
+	                            </div>
+	                            {{photo.likes.count}}
+	                        </div>
+
+	                        <div class="comments">
+	                            <div class="icon-container">
+	                                <img class="icon" src="/assets/img/hubstagram/comment-icon.png">
+	                            </div>
+	                            {{photo.comments.count}}
+	                        </div>
+
+	                        {% if photo.location.name is defined %}
+	                        <div class="location">
+	                            <div class="icon-container">
+	                                <img class="icon" src="/assets/img/hubstagram/location-icon.png">
+	                            </div>
+	                            <div class="location-name">
+	                                {{photo.location.name}}
+	                            </div>
+	                        </div>
+	                        {% endif %}
+
+	                        {% if photo.tags is not empty %}
+	                        <div class="tags">
+	                            {% for tag in photo.tags %}
+	                                #{{ tag }}
+	                            {% endfor %}
+	                        </div>
+	                        {% endif %}
+
+	                    </div><!-- end bottom-drawer -->
+	                </div><!-- end drawer -->
+	    		</div>
+	    		{% endfor %}
+
+    			</div><!-- end photo-container -->
+
+			{#</div>#}
+
+		</div>
+
+		{#{% include "partials/article-sidebar.twig" %}#}
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		// Simple function calls and event listening
+		hubstagram.init({ 
+			container: ".photo-container",
+			shuffleTrigger: $(".logo, .tag-set .all"),
+			bannedUsers: {{ recentlyBannedUsers|json_encode|raw }},
+			bannedPhotos: {{ recentlyBannedPhotos|json_encode|raw }},
+			tags: {{ filters.tags|json_encode|raw }}
+		}).display();
+
+		$(".tag-set a, .logo").on("click", function (e) {
+			e.preventDefault();
+			hubstagram.filter($(this).attr("data-filter"));
+		});
+
+	});
+	</script>
+{% endblock %}

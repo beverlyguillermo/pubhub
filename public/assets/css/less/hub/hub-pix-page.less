@@ -1,0 +1,438 @@
+body.hub-pix{
+	background: #E7E7E7 url(/assets/img/hubstagram/paper-bg2.png);
+}
+
+.hub-pix {
+	a{
+		outline: 0px;
+	}
+
+	// specific styles -------------------
+	.main-content{
+		margin-top: 2.5%;
+	}
+	.center{
+		width: 90%;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.narrow{
+		margin-bottom: 20px;
+	}
+
+	.left-nav{
+		font-family: @sans;
+		font-weight: normal;
+		color: #4D4D4D;
+
+		// Gets overridden with media query at bottom of file 
+		display: none;
+	}
+
+	.logo{
+		margin-top: 23px;
+		margin-bottom: -10px;
+		margin-left: 1px;
+		font-family: "league-gothic", Impact, sans-serif;
+		color: #000000;
+		position: relative;
+		width: 210px;
+
+		.pix{
+			.transition (all 0.5s easeInOutCubic);
+		}
+
+		div{display: inline-block;}
+
+		.camera{
+			position: absolute;
+			top: -10px;
+			right: 0px;
+			width: 40px;
+			height: 40px;
+
+			.camera-gear{
+				position: absolute;
+				top: 8px;
+				left: 8px;
+				width: 24px;
+				height: 24px;
+				.transition (all 1s);
+			}
+		}
+	}
+
+	// .logo{
+	// 	.transform (scale(1,1));
+	// 	.transition (all .5s);
+
+	// 	&:hover{
+	// 		.transform (scale(1.025,1.025));
+	// 	}
+	// }
+
+	.logo:hover .camera-gear{
+	    -webkit-animation-name: rotate; 
+	    -webkit-animation-duration: 4s; 
+	    -webkit-animation-iteration-count: infinite;
+	    -webkit-animation-timing-function: linear;
+	    -moz-animation-name: rotate; 
+	    -moz-animation-duration: 4s; 
+	    -moz-animation-iteration-count: infinite;
+	    -moz-animation-timing-function: linear;
+	}
+	@-webkit-keyframes rotate {
+	    from {-webkit-transform: rotate(0deg);}
+	    to {-webkit-transform: rotate(720deg);}
+	}
+
+	@-moz-keyframes rotate {
+	    from {-moz-transform: rotate(0deg);}
+	    to {-moz-transform: rotate(720deg);}
+	}
+
+	.follow{
+		max-width: 210px;
+	    background-color: @black_05;
+	    .linear-gradient (url(/assets/img/hubstagram/paper-bg2.png), center top, @white_05, @black_05);
+	    background-position: 50% 50%;
+	    border: 1px solid @black_10;
+	    color: @black_50;
+	    text-align: center;
+	    text-shadow: 0 1px 1px @white_30;
+	    font-size: 20px;
+	    padding: 2px 0;
+	    .border-radius (5px);
+	    .transition (all 0.125s);
+	    box-shadow: 0px 1px 1px @black_10, 1px 0px 0px @white_05 inset, -1px 0px 0px @white_05 inset, 0px 1px 0px @white_20 inset;
+	    font-family: "league-gothic", Impact, sans-serif;
+	    text-transform: uppercase;
+	    letter-spacing: 1px;
+	    margin-bottom: 20px;
+
+	    &:hover{
+	    	background-color: @black_10;
+	    	color: @hopkins_blue_dark;
+	    	text-shadow: 0 1px 1px @white_70;
+	    	box-shadow: 0px -1px 1px @black_10, 1px 0px 0px @white_05 inset, -1px 0px 0px @white_05 inset, 0px -1px 0px @white_20 inset;
+	    	.linear-gradient (url(/assets/img/hubstagram/paper-bg2.png), center bottom, @white_05, @black_05);
+	    }
+	}
+
+	.nav-divider{
+		width: 100%;
+		position: relative;
+		margin: 30px 0px;
+	}
+
+	.nav-rule{
+		width: 100%;
+		border-top: 2px solid #CCCCCC;
+		border-bottom: 2px solid #F2F2F2;
+		border-left: none;
+		border-right: none;
+		margin: 0px;
+		display: block;
+	}
+
+	.nav-icon{
+		position: absolute;
+		top: -16px;
+		left: 50%;
+		margin-left: -16px
+	}
+
+	.tag-set, .location-set{
+		color: #4D4D4D;
+		ul{
+			margin: 0px;
+			padding-left: 0px;
+			list-style-type: none;
+
+			li{
+				padding-bottom: 5px;
+
+				span{
+					font-size: 80%;
+				}
+			}
+
+			.all{
+				font-weight: bold;
+				font-size: 22px;
+				color: @black;
+				&:hover{
+					color: @hopkins_blue_dark;
+				}
+			}
+		}
+	}
+
+	.location-set {
+		ul{
+			li{
+				border-bottom: dotted 2px #CCCCCC;
+				padding-top:5px;
+			}
+		}
+	}
+
+	.tag-count{
+		text-align: left;
+		margin-left: 5px;
+		display: inline-block;
+	}
+
+	.more, .more:active, .more:visited, .more:hover{
+		display: block;
+		font-family: "myriad-pro", sans-serif;
+		font-weight: bold;
+		font-size: 14px;
+		color: #4D4D4D;
+		text-decoration: none;
+	}
+
+	.more:hover{
+		color: #000000;
+	}
+
+	.photo-container{
+	}
+
+	.photo{
+		float: left;
+		display: block;
+		width: 292px;
+		height: 292px;
+		margin: 0px 6px 6px 0px;
+		background: #FFFFFF;
+		.box-shadow (0px 2px 2px #999);
+
+		img.main{
+			width: 100%;
+			height: auto;
+			display: block;
+			.transition (all 0.5s);
+
+			&:hover{
+				.opacity (.66);
+			}
+		}
+
+		img.profile{
+			width: 40px;
+			height: 40px;
+			float: left;
+			.border-radius (5px);
+			border: 1px solid #999999;
+			.transition (all 0.5s);
+
+			&:hover{
+				.opacity (.66);
+			}
+		}
+	}
+
+	.photo:hover .drawer{
+			height: auto;
+			padding: 15px 15px;
+	}
+
+	.drawer{
+		width: 262px;
+		padding: 0 15px;
+		background: #FFF;
+		.border-radiuses (0, 20px, 20px, 0);
+		font-family: "myriad-pro", sans-serif;
+		font-weight: bold;
+		font-size: 16px;
+		position: relative;
+		z-index: 20000;
+		.box-shadow (~"inset 0 4px 4px -3px rgba(0, 0, 0, 0.5), 0 4px 3px -2px rgba(0,0,0,0.25)");
+		height: 0px;
+		overflow: hidden;
+		.transition (all 0.5s);
+	}
+
+	.top-drawer{
+		width: 100%;
+	}
+
+	.username{
+		width: auto;
+		float: left;
+		background: #FFF;
+		.border-radius (5px);
+		border: solid 1px #FFFFFF;
+		margin-left: 5px;
+		padding: 0 10px 5px 10px;
+		.transition (all 0.5s);
+
+		a{
+			color: #777777;
+			text-decoration: none;
+			line-height: 35px;
+			.transition (all 0.5s);
+
+		}
+
+		&:hover{
+			background: #F2F2F2; 
+			border: solid 1px #CCCCCC;
+			.box-shadow (~"inset 0 3px 3px -1px rgba(255, 255, 255, 0.66), 0 1px 2px 1px rgba(0,0,0,0.0625)");
+
+			a{
+				color: #4D4D4D;
+			}
+		}
+	}
+
+	.drawer-divider{
+		height: 2px;
+		color: #CCCCCC;
+		background-color: #CCCCCC;
+		border: 0px;
+		outline: 0px;
+		padding:0px;
+		margin:15px 0px;
+	}
+
+	.bottom-drawer{
+		width: 100%;
+		font-size: 14px;
+		font-weight: normal;
+		color: #CCCCCC;
+	}
+
+	.likes, .comments{
+		float: left;
+		margin-right: 10px;
+	}
+
+	.comments{
+		clear: right;
+	}
+
+	.icon-container{
+		width: 16px;
+		height: auto;
+		float: left;
+		text-align: center;
+		margin-right: 3px;
+		.icon{
+			.opacity (0.2);
+			height: 11px;
+			width: auto;
+			margin-bottom: -1px;
+		}
+	}
+	
+
+	.location {
+		clear: both;
+		.icon-container{
+		}
+		.icon{
+			height: 14px;
+			margin-bottom: -2px;
+		}
+		.location-name{
+			float: left;
+			max-width: 243px;
+		}
+	}
+
+
+	.photo {
+
+		@gutters: 12px;
+		@block: 64px;
+
+		.drawer {
+			display: none;
+		}
+
+		margin-bottom: @gutters;
+		&.size-1x1 {
+			width: @block;
+			height: @block;
+		}
+		&.size-2x2 {
+			width: @block * 2 + @gutters;
+			height: @block * 2 + @gutters;
+		}
+		&.size-3x3 {
+			width: @block * 3 + @gutters * 2;
+			height: @block * 3 + @gutters * 2;
+		}
+		&.size-4x4 {
+			width: @block * 4 + @gutters * 3;
+			height: @block * 4 + @gutters * 3;
+		}
+	}
+
+	.footer {
+		.icon {
+               .opacity(1);
+		}
+	}
+
+
+
+	// Isotope
+	.isotope,
+	.isotope .isotope-item {
+	  /* change duration value to whatever you like */
+	  -webkit-transition-duration: 0.8s;
+	     -moz-transition-duration: 0.8s;
+	      -ms-transition-duration: 0.8s;
+	       -o-transition-duration: 0.8s;
+	          transition-duration: 0.8s;
+	}
+
+	.isotope {
+	  -webkit-transition-property: height, width;
+	     -moz-transition-property: height, width;
+	      -ms-transition-property: height, width;
+	       -o-transition-property: height, width;
+	          transition-property: height, width;
+	}
+}
+
+// iPad landscape, small desktop -- large
+@media screen
+and (min-width:760px) {
+
+	.hub-pix .nav-rule{
+		display: none;
+	}
+
+	.hub-pix .left-nav .nav-divider .nav-rule{
+		display: block;
+	}
+
+	.hub-pix .left-nav{
+		display: block;
+	}
+
+	.hub-pix .narrow{
+		margin-bottom: 0px;
+	}
+
+	.hub-pix .logo{
+		margin-top: 3px;
+	}
+
+	.hub-pix .follow{
+		max-width: 100%;
+		margin-bottom: 0px;
+	}
+}
+
+
+
+
+
+
+

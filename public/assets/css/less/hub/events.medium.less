@@ -1,0 +1,98 @@
+.event.single-view {
+
+	.meta {
+
+		&.location {
+
+			.building {
+
+				a {
+					display: inline;
+	            	color: @hopkins_blue;
+	            	&:hover {
+	            		 color: @hub_blue;
+	            	}
+				}
+				
+            	span {
+            		display: none;
+            	}
+            }
+            
+            .address {
+            	display: none;
+            }
+		}
+	}
+
+	.map-container {
+		display: block;
+		margin: 50px 0;
+		
+		img {
+			max-width: none !important;
+		}
+		.mapsInfoWindow {
+			h1 {
+				font-size: @medium;
+			}
+			address {
+				margin-bottom: 8px;
+			}
+			.otherContact {
+				p {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+.events-multi-view {
+
+	.page-container {
+
+		.filters-col {
+
+			width: 30%;
+
+			fieldset {
+				padding: 0;
+				margin: 0 0 15px 0;
+				border: none;
+
+				legend {
+					font-weight: bold;
+					margin-bottom: 5px;
+				}
+			}
+
+			.section {
+				margin-bottom: 35px;
+			}
+
+			.form-field {
+				clear: left;
+				float: none;
+				font-size: 14px;
+				margin-right: 0;
+			}
+
+			.other-calendars {
+				display: block;
+				ul {
+					padding: 0;
+
+					li {
+						list-style-type: none;
+					}
+				}
+			}
+
+		}
+
+		.content-col {
+			width: 65%;
+		}
+	}
+}

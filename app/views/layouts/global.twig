@@ -1,0 +1,235 @@
+{% import "macros/global.twig" as globalMacros %}
+
+{% set facebookAppId = "311378138917053" %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+        {% block meta %}
+
+        {% endblock %}
+
+        <title>{% block title %}{{ results.headline|striptags }}{% endblock %} | Hub</title>
+
+        {% if object == "articles" %}
+            {% include "partials/social-meta-article.twig" %}
+        {% elseif object == "events" %}
+            {% include "partials/social-meta-event.twig" %}
+        {% elseif object == "images" %}
+            {% include "partials/social-meta-image.twig" %}
+        {% endif %}
+        
+        {# FAVICON FTW #}
+        <link rel="shortcut icon" href="/assets/img/icons/favicon.gif" type="image/png" />
+        <!-- For third-generation iPad with high-resolution Retina display: -->
+        <link rel="apple-touch-icon" sizes="144x144" href="/assets/img/icons/apple-touch-icon-144x144.png">
+        <!-- For iPhone with high-resolution Retina display: -->
+        <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/icons/apple-touch-icon-114x114.png">
+        <!-- For first- and second-generation iPad: -->
+        <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/icons/apple-touch-icon-72x72.png">
+        <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+        <link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon-57x57.png">
+
+        <link rel="apple-touch-icon-precomposed" href="/assets/img/icons/apple-touch-icon-57x57-precomposed.png">
+
+        <!-- less -->
+        <script type="text/javascript">
+            less = {
+                env: "development"
+            };
+        </script>
+        <!-- end less -->
+
+        {% block stylesheet %}
+        {% endblock %} 
+
+        <!-- less -->
+        <script src="/assets/js/vendor/less-1.3.3.min.js" type="text/javascript"></script>
+        <!-- end less -->
+
+        <!--[if IE]>
+        <style type="text/less">
+            {% include "partials/styles/ie.less" %}
+        </style>
+        {% include "partials/scripts/hub-ie.twig" %}
+        <![endif]-->
+
+        {% block head %}
+            <script type="text/javascript">
+              (function() {
+                var config = {
+                  kitId: 'pbj0pcp',
+                  scriptTimeout: 3000
+                };
+                var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/( |^)wf-loading( |$)/g,"");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script");tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(a&&a!="complete"&&a!="loaded")return;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+              })();
+            </script>
+            <link rel="alternate" type="application/rss+xml" title="Hub" href="{{ request.rootUri }}/feed" />
+        {% endblock %}
+
+        {# Google Analytics Setup #}
+        {% set analytics_account = "UA-34493483-1" %}
+        {% if request.rootUri == "http://local.hub.jhu.edu" %}
+            {% set analytics_account = "UA-35274546-1" %}
+        {% endif %}
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', '{{ analytics_account }}']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    
+    </head>
+
+    <body class="{%- block body_classes -%}hub fit-video{% if site_options.doodle != "" %} doodle-on doodle-{{ site_options.doodle }}{% endif %}{%- endblock -%}">
+        
+        <a id="target-top"></a>
+        
+        {% include "partials/facebook-sdk.twig" %}
+
+        <div class="header-fixed-buffer"></div>
+
+        <div class="header-global header section">
+
+            <div class="center force">
+
+                <div class="alt-global-navigation">
+                    <a class="scroll-nav" href="#footerNav"><i class="icon-reorder"></i></a>
+                    <a class="hub" href="#target-top">Hub</a>
+                </div>
+
+                {% block global_nav %}
+                    {% set section_id = section_id is not null ? section_id : {"nav_section" : "hub"} %}
+                    {% include "partials/global-navigation.twig" with section_id %}
+                {% endblock %}
+
+            </div>
+
+        </div>
+
+        {% include "partials/alert.twig" %}
+        
+        <div class="site-content">
+
+            {% block site_content %}
+
+            {% endblock %}
+
+        </div>
+
+        <div class="footer-global footer section" id="footerNav">
+            <div class="center force">
+
+                <div class="top-shelf force">
+
+                    <div class="col force" id="news-network-nav">
+
+                        <h5><span>News Network</span></h5>
+                        <ul>
+                            <li><a href="/">The Hub</a></li>
+                            <li><a href="/magazine">Johns Hopkins Magazine</a></li>
+                            <li><a href="/gazette">The Gazette</a></li>
+                            <li><a href="/search">Search</a></li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col force" id="topics-nav">
+
+                        <h5><span>Explore by Topic</span></h5>
+                        <ul>
+                            <li><a href="/health">Health</a></li>
+                            <li><a href="/science-technology">Science+Technology</a></li>
+                            <li><a href="/arts-culture">Arts+Culture</a></li>
+                            <li><a href="/politics-society">Politics+Society</a></li>
+                            <li><a href="/university-news">University News</a></li>
+                            <li><a href="/student-life">Student Life</a></li>
+                            <li><a href="/athletics">Athletics</a></li>
+                            <li><a href="/voices-opinion">Voices+Opinion</a></li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col force" id="resources-nav">
+
+                        <h5><span>Resources</span></h5>
+                        <ul>
+                            <li><a href="/about">About The Hub</a></li>
+                            <li><a href="/subscribe">Get Email Updates</a></li>
+                            <li><a href="/events">Events</a></li>
+                            <li><a href="/submit-announcement">Submit an Announcement</a></li>
+                            <li><a href="/submit-article">Submit an Article</a></li>
+                            <li><a href="/submit-event">Submit an Event</a></li>
+                            <li><a href="/community-guidelines">Community Guidelines</a></li>
+                            <li><a href="/media">For Media</a></li>
+                            <li><a href="/developers">For Developers</a></li>
+                            <li><a href="/pix">Hub/Pix</a></li>
+                            <li><a href="/about">Contact Us</a></li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col end force" id="explore-jh-nav">
+
+                        <h5><span>Discover JHU</span></h5>
+                        <ul>
+                            <li><a href="http://www.jhu.edu">jhu.edu</a></li>
+                            <li><a href="http://webapps.jhu.edu/jhuniverse/information_about_hopkins/facts_and_statistics/">Facts &amp; Figures</a></li>
+                            <li><a href="http://webapps.jhu.edu/jhuniverse/academics/schools/">Schools</a></li>
+                            <li><a href="http://webapps.jhu.edu/jhuniverse/information_about_hopkins/visitor_information/">Visitor Information</a></li>
+                            <li><a href="http://webapps.jhu.edu/jhuniverse/about_johns_hopkins/social_media/">Social Media</a></li>
+                            <li><a href="https://hrnt.jhu.edu/jhujobs/">Employment</a></li>
+                            <li><a href="http://my.johnshopkins.edu">my.JohnsHopkins.edu</a></li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="bottom-shelf force">
+
+                    <div class="mark col">
+                        <a href="http://jhu.edu"><img alt="The Johns Hopkins University" src="/assets/img/jhu-logo.png" /></a>
+                    </div>
+
+                    <div class="wide col">
+                        <p>
+                            <span>&copy; {{ "now"|date("Y") }} <a href="http://jhu.edu">Johns Hopkins University</a>.</span>
+                            <span>All rights reserved.</span>
+                            <span class="sep"><br /></span>
+                            <span><a href="http://web.jhu.edu/administration/communications/">Office of Communications</a></span>
+                            <span class="sep">/</span>
+                            <span>3910 Keswick Rd., Suite N2600</span><span class="sep">, </span>
+                            <span>Baltimore, MD</span>
+                        </p>
+                        <p class="social-media">
+                            <span><a href="http://twitter.com/hubjhu"><i class="icon icon-twitter"></i></a></span>
+                            <span><a href="http://www.facebook.com/johnshopkinsuniversity"><i class="icon icon-facebook"></i></a></span>
+                            <span><a href="http://instagram.com/JohnsHopkinsU"><i class="icon icon-camera-retro"></i></a></span>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        {% block footer %}
+            <script type="text/template" id="template-search-form">
+                {% include "partials/search-form.twig" %}
+            </script>
+
+            {# This is for adding JS right before the closing body tag, etc. Not for any additional on-page elements! #}
+            {% include "partials/scripts/hub-global.twig" %}
+        {% endblock %}
+    </body> 
+</html>

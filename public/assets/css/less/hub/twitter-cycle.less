@@ -1,0 +1,117 @@
+/**
+ * Auto-rotating Twitter feed on the Hub homepage
+ */
+
+.twitter-cycle {
+	@padspace: 0;
+	.transition(height, 0.5s ease-out);
+	// background: desaturate(@light_tan, 20%) url("/assets/img/splitbg-grey-blue-1.gif") center center repeat-y;
+	background-color: #e7e7e7;
+	position: relative;
+	.tweet-list {
+		list-style: none;
+		margin: 0;
+		padding: @padspace 0;
+		overflow: hidden;
+		position: relative;
+		a {
+			color: fade(@black, 75%);
+		}
+		.hidden {
+			display: none;
+		}
+		p {
+			margin: 0;
+		}
+		li {
+			display: none;
+			.user-info {
+				i.icon-chevron-right {
+					display: none;
+				}
+				.avatar {
+					width: 15px;
+					height: 15px;
+					position: relative;
+					top: 4px;
+				}
+			}
+		}
+		
+		.follow-actions {
+			text-align: center;
+			padding: 10px 0;
+			a {
+				display: block;
+				font-size: @x-small;
+				&:hover {
+					color: @brighter_blue;
+				}
+				i {
+					margin-right: 0.5em;
+				}
+				.icon-twitter {
+					color: @twitter_blue;
+				}
+			}
+		}
+		
+	}
+}
+
+
+.about-page {
+	.twitter-cycle {
+		height: auto;
+		background-color: transparent;
+		h2 {
+			margin: 20px 0 8px 0;
+		}
+		.tweet-list {
+			li {
+				display: block;
+				margin-bottom: 15px;
+				.col {
+					float: none;
+				}
+				.user-info {
+					font-size: @x-small;
+					width: 100%;
+					height: auto;
+					margin-right: 0;
+					float: none;
+					text-align: left;
+					.container {
+						height: auto;
+						margin: 0;
+						position: relative;
+						top: auto;
+						right: auto;
+					}
+					.avatar {
+						margin-left: 0;
+					}
+					.created-at {
+						display: inline;
+						font-style: italic;
+						top: auto;
+					}
+					.icon-chevron-right {
+						display: none;
+					}
+				}
+				.tweet-body {
+					width: 100%;
+					margin-right: 0;
+					table {
+						margin-bottom: 0;
+						height: auto;
+					}
+				}
+			}
+			.follow-actions {
+				display: none;
+			}
+		}
+	}
+}

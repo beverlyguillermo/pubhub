@@ -1,0 +1,61 @@
+/**
+ * Hub identity styles, wordmark, mini navigation, etc.
+ *
+ * These only appear on Hub articles and Hub static pages, etc.
+ */
+
+.hub-header {
+	padding: 20px 0;
+	float: none !important;
+}
+
+.wf-loading {
+    .hubmark {
+        background: url(/assets/img/spinning-gear-small.gif) left center no-repeat;
+        height: 50px;
+
+        .asterisk {
+            display: none;
+        }
+    }
+}
+.hubmark {
+    width: 83px;
+    text-indent: -9999px;
+    background: url(/assets/img/hubmark.png) left bottom no-repeat;
+    height: 56px;
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+
+    .asterisk {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 83px;
+        background-position: left top;
+        background-repeat: no-repeat;
+        width: 40px;
+        height: 40px;
+
+        // For the usual gear
+        background-image: url(/assets/img/hubmark-gear.png);
+    }
+}
+
+.hub-navigation {
+	clear: left;
+}
+
+.hub.home {
+    .hub-navigation {
+        display: none;
+    }
+}
+
+h2.hub-description {
+    font-size: @small;
+	line-height: 130%;
+	margin: 1em 0;
+    font-weight: normal;
+}

@@ -1,0 +1,34 @@
+MAILTO=jhuautobot@gmail.com
+
+# HUB
+
+# Run today's announcement's generator Monday - Friday at 12:30am
+30 0 * * 1-5 /var/www/html/hub/current/email/index.php >> /var/www/html/hubapi/current/logs/cli/cron.log 2>&1
+
+# Daily database/files backups
+0 1 * * * /var/www/html/hub/current/cli/backup.sh >> /var/www/html/hub/current/logs/cli/cron.log 2>&1
+
+# Weekly (every Saturday at 1:30am) backups cleanup
+30 1 * * 6 /var/www/html/hub/current/cli/s3cleanup.php >> /var/www/html/hub/current/logs/cli/cron.log 2>&1
+
+# Update hubpix every half hour
+30 * * * * curl -o --url http://hub.jhu.edu/pix?updateCache >> /dev/null 2>&1
+
+
+
+# API
+
+# Daily database/files backups
+0 1 * * * /var/www/html/hubapi/current/cli/backup.sh >> /var/www/html/hubapi/current/logs/cli/cron.log 2>&1
+
+# Weekly (every Saturday at 1:30am) backups cleanup
+30 1 * * 6 /var/www/html/hubapi/current/cli/s3cleanup.php >> /var/www/html/hubapi/current/logs/cli/cron.log 2>&1
+
+# Weekly (every Saturday at 2:00am) Conversions cleanup (leave 8 weeks of unique conversion data)
+0 2 * * 6 /var/www/html/hubapi/current/cli/dbcleanup/archive_conversions_by_days.php "eight weeks ago" -7 >> /var/www/html/hubapi/current/logs/cli/cron.log 2>&1
+
+# Daily (everyday at 2:30am) API Requests cleanup - archive yesterday's requests
+30 2 * * * /var/www/html/hubapi/current/cli/dbcleanup/archive_api_requests_by_days.php "yesterday" -1 >> /var/www/html/hubapi/current/logs/cli/cron.log 2>&1
+
+
+# DO NOT WRITE BELOW THIS LINE

@@ -1,0 +1,41 @@
+{
+    "name": "johnshopkins/hub",
+    "description": "Johns Hopkins University news delivery website, built on top of the public Hub API",
+    "license": "proprietary",
+    "require": {
+        "slim/slim": "2.2.0",
+        "resty/resty": "0.3.9",
+        "twig/twig": "1.8.3",
+        "monolog/monolog": "1.2.0",
+        "rych/phpass": "2.0.2-p1",
+        "swiftmailer/swiftmailer": "4.2.1",
+        "amazonwebservices/aws-sdk-for-php": "1.6.2",
+        "dflydev/markdown": "1.0.2",
+        "johnshopkins/instahook": "0.*",
+        "johnshopkins/twitterhook": "0.*",
+        "zircote/Hal": "0.3.2",
+        "jenwachter/data-encoder": "dev-master",
+        "johnshopkins/environment-finder": "1.0",
+        "pimple/pimple": "v1.0.2",
+        "jenwachter/html-form": "dev-master",
+        "johnshopkins/mailchimp": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Jen Wachter",
+            "email": "jwachter@jhu.edu"
+        },
+        {
+            "name": "Jason Rhodes", 
+            "email": "jason.matthew.rhodes@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "app": "",
+            "cli": "",
+            "email": "",
+            "tests": ""
+        }
+    }
+}

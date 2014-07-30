@@ -1,0 +1,110 @@
+// Colloquy and Who Is
+
+.department-who_is, .department-colloquy {
+	h4 {
+		color: @black;
+		font-size: @small;
+		margin-bottom: 8px;
+		line-height: 130%;
+	}
+	.inset-image {
+		display:block;
+	}
+}
+
+.department-colloquy {
+  a.audio-player {
+    font-family: @sans;
+    display: block;
+    padding: 6px 0 6px 40px;
+    margin: 1em 0;
+    font-weight: bold;
+    color: @accent_red;
+    background: url(/assets/img/magazine/icon-play.png) left center no-repeat;
+    &:hover {
+      color: @accent_red;
+    }
+  }
+}
+
+.interviewer-image {
+  font-family: @sans;
+  border-top: 1px solid @border_light;
+  border-bottom: 1px solid @border_light;
+  padding: 10px 0;
+  img {
+    margin: 5px 0;
+    width: 20%;
+    margin-right: 5%;
+    float: left;
+  }
+  p {
+    &.interview-meta {
+      //text-align: right;
+      margin: 2.5em 0 1em 0;
+      line-height: 125%;
+      font-weight: bold;
+      .interviewer {
+        margin-bottom: 0.3em;
+        display: block;
+      }
+      b {
+        font-size: 85%;
+        display: block;
+        &.title {
+          font-weight: normal;
+          font-style:italic;
+        }
+      }
+    }
+  }
+  .caption {
+    float: left;
+    width: 75%;
+    padding-top: 10px;
+  } 
+}
+
+.who-is-facts {
+  margin-bottom: 2em;
+  p {
+    margin-bottom: 0.2em;
+    strong {
+      font-family: @sans;
+      font-size: 115%;
+    }
+  }
+}
+
+.audio-files {
+  clear: left;
+  padding: 10px;
+  background-color: #efefef;
+  ol {
+    padding-left: 30px;
+    font-family: @sans;
+    h4 {
+      position: relative;
+      left: -20px;
+      font-weight: bold;
+      margin: 0 0 0.5em;
+      font-size: 16px;
+      color: @black;
+    }
+    li {
+      list-style: decimal;
+      list-style-position: outside;
+      line-height: 120%;
+      font-size: 14px;
+      a {
+        color: @black;
+        opacity: 1;
+        .transition-none();
+        &:hover {
+          color: @hopkins_blue;
+        }
+      }
+    }
+  }
+}
+

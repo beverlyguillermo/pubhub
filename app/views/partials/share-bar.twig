@@ -1,0 +1,61 @@
+<div class="share-bar force" id="shareBar">
+	{# Facebook Recommend #}
+	<div 
+		class="fb-like" 
+		data-send="false" 
+		data-layout="button_count"
+		data-width="150" 
+		data-show-faces="false" 
+		data-action="recommend"
+		>
+	</div>
+
+	{### Sharing Icons ###}
+	<div class="share-icons">
+
+		{# Twitter #}
+		<a class="share-twitter" 
+			data-service="twitter" 
+			target="_newtab" 
+			href="https://twitter.com/share?hashtags={{ twitter.hashtags|join(',') }}&url={{ url|url_encode() }}&related={{ twitter.related|join(',') }}&source=hub&text={{ headline|url_encode() }}&via=HubJHU"
+		><i class="icon-twitter icon-large"></i><span>Share on Twitter</span></a>
+
+		{# Facebook #}
+		{% set appId = "311378138917053" %}
+		<a class="share-facebook"
+			data-service="facebook" 
+			href="https://www.facebook.com/dialog/feed?app_id={{ appId }}&link={{ url|url_encode() }}&picture={{ thumbnail|url_encode() }}&name={{ headline|url_encode() }}&caption={{ summary|url_encode() }}&description=&redirect_uri={{ "http://hub.jhu.edu"|url_encode() }}"
+		><i class="icon-facebook icon-large"></i><span>Share on Facebook</span></a>
+
+		{# Email #}
+		{#
+		<a class="share-email" 
+			data-service="email"
+			href="#"
+		><i class="icon-envelope icon-large"></i><span>Email</span></a>
+		#}
+		
+		{# Print #}
+		<a class="share-print"
+			data-service="print"  
+			href="{{ url }}?printerfriendly=true"
+		><i class="icon-print icon-large"></i><span>Print</span></a>
+
+		{# Comments #}
+		<a class="share-comment"
+			data-service="comment"  
+			href="#"
+		><i class="icon-comments icon-large"></i><span>Comment</span></a>
+
+	</div>
+</div>
+
+{#
+https://twitter.com/intent/tweet?
+	hashtags=jhmag
+	&original_referer=http%3A%2F%2Fmagazine.jhu.edu%2Fsummer-2012%2Fstaging-revival
+	&related=JohnsHopkins
+	&source=tweetbutton
+	&text=I%20just%20read%20Staging%20a%20Revival%20from%20the%20Johns%20Hopkins%20Magazine.%20You%20should%20too.
+	&url=http%3A%2F%2Fmagazine.jhu.edu%2Fsummer-2012%2Fstaging-revival
+#}

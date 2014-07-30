@@ -1,0 +1,48 @@
+.filters-container {
+
+    background-color: transparent;
+    border: none;
+
+    .display-nav {
+        display: none;
+    }
+
+    &.closed {
+        font-size: @small;
+        font-weight: normal;
+        text-align: left;
+        background-color: transparent;
+
+        &:hover {
+            cursor: auto;
+            background-color: transparent;
+        }
+    }
+
+    .filters {
+
+        display: block;
+        padding: 0;
+
+        h3 {
+            display: block;
+        }
+
+        ul {
+            background: none;
+
+            a {
+                color: @hopkins_blue;
+                &:hover {
+                    color: @hub_blue;
+                }
+            }
+
+            li {
+                padding-bottom: 10px;
+                margin-right: 0;
+                display: block;
+            }
+        }
+    }
+}

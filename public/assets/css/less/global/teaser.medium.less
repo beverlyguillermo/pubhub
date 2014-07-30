@@ -1,0 +1,159 @@
+.rail {
+	.teaser {
+        min-height: 220px;
+		&:last-child {
+            margin-right: 0;
+        }
+        .overline {
+        	display: block;
+            font-size: @x-small;
+        }
+        h2, h3 {
+            font-size: @medium;
+        }
+        .summary {
+            margin: 0;
+            clear: left;
+        }
+        &.no-image {
+            .topline;
+            h3 {
+                margin-top: 0;
+            }
+        }
+        img {
+        	display: block;
+        }
+        .source {
+            display: inline;
+        }
+
+        // event teaser
+        &.event {
+            h2, h3 {
+                font-size: 18px;
+            }
+            .thumbnail {
+                .placeholder {
+                    display: block;
+                }
+            }
+            &.no-image {
+                border: none;
+                padding-top: 0;
+            }
+            .overline {
+                font-size: @small;
+            }
+            .summary {
+                margin-top: 5px;
+            }
+            .meta {
+                .text {
+                    left: 15px;
+                    margin-right: 15px;
+                }
+                &.date {
+                    .text {
+                        left: 20px;
+                        margin-right: 20px;
+                    }
+                }
+                &.time {
+                    font-size: @x-small;
+                }
+                &.location {
+                    font-size: @x-small;
+                }
+            }
+        }
+	}
+}
+
+.sidebar {
+    &.event-sidebar {
+        .teaser {
+            .overline {
+                font-size: @x-small;
+            }
+            h2 {
+                margin-bottom: 0;
+            }
+            .meta {
+                font-size: @x-small;
+
+                &.date {
+
+                    // Safari doesn't like the icons display abolutely (they are displayed
+                    // absolutely to allow the cool location text display)
+                    .icon {
+                        position: relative;
+                        display: inline;
+                    }
+                    .text {
+                        display: inline;
+                        left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.content-col {
+    .teaser {
+        margin: 5px;
+        padding: 15px;
+        background: fade(@black, 10%);
+        width: 195px;
+        div.thumbnail {
+            float: none;
+            width: auto;
+            margin-left: 0;
+            padding-left: 0;
+        }
+        h3 {
+            font-size: @medium;
+            margin: 0 0 5px 0;
+            a {
+                color: @black;
+                &:hover {
+                    color: @hopkins_blue;
+                }
+            }
+        }
+        p {
+            margin-bottom: 0;
+        }
+        .summary {
+            font-size: @small;
+        }
+    }
+}
+
+.topic-page {
+    .rail {
+        .teaser {
+            clear: none;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+        img {
+            display: block;
+            width: auto;
+            margin-left: 0;
+            float: none;
+        }
+    }
+}
+
+.events-multi-view {
+
+    .content-col {
+
+        .teaser {
+
+            
+        }
+    }
+}

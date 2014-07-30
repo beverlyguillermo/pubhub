@@ -1,0 +1,63 @@
+{% if issue._links.carousel is not empty %}
+
+	<div id="magazine-carousel" class="carousel force">
+			
+			<h3>More from Johns Hopkins Magazine {{ issue.edition }} {{ issue.publish_date|date("Y") }}</h3>
+			<a class="carousel-nav previous" href="#">Previous Set</a>
+
+			<div class="container force">
+
+				{# opens the first carousel set #}
+				<div class="set active">
+
+					{% set i = 0 %}
+
+					{% for article in issue._links.carousel %}
+
+						{% if article.id != results.id %}
+
+							{# takes care of all the opening/closing in the middle #}
+							{% if i != 0 and i % 3 == 0 %}
+								</div>
+								<div class="set">
+							{% endif %}
+
+							{# set panel div classes #}
+							{% set classes = ["panel"] %}
+							{% if (i + 1) % 3 == 0 %}
+								{% set classes = classes|merge(["end"]) %}
+							{% endif %}
+							{% if article._embedded.image_thumbnail[0] is null %}
+								{% set classes = classes|merge(["no-image"]) %}
+							{% endif %}
+
+								<div class="{{ classes|join(" ") }}">
+									<a href="{{ article.url }}">
+										{% if article._embedded.image_thumbnail[0] is not null %}
+											{{ globalMacros.getImage(article._embedded.image_thumbnail[0], "thumbnail", false) }}
+										{% endif %}
+
+										<h5 class="hasunderline">{{ globalMacros.getHeadline(article) }}</h5>
+
+										{% if article.excerpt is not null %}
+											<p class="summary">{{ article.excerpt }}</p>
+										{% endif %}
+									</a>
+								</div>
+
+							{% set i = i + 1 %}
+
+						{% endif %}
+
+					{% endfor %}
+
+				{# closes the last carousel set #}
+				</div>
+
+			</div>{# end container #}
+
+			<a class="carousel-nav next" href="#">Next Set</a>
+
+		</div>{# end carousel #}
+
+{% endif %}

@@ -1,0 +1,67 @@
+// Side navigation and header styles used in Campus, Forefront, and eventually anywhere we like
+
+.department-nav {
+	margin-top: 50px;
+	h4 {
+		font-size: 90%;
+	}
+	ul {
+		padding-left: 0;
+	}
+	li {
+		list-style-type: none;
+		&.current a {
+			display: none;
+		}
+		h3 {
+			font-size: @small;
+			font-weight:bold;
+			margin-bottom: 0;
+			line-height: 120%; 
+			a:hover {
+				color: @hopkins_blue;
+			}	
+		}
+		h5 {
+			font-style: normal;
+			margin-bottom: 5px;
+		}
+	}
+}
+
+.forefront-nav, .text-nav {
+  h4 {
+    margin-top: 5px;
+  }
+  li {
+    h3 {
+    }
+  }
+}
+
+// Heading
+.department-heading {
+	margin: 20px 0 10px;
+	.title {
+		font-weight: normal;
+		font-family: @sans_condensed;
+		text-transform: uppercase;
+		font-size: @large;
+		letter-spacing: 1px;
+		border-bottom: 1px solid @black;
+		display: block;
+		padding-bottom: 5px;
+	}
+	.sep {
+		font-weight: 100;
+		font-size: 30px;
+		display: none;
+	}
+	.subtitle {
+		display: block;
+		padding-top: 5px;
+		font-size: 16px;
+		font-weight: normal;
+		line-height: 120%;
+	}
+}

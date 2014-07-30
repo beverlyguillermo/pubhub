@@ -1,0 +1,35 @@
+// Decided against the message idea for now, but leaving it here until we decide for sure
+.loading-message {
+	display: none;
+	font-weight: bold;
+	font-size: @small;
+	color: @black;
+	text-align: center;
+	margin: 30px 0 0;
+	opacity: 0.4;
+	span {
+		display: inline-block;
+		padding: 60px 0 35px;
+		background: url("/assets/img/spinning-gear-small-2.gif") top center no-repeat;
+	}
+}
+
+.data-loading {
+	opacity: 0.1;
+	padding-bottom: 100%;
+	background: url("/assets/img/spinning-gear-small-2.gif") center center no-repeat;
+}
+
+.rail .data-loading {
+	padding-bottom: 230px;
+}
+
+.events-multi-view .data-loading {
+	padding-bottom: 0;
+}
+
+.loaded {
+	.loading-message {
+		display: none;
+	}
+}

@@ -1,0 +1,377 @@
+.body-content {
+    margin-top: 20px;
+    h5 {
+        margin: 25px 0 5px 0;
+    }
+}
+
+.hub-article .article, .gazette-article .article {
+    a {
+        color: @hopkins_blue;
+        &:hover {
+            color: @hub_blue;
+        }
+    }
+}
+
+.hub-article {
+    .article {
+        .overline {
+            font-size: @medium;
+        }
+    }
+}
+
+.article-inset {
+    padding: 15px;
+    background-color: #efefef;
+    float: right;
+    width: 45%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+    font-family: @sans;
+    h5 {
+        font-size: 13px;
+        text-transform: uppercase;
+        margin: 0 0 1em;
+    }
+    .teaser {
+        h5 {
+            margin-bottom: 0;
+        }
+    }
+    a {
+        color: @black;
+        &:hover {
+            color: @hopkins_blue;
+        }
+    }
+
+    .article-inset-section {
+        margin-bottom: 2em;
+        clear: both;
+    }
+
+    .article-inset-video {
+        @dark: fade(@black, 60%);
+        .video {
+            a {
+                position: relative;
+                display: block;
+                // border: 3px solid @dark;
+                img {
+                    display: block;
+                    max-width: 100%;
+                    height: auto;
+                }
+                i {
+                    font-size: 100px;
+                    line-height: 100px;
+                    color: @white;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    margin-left: -28px;
+                    margin-top: -50px;
+                    text-shadow: 0 1px 0 @dark;
+                    opacity: 0.6;
+                    .transition(all, 0.2s, ease-out);
+                }
+                &:hover {
+                    i { 
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.article, .summary {
+    blockquote {
+        color: @medium_text;
+        border-left: 1px solid @medium_text;
+        padding-left: 15px;
+        margin-left: 25px;
+    }
+}
+
+
+.magazine-article, .gazette-article, {
+    blockquote {
+        font-size: @large;
+        line-height: 120%;
+        padding: 15px 0;
+        border-top: 2px solid @black;
+        border-bottom: 2px solid @black;
+        border-left: 0;
+        color: @black;
+        margin: 16px 0;
+        p {
+                margin-bottom: 0;
+        }
+        blockquote {
+                position: static;
+                font-weight: bold;
+                border: none;
+                padding: 0;
+                width: auto;
+                font-size: @small;
+                margin-bottom: 0;
+                font-family: @sans;
+                p {
+                        margin: 0;
+                }
+        }
+        &.alt {
+                font-family: @sans;
+        }
+        .by {
+                display: block;
+                margin-top: 0.25em;
+                font-weight: bold;
+        }
+    }
+}
+
+.magazine-article {
+    h4 {
+        color: @black;
+        font-size: @small;
+        margin-bottom: 8px;
+        line-height: 130%;
+    }
+}
+
+.aside {
+    background-color: #EFEFEF;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.mobile-more {
+    font-family: @sans;
+    padding: 10px 15px !important; 
+    background-color: #efefef; 
+    font-size: 16px; 
+    line-height: 140%;
+    h5 {
+        margin-bottom: 8px;
+    }
+    ul {
+        margin-top: 0;
+        list-style-type: none;
+        padding-left: 20px;
+        li {
+            background-image: url(/assets/img/magazine/diamond_black.png);
+            background-repeat: no-repeat;
+            display: block;
+            background-position: left 9px;
+            padding-left: 18px;
+        }
+    }
+    a {
+        display: block;
+        padding: 1px 5px;
+        color: @body_link;
+        &:hover {
+            color: @hopkins_blue;
+        }
+    }
+}
+
+
+.topics-in, .tags-in {
+    font-weight: normal;
+    font-size: @x-small;
+    line-height: 140%;
+    display: block;
+    float: none;
+    width: 100%;
+    text-align: left;
+    a {
+        color: @black_70;
+    font-style: italic;
+        &:hover {
+            color: @hopkins_blue;
+        }
+    }
+}
+
+// Magazine and Gazette article navigation content only to show up in small-width view,
+// and hidden on all larger views. (move this to the media query 'medium' file)
+.mobile-more {
+        display: none;
+}
+
+
+/**
+ * Images, captions, and inline media (galleries, video)
+ */ 
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+// A container for a photo with a caption, plus the photo and caption styles
+.caption-photo {
+    border-top: 1px solid lighten(@black, 80%);
+    overflow: hidden;
+    position: relative;
+    margin: 1.5em 0;
+    img {
+        width: 70%;
+        display: block;
+    }
+    .caption {
+        margin-top: 1em;
+        width: 28%;
+    }
+    &.right .caption {
+        float: right;
+        margin-left: 2%;
+    }
+    &.right img {
+        float:left;
+    }
+    &.left .caption {
+        float: left;
+        margin-right: 2%;
+        text-align: right;
+    }
+    &.left img {
+        float:right;
+    }
+    &.bottom {
+        border-top: none;
+        border-bottom: 1px solid lighten(@black, 80%);
+        .caption {
+                position: absolute;
+                bottom: 0;
+                }
+        &.right .caption {
+                float: none;
+                right: 0;
+                left: auto;
+        }
+        &.left .caption {
+                float: none;
+                left: 0;
+                right: auto;
+        }
+    }
+
+}
+
+.caption-photo-small {
+  width: 30%;
+  border-bottom: 1px solid lighten(@black, 80%);
+  margin-bottom: 20px;
+  &.align-left {
+    margin-right: 20px;
+  }
+  &.align-right {
+    margin-left: 20px;
+  }
+}
+
+// Magazine (and Gazette?) images
+.caption-photo img {
+    width: 100% !important;
+    float: none !important;
+}
+.caption-photo .caption {
+    width: 100% !important;
+    float: none !important;
+    position: static !important;
+    text-align: left !important;
+}
+
+.inset-image { 
+    display: none; 
+    &.force-visible {
+        display: block;
+    }
+}
+
+
+// Magazine section break
+.magazine-section-break {
+    text-indent: -9999px;
+    width: 100%;
+    margin: 1.5em 0;
+    height: 20px;
+    background: url(/assets/img/magazine/section-break.png) center center no-repeat;
+}
+
+
+// Magazine note block (Alumni, Dialog, Note)
+.special-note {
+    font-family: @sans;
+    padding: 10px 15px !important; 
+    background-color: #efefef; 
+    font-size: 14px; 
+    line-height: 135%;
+    a {
+        color: @accent_red;
+        &:hover {
+            color: @hopkins_blue;
+        }
+    }
+}
+
+// Magazine
+.author-bio {
+    font-family: @sans;
+    font-size: @small;
+    font-weight: bold;
+}
+
+
+
+// Gazette
+
+// Calendar
+.department-subtitle-events {
+    .caption {
+        font-size:20px;
+        line-height: 135%;
+        border-bottom: 1px solid #000;
+        padding-bottom:15px;
+        .credit {
+            font-size: @x-small;
+        }
+    }
+}
+
+
+// Milestones
+.department-subtitle-milestones {
+    h3 {
+        padding-top: 20px;
+        color: @hub_blue;
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+    h4 {
+        margin-bottom: 5px;
+    }
+    ul {
+        margin-top: 0;
+        padding-left: 15px;
+    }
+    li {
+        list-style: none;
+    }
+}
+
+#comments {
+    // powered by disqus link
+    .dsq-brlink {
+        display: none;
+    }
+}

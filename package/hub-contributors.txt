@@ -1,0 +1,48 @@
+Tues, July 31
+=============
+
+Suggestions:
+
+- JHED authentication
+- Editor groups, so you can edit anyone's content inside of your editor group.
+	- Note: Can we create a "role" for each group and allow them to edit any in that role?
+- Style guidelines? Donde?
+
+- "What should we submit?" : where are the guidelines?
+	- How and who decides what is worth entering?
+	- How do the contributors avoid wasted and duplicate effort?
+
+	- My note: what would these guidelines look like?
+	- We need a full explanation in writing of what things link out, what stays in, what the criteria are, why, etc.
+
+	- How do contributors add images, galleries, captions, video?
+
+
+- Contracts with freelance writers, how do they interact with stories being published to the Hub.
+
+- Can we tag images as "not for reuse" so that things like illustrations can be added to a story without being reused?
+
+- Should "summary" fall back to "subheadline" if it exists, then fall back to "first x number of words" second?
+
+=== SOURCE INFO
+- Source Publication: should be dropdown
+- Source Publication Date: sometimes this is just a "Fall 2012"
+- "From outside of JHU?" -> needs new language
+- Should we check for broken links in the source pub url field over time? (I don't know that this is necessary)
+
+=== TOPICS
+- Need a new topic for Econ, Social Sciences, Policy, Business, Govt/Politics, International(SAIS)
+	- Politics and Society?
+
+
+=== Related Items
+- How can we make this easier than having to add NODE IDS
+
+
+=== Images
+- When we decide image sizes, we should note them on the image fields
+- How can you add "search" to the media manager?
+- How can you edit fields on upload of an image?
+- Alt vs. Title?
+
+

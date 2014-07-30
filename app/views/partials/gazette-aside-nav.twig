@@ -1,0 +1,61 @@
+{% if results.publication_content.department_set is not empty and results.publication_content.department_set|length > 1 %}
+	
+	{% if results.publication_content.department.parent is not null %}
+		{% set department_name = results.publication_content.department.parent.name %}
+	{% else %}
+		{% set department_name = results.publication_content.department.name %}
+	{% endif %}
+	
+	<div class="{{ department_machine_title }}-nav department-nav">
+		<h5 class="department-heading"><b class="title">More from {{ department_name }}</b></h5>
+
+		{% set n_previous = "false" %}
+	    {% set n_next = false %}
+	    {% set i = 0 %}
+	    {% set n_total = results.publication_content.department_set|length %}
+
+		<ul>
+		{% for article in results.publication_content.department_set %}
+
+			{# Set up classes to add to the li item, if necessary #}
+			{% set item_classes = [] %}
+
+			{# Set up class, previous, and next links for current article #}
+			{% if article.id == results.id %}
+
+				{% set item_classes = item_classes|merge(["current"]) %}
+
+				{% if i > 0 %}
+					{% set n_previous = attribute(results.publication_content.department_set, i - 1).url %}
+				{% endif %}
+
+				{% if i < (n_total - 1) %}
+					{% set n_next = attribute(results.publication_content.department_set, i + 1).url %}
+				{% endif %}
+
+			{% endif %}
+
+			{% set i = i + 1 %}
+
+			{# construct the list items #}
+			<li class="{{ item_classes|join(" ") }}">
+				<a href="{{ article.url }}">
+
+					{% set h_classes = [] %}
+
+					<h3 class="{{ h_classes|join(" ") }}">
+						{% if results.publication_content.department.name == "This Month" and article.department.name != article.headline %}
+							<b>{{ article.section }}</b>
+						{% endif %}
+						{{ article.headline }}
+					</h3>
+
+			    </a>
+			  </li>
+
+		{% endfor %}
+		</ul>
+
+	</div>
+	
+{% endif %}

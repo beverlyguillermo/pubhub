@@ -1,0 +1,70 @@
+{% extends "pages/hub/static.twig" %}
+
+{% block page_content %}
+
+	{% set classes = ["page"] %}
+
+	{% set classes = ["page"] %}
+	{% if slug is defined %}
+		{% set classes = classes|merge([slug ~ "-page"]) %}
+	{% endif %}
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			<div class="col measure wide">
+
+				<h1>Search</h1>
+
+				{% include "partials/search-form.twig" %}
+
+				{% if results is defined %}
+
+					{% if results.rCount is not defined or results.rCount < 1 %}
+
+						<p class="no-results">No results returned for '<strong>{{ query }}</strong>'.</p>
+
+					{% else %}
+
+						{% set search_url = "/search?q=" ~ query|url_encode() %}
+						
+						<p>{{ results.rCount }} results for '<strong>{{ query }}</strong>', returned in {{ searchTime }} seconds.</p>
+
+						{% include "partials/search-pagination.twig" with {"classes": ["results-top"]} %}
+
+						<ul class="search-results">
+						{% for res in results.records %}
+						
+						{% if loop.index % 2 == 0 %}
+						<li class="result odd">
+						{% else %}
+						<li class="result">
+						{% endif %}
+
+							<h4 class="title"><a href="{{ res.url }}">{{ res.title }}</a></h4>
+							<p class="snippet">{{ res.snippet }}</p>
+							<p class="url"><a href="{{ res.url }}">{{ res.url }}</a></p>
+						</li>
+						{% endfor %}
+						</ul>
+
+						{% include "partials/search-pagination.twig" with {"classes": ["results-bottom"]} %}
+
+					{% endif %}
+
+				{% else %}
+
+					<div style="height: 200px"></div>
+
+				{% endif %}
+
+			</div>
+
+			{% include "partials/article-sidebar.twig" %}
+
+		</div>
+
+	</div>
+
+{% endblock %}

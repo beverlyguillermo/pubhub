@@ -1,0 +1,51 @@
+{% macro makeRailSelector(rail) %}{{ rail.type }}-{{ rail.endpoint ? rail.endpoint|replace("/", "-") : rail.page.endpoint|replace("/", "-") }}{% endmacro %}
+
+
+{% macro displayFeed(feed) %}
+
+	<ul class="feed">
+
+		{% for item in feed %}
+
+			<li class="teaser article">
+
+				<h2><a href="{{ item.link }}" title="{{ item.title }}">{{ item.title }}</a></h2>
+
+				{% if item.description is not empty %}
+					<div class="summary">{{ item.description }}</div>
+				{% endif %}
+
+				<div>
+					<span class="publish-date"><i class="icon icon-time"></i> {{ item.pubDate|date("F j, Y") }}</span>
+					<span class="source"><a href="{{ item.source.url }}"><i class="icon-cog hub-mark"></i> {{ item.source.name }} <i class="icon-external-link external-link"></i></a></span>
+				</div>
+
+			</li>
+
+		{% endfor %}
+
+	</ul>
+
+{% endmacro %}
+
+
+
+
+
+
+{% macro getSource(article) %}
+
+	{% if article.source.name is not null and article.source.url is not null %}
+		
+		<p class="read-more">
+			{% if article.source.name is not null %}
+				
+				{% if article.source.url is not null %}
+					<a href="{{ article.source.url }}">Read more on <em>{{ article.source.name }}</em> &raquo;</a>
+				{% endif %}
+
+			{% endif %}
+		</p>
+	{% endif %}
+
+{% endmacro %}

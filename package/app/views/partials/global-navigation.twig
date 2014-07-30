@@ -1,0 +1,153 @@
+{% set nav_section = nav_section is not null ? nav_section : "hub" %}
+
+{# Sets the nav_links array #}
+{% 
+    set main_menu = [
+        { 
+            id: "hub", 
+            href: "/", 
+            text: "Hub",
+            subpages: [
+                {
+                    id: "about",
+                    href: "/about",
+                    text: "About the Hub"   
+                },
+                {
+                    id: "events",
+                    href: "/events",
+                    text: "Events"
+                },
+                {
+                    id: "media",
+                    href: "/media",
+                    text: "For Media"
+                },
+                {
+                    id: "pix",
+                    href: "/pix",
+                    text: "Hub/Pix"
+                },
+                {
+                    id: "subscribe",
+                    href: "/subscribe",
+                    text: "Subscribe"
+                },
+                {
+                    type: "section heading",
+                    text: "Explore by Topic"
+                },
+                {
+                    id: "health",
+                    href: "/health",
+                    text: "Health"
+                },
+                {
+                    id: "science-technology",
+                    href: "/science-technology",
+                    text: "Science+Technology"
+                },
+                {
+                    id: "arts-culture",
+                    href: "/arts-culture",
+                    text: "Arts+Culture"
+                },
+                {
+                    id: "politics-society",
+                    href: "/politics-society",
+                    text: "Politics+Society"
+                },
+                {
+                    id: "university-news",
+                    href: "/university-news",
+                    text: "University News"
+                },
+                {
+                    id: "student-life",
+                    href: "/student-life",
+                    text: "Student Life"
+                },
+                {
+                    id: "athletics",
+                    href: "/athletics",
+                    text: "Athletics"
+                },
+                {
+                    id: "voices-opinion",
+                    href: "/voices-opinion",
+                    text: "Voices+Opinion"
+                }
+            ]
+        },
+        { 
+            id: "magazine", 
+            href: "/magazine", 
+            text: "Johns Hopkins Magazine",
+            subpages: [
+                {
+                    id: "magazine/about",
+                    href: "/magazine/about",
+                    text: "About the Magazine"
+                },
+                {
+                    id: "magazine/past-issues",
+                    href: "/magazine/past-issues",
+                    text: "Past Issues"
+                },
+                {
+                    id: "magazine/contact",
+                    href: "/magazine/contact",
+                    text: "Contact"
+                },
+                {
+                    id: "magazine/giving",
+                    href: "/magazine/giving",
+                    text: "Giving"
+                },
+                {
+                    id: "magazine/subscribe",
+                    href: "/magazine/subscribe",
+                    text: "Subscribe"
+                }
+            ]
+        },
+        { 
+            id: "gazette", 
+            href: "/gazette", 
+            text: "Gazette",
+            subpages: [
+                {
+                    id: "gazette/about",
+                    href: "/gazette/about",
+                    text: "About the Gazette"
+                },
+                {
+                    id: "gazette/past-issues",
+                    href: "/gazette/past-issues",
+                    text: "Past Issues"
+                },
+                {
+                    id: "gazette/advertise",
+                    href: "/gazette/advertise",
+                    text: "Advertise"
+                },
+                {
+                    id: "gazette/contact",
+                    href: "/gazette/contact",
+                    text: "Contact"
+                }
+            ] 
+        },
+        { 
+            id: "jhu", 
+            href: "http://jhu.edu", 
+            text: "jhu.edu" 
+        }
+    ]
+%}
+
+<ul class="global-navigation">
+    <li class="intro">Johns Hopkins news network:</li>
+    {{ globalMacros.printMenu(main_menu, nav_section) }}
+    <li class="search"><a id="openSearch" href="/search"><i class="icon-search icon-white icon-large"></i><span>Search Archives</span></a></li>
+</ul>

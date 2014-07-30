@@ -1,0 +1,36 @@
+{# facebook-specific #}
+<meta property="fb:app_id"               content="{{ facebookAppId }}" /> 
+<meta property="og:type"                 content="article" /> 
+<meta property="og:site_name"            content="The Hub" />
+<meta property="og:title"                content="{{ results.headline }}" />
+<meta property="og:url"					 content="{{ results.url }}" />
+<meta property="article:published_time"  content="{{ results.publish_date|date("c") }}" /> 
+
+{# Adds like page button to any shares of this content on Facebook #}
+{# See: https://developers.facebook.com/blog/post/2013/06/19/platform-updates--new-open-graph-tags-for-media-publishers-and-more/ #}
+<meta property="article:publisher"       content="https://www.facebook.com/johnshopkinsuniversity" />
+
+
+{% if results._embedded.image_thumbnail is not null %}
+	<meta property="og:image"            content="{{ results._embedded.image_thumbnail.0.sizes.thumbnail }}" />
+{% endif %}
+
+{% if results.excerpt is not null %}
+	<meta property="og:description"            content="{{ results.excerpt }}" />
+{% endif %}
+
+{% if results.type == "magazine_article" %}
+	<meta property="article:section"         content="Johns Hopkins Magazine" />
+{% elseif results.type == "gazette_article" %}
+	<meta property="article:section"         content="Gazette" />
+{% endif %}
+
+{% for tag in results._embedded.tags %}
+	<meta property="article:tag"             content="{{ tag.name }}" />
+{% endfor %}
+
+
+
+{# twitter-specific #}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site:id" content="743066030" />

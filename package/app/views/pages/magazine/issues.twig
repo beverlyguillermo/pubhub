@@ -1,0 +1,83 @@
+{% extends "layouts/magazine.twig" %}
+
+{% block title %}
+{{ page_title }} | Johns Hopkins Magazine
+{% endblock %}
+
+{% block page_content %}
+
+	{# used as-is on static pages #}
+
+	{% set classes = ["page"] %}
+
+	{% set classes = ["page"] %}
+	{% if slug is defined %}
+		{% set classes = classes|merge([slug ~ "-page"]) %}
+	{% endif %}
+
+
+	<div class="{{ classes|join(" ") }}">
+
+		<div class="body-content">
+
+			<div class="col measure wide">
+
+				{% include "partials/messages.twig" %}
+				
+				<h1>{{ page_title }}</h1>
+
+				<p>Articles from <em>Johns Hopkins Magazine</em> are maintained online beginning with Volume 46 in 1994. Earlier editions of the magazine can be viewed, in hard copy by special request, through the <a target="_blank" href="https://catalog.library.jhu.edu/ipac20/ipac.jsp?session=1S9V08247K518.4113&amp;profile=general&amp;uri=link=3100007~!14396770~!3100001~!3100002&amp;aspect=subtab22&amp;menu=search&amp;ri=8&amp;source=~!horizon&amp;term=Johns+Hopkins+magazine.&amp;index=ALTITLE">special collections of Johns Hopkins Libraries</a>.</p>
+
+				{# Jen: Bring in issues dynamically. This is SLOW. How do we speed this up? #}
+				{# Jason: By making our API super ridiculous fast? #}
+				{% for year, theIssues in issues %}
+					<h5>{{ year }} Issues</h5>
+					<p>
+					{% for issue in theIssues %}
+						<a href="{{ issue.url }}">{{ issue.edition }} {{ issue.publish_date | date("Y") }}, Vol {{ issue.volume }} No {{ issue.number }}</a>
+						{% if not loop.last %}
+							<br />
+						{% endif %}
+					{% endfor %}
+					</p>
+				{% endfor %}
+
+				{# past issues #}
+				{{ html }}
+
+			</div>
+
+		</div>
+
+		{% include "partials/article-sidebar.twig" %}
+
+	</div>
+	
+{% endblock %}
+
+{% block footer %}
+	<script type="text/template" id="template-new-tab">
+	{% include "partials/new-tab.js" %}
+	</script>
+	<script type="text/template" id="template-trending-tab">
+	{% include "partials/trending-tab.js" %}
+	</script>
+	<script type="text/template" id="template-hubpix-promo">
+    {% include "partials/hubpix-promo.js" %}
+    </script>
+	{{ parent() }}
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+	    hubster.activateNewTrending();
+
+	    hubstagram.init({
+			container: ".hubpix-promo .pix",
+			template: "#template-hubpix-promo"
+		}).promote(6);
+	});
+	hubstagram.init({
+    	container: ".hubpix-promo .pix",
+    	template: "#template-hubpix-promo"
+    }).promote(6);
+	</script>
+{% endblock %}

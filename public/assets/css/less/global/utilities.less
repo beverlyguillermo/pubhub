@@ -1,0 +1,27 @@
+/**
+ * Utility styles: non-semantic classes for reusable utilities
+ */
+ 
+// Clear ifix
+// http://css-tricks.com/snippets/css/clear-fix/
+  
+.force:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+* html .force             { zoom: 1; } /* IE6 */
+*:first-child+html .force { zoom: 1; } /* IE7 */
+
+// General alignment
+
+.align-left {
+    float: left;
+    margin-right: 25px;
+}
+.align-right {
+    float: right;
+    margin-left: 25px;
+}

@@ -1,0 +1,344 @@
+{% macro input(name, label, value, type, size, class, help) %}
+	{% if size is not defined %}{% set size = "xlarge" %}{% endif %}
+
+	<div class="control-group">
+		<label class="control-label" for="{{ name }}">{{ label }}</label>
+		<div class="controls">
+			{% if type == "textarea" %}
+				<textarea class="input-{{ size }} {{ class }}" id="{{ name }}" name="{{ name }}">{{ value|e }}</textarea>
+			{% else %}
+				<input type="{{ type|default('text') }}" class="input-{{ size }} {{ class }}" id="{{ name }}" name="{{ name }}" value="{{ value|e }}">
+			{% endif %}
+			
+			{% if help is not empty %}
+				<p class="help-block">{{ help }}</p>
+			{% endif %}
+		</div>
+	</div>
+{% endmacro %}
+
+
+{# Add an input as part of a group of inputs #}
+{% macro group_input(name, value, help, type, size) %}
+	<div class="control-group">
+		<input type="{{ type|default('text') }}" class="input-xlarge" name="{{ name }}" value="{{ value|e }}" size="{{ size|default(20) }}"> <i class="action-link action-move icon-move"></i> <i class="action-link action-delete icon-trash"></i>
+		{% if help is not empty %}
+		    <p class="help-block">{{ help }}</p>
+		{% endif %}
+	</div>
+	<div class="preview"></div>
+{% endmacro %}
+
+
+
+{# Add a rail input group as part of a group  #}
+{% macro group_input_rails(item, counter, page_list) %}
+
+	<div class="force">
+	
+		<div class="form-elements">
+
+			<div class="control-group">
+				<div class="controls">
+					<input type="{{ type|default('text') }}" class="input-xlarge span5" name="rails[{{ counter }}][title]" value="{{ item.title|e }}" placeholder="Title"> 
+				</div>
+			</div>
+
+			<div class="expanded-details" style="display: none;">
+
+				<div class="control-group" style="margin-bottom: 5px">
+				<div class="controls">
+				<p class="help-block">Please select either an API endpoint OR a page reference</p>
+				</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Endpoint</label>
+					<div class="controls">
+						<input type="{{ type|default('text') }}" class="input-xlarge" name="rails[{{ counter }}][endpoint]" value="{{ item.endpoint|e }}" size="20"> 
+					</div>
+				</div>
+
+				{% set name = "rails[" ~ counter ~ "][page]" %}
+				{{ _self.input(name, 'Page', item.page|e) }}
+				{#
+					Note: We were using a select box and passing in page_list as a list of key/values, with
+					the page title and id of every page in the database. It was a convenience UI decision
+					to make this input a lot more friendly. But since this input is almost NEVER changed after
+					a page is created, and since we create the pages by hand, in the database, this was
+					an unnecessary burden on the page (processing all the pages for every individual edit)
+
+					So we replaced it with a regular input. Just list the page ID.
+				#}
+				{# {{ _self.select(name, 'Page', item.page|e, page_list) }} #}
+				
+				<br>
+
+				<div class="control-group">
+					<label class="control-label">Description</label>
+					<div class="controls">
+						<textarea class="input-xlarge" name="rails[{{ counter }}][description]" rows="3">{{ item.description|e }}</textarea> 
+					</div>
+				</div>
+
+				{% set templateName = "rails[" ~ counter ~ "][template]" %}
+				{{ _self.select(templateName, 'Template', item.template|e, ["articles rail", "events rail"]) }}
+
+			</div>
+
+		</div>
+
+		<div class="actions">
+			<i class="action-link action-expand icon icon-chevron-down"></i>
+			<i class="action-link action-move icon-move"></i>
+			<i class="action-link action-delete icon-trash"></i>
+		</div>
+
+	</div>
+
+{% endmacro %}
+
+
+{% macro time_input_row(time, name) %}
+	<input type="text" name="{{ name }}" class="span3" placeholder="ex. 10am, 7:15pm" value="{{ time is not empty ? time|date("g:ia") : "" }}" />
+{% endmacro %}
+
+
+{# Drop in a nifty little button to add a new input to the input group #}
+{% macro add_new_button(moreClasses) %}
+	<button class="action action-add-new btn {{ moreClasses|join(" ") }}">+ Add Another</button>
+{% endmacro %}
+
+
+{% macro select(name, label, default_value, options, size, class, help) %}
+	<div class="control-group">
+		<label class="control-label">{{ label }}</label>
+		<div class="controls">
+			<select name="{{ name }}">
+				<option value="">---Select One---</option>
+				{% for option in options %}
+					{% if option is iterable %}
+						{% set label = option.label %}
+						{% set value = option.value %}
+					{% else %}
+						{% set label = option %}
+						{% set value = option %}
+					{% endif %}
+					<option value="{{ value }}"{% if value == default_value %} selected="selected"{% endif %}>{{ label }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+{% endmacro %}
+
+
+{# The whole damn form, in one droppable piece #}
+{% macro edit_form(version, version_type, page) %}
+
+	<form method="post" action="" class="form-vertical" id="editForm">
+
+		<input type="hidden" name="template" value="{{ version.template }}" />
+
+		{% if "feature_queue" in page.page_features %}
+
+			{% set class = "articles" %}
+			{% if page.type == "events" %}
+				{% set class = "events" %}
+			{% endif %}
+
+			<fieldset data-endpoint="{{ class }}">
+				<legend>Feature Queue</legend>
+
+				<script type="text/template" class="input-template">
+				<li>{{ _self.group_input("feature_queue[]") }}</li>
+				</script>
+
+				<ul class="features input-group ui-sortable" style="margin-left: 0;">
+				
+				{% for item in version.feature_queue %}
+				    <li>{{ _self.group_input("feature_queue[]", item) }}</li>
+				{% endfor %}
+				</ul>
+				{{ _self.add_new_button() }}	
+
+			</fieldset>
+
+		{% endif %}
+
+		{% if "tags" in page.page_features %}
+
+			<fieldset data-endpoint="tags">
+				<legend>Tag Filters</legend>
+
+				<script type="text/template" class="input-template">
+				<li>{{ _self.group_input("tags[]") }}</li>
+				</script>
+
+				<ul class="tags input-group ui-sortable" style="margin-left: 0;">
+				
+				{% for item in version.tags %}
+				    <li>{{ _self.group_input("tags[]", item) }}</li>
+				{% endfor %}
+				</ul>
+				{{ _self.add_new_button() }}	
+
+			</fieldset>
+
+		{% endif %}
+
+		{% if "locations" in page.page_features %}
+
+			<fieldset data-endpoint="locations">
+				<legend>Location Filters</legend>
+
+				<script type="text/template" class="input-template">
+				<li>{{ _self.group_input("locations[]") }}</li>
+				</script>
+
+				<ul class="locations input-group ui-sortable" style="margin-left: 0;">
+				
+				{% for item in version.locations %}
+				    <li>{{ _self.group_input("locations[]", item) }}</li>
+				{% endfor %}
+				</ul>
+				{{ _self.add_new_button() }}	
+
+			</fieldset>
+
+		{% endif %}
+
+		{% if "topics" in page.page_features %}
+
+			<fieldset data-endpoint="topics">
+				<legend>Topic Filters</legend>
+
+				<script type="text/template" class="input-template">
+				<li>{{ _self.group_input("topics[]") }}</li>
+				</script>
+
+				<ul class="topics input-group ui-sortable" style="margin-left: 0;">
+				
+				{% for item in version.topics %}
+				    <li>{{ _self.group_input("topics[]", item) }}</li>
+				{% endfor %}
+				</ul>
+				{{ _self.add_new_button() }}	
+
+			</fieldset>
+
+		{% endif %}
+
+		{% if "rails" in page.page_features %}
+
+			<fieldset>
+				<legend>Rails</legend>
+
+				<ul class="input-group ui-sortable">
+
+				{% for key, value in version.rails %}
+				    <li>{{ _self.group_input_rails(value, key, page_list) }}</li>
+				{% endfor %}
+
+				</ul>
+				{{ _self.add_new_button("add-group") }}
+
+				<script type="text/template" class="input-template">
+				<li>{{ _self.group_input_rails([], "new") }}</li>
+				</script>
+
+			</fieldset>
+
+		{% endif %}
+
+		{% if "html" in page.page_features %}
+
+			<fieldset>
+				<br />
+				<legend>HTML Body</legend>
+				<textarea name="html" class="wysiwyg" style="width:100%; height:600px;">{{ version.html }}</textarea>
+			</fieldset>
+
+		{% endif %}
+
+
+		{% if "form" in page.page_features %}
+
+			<fieldset>
+				<br />
+				<legend>Form</legend>
+				{{ _self.input("form", "ID", version.form) }}
+			</fieldset>
+
+		{% endif %}
+
+		{{ _self.input("id", "", version.id, "hidden") }}
+
+
+		{# live, scheduled, new, delete #}
+		<div class="form-actions">
+			{% if version_type == "live" %}
+				<button class="btn btn-primary" type="submit" name="submit" value="live">Update</button>
+			{% elseif version_type == "scheduled" %}
+				<button class="btn btn-primary" type="submit" name="submit" value="update">Update</button>
+				<button class="btn btn-danger" type="submit" name="submit" value="delete">Delete Version</button>
+			{% elseif version_type == "new" %}
+				<button class="btn btn-primary" type="submit" name="submit" value="new">Schedule</button>
+				{# <i class="icon-time"></i> #}
+				<input type="text" class="input-xlarge transparent" readonly id="published" name="published" size="10" style="width:150px">
+			{% endif %}
+				<button class="btn" type="cancel" name="cancel" value="cancel">Exit Without Saving</button>
+		</div>
+	</form>
+
+{% endmacro %}
+
+
+{% macro group_input_hubpix_ban(counter) %}
+
+	<div class="force">
+	
+		<div class="form-elements">
+
+			<select name="banned[{{ counter }}][type]" class="input-small">
+				<option>user</option>
+				<option>photo</option>
+			</select>
+
+			<input type="text" name="banned[{{ counter }}][value]" placeholder="ID">
+			
+			<input type="text" name="banned[{{ counter }}][description]" placeholder="Reason for ban (optional)">
+
+
+		</div>
+
+		<div class="actions">
+			<i class="action-link action-delete icon-trash"></i>
+		</div>
+
+	</div>
+
+{% endmacro %}
+
+
+{% macro banUsersForm() %}
+	<form method="post" action="" class="form-vertical" id="editFormg">
+
+		<fieldset>
+
+			<div class="input-group">
+				<li>{{ _self.group_input_hubpix_ban("new") }}</li>
+			</div>
+
+			{{ _self.add_new_button("add-group") }}
+
+			<script type="text/template" class="input-template">
+			<li>{{ _self.group_input_hubpix_ban("new") }}</li>
+			</script>
+
+		</fieldset>
+
+		<button class="btn btn-primary" type="submit" name="submit" value="ban">Ban</button>
+		<button class="btn" type="cancel" name="cancel" value="cancel">Exit Without Saving</button>
+
+	</form>
+{% endmacro %}

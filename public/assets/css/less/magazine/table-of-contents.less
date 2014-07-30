@@ -1,0 +1,174 @@
+// Table of Contents
+
+
+// Table of Contents, overlay version
+#toc-overlay {
+  .toc-inner {
+    padding: 25px 25px 70px;
+  }
+  display: none;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background: url(/assets/img/magazine/overlay_bg.png) left top repeat;
+  .toc {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+    background-color: @white;
+    position: relative;
+    .box-shadow(0, 6px, 10px, rgba(0,0,0,0.35));
+  }
+}
+
+.toc {
+  a {
+    display: block;
+  }
+}
+
+.toc-overlay {
+	z-index: 1000;
+  .toc-inner {
+    .contents-title {
+      font-family: @sans_condensed;
+      text-transform: uppercase;
+      font-weight: normal;
+      margin: 0;
+      font-size: 150%;
+      .site-title {
+        display: block;
+      }
+      .sep {
+        display: none;
+        font-family: @sans;
+        font-weight: 100;
+        font-size: 150%;
+      }
+    }
+  }
+  .close-toc {
+    text-indent: -9999px;
+    display: block;
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/magazine/x.png?busted) center center no-repeat;
+    position: absolute;
+    top: 10px;
+    right: 2px;
+  }
+}		
+		
+.toc-inner {
+	h1 {
+    .site-title {
+      display: none;
+    }
+    .sep {
+      display: none;
+    }
+  }
+	.link-row {
+    margin: 1.5em 0 0;
+    a {
+      font-family: @sans;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 20px;
+    }
+    .download {
+      float: left;
+      margin-right: 20px;
+      padding-left: 35px;
+      background: url(/assets/img/magazine/icon-download.png?busted) left top no-repeat;
+      &:hover {
+        background-position: left bottom;
+      }
+    }
+	}
+	
+	b {
+    padding-left: 5px;
+	}	
+	a:hover h5 {
+		color: @hopkins_blue;
+	}
+	a:hover p {
+    color: @black;
+	}
+	ul {
+		list-style-type:none;
+		padding-left: 0;
+		li {
+			font-family: @sans;
+			line-height: 130%;
+			margin-bottom:6px;
+		}
+	}
+	h2 {
+		margin-top: 30px;
+		font-family: @sans_condensed;
+		text-transform: uppercase;
+		border-bottom: 3px solid @black;
+		font-size: 180%;
+    font-weight: normal;
+		padding-bottom: 3px;
+	}
+}
+
+.toc-features {
+  a {
+    margin-bottom: 2.5em;
+  }
+	img {
+		width: 25%;
+		clear:both;
+		margin-right: 15px;
+	}
+	p {
+		//padding-left: 135px;
+	}
+	.author {
+		margin-bottom:.25em;
+		font-weight: normal;
+		text-transform: uppercase;	
+		font-size: 90%;
+		margin-top: 0;
+	}
+}
+
+
+// Nested lists (departments)
+.toc-group {
+    li.contents-section {
+        span {
+            background-color: @white;
+            padding-right: 10px;
+        }
+        ul {
+            border-left: 1px solid @border_light;
+            margin: 5px 0 5px 15px;
+            padding-left: 8px;
+        }
+    }
+}
+
+
+// Table of contents styles, usage TBD
+.toc-group h3.condensed {
+  font-size: @xx-large;
+  .medium_bottom;
+}
+.toc-group h6 {
+  margin-bottom: 0.5em;
+  .author {
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+}
+
+.toc-group .article {
+  background: url(/assets/img/magazine/doodad.png) left 8px no-repeat;
+  padding-left: 30px;
+  margin-bottom: 22px;
+}

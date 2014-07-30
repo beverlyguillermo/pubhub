@@ -1,0 +1,263 @@
+/* mixins.less
+ *
+ * Reusable classes, styles, and functions
+ * ----------------------------------------------------- */
+
+.bold_bottom(@px: 7px, @pad: 10px, @margin: 1em, @color: @black) {
+    padding-bottom: @pad;
+    border-bottom: solid @px @color;
+    margin-bottom: @margin;
+}
+
+.topline {
+    border-top: 4px solid @black;
+    padding-top: 6px;
+}
+
+.medium_bottom() {
+	.bold_bottom(3px);
+}
+
+.js-overlay {
+    background-color: rgba(0,0,0,0.9);
+}
+
+.hide {
+    display: none;
+}
+
+.ff-condensed, .condensed {
+    font-family: @sans_condensed;
+}
+.ff-sans, .sans {
+    font-family: @sans;
+}
+.ff-serif, .serif {
+    font-family: @serif;
+}
+
+.subheadline {
+    margin-bottom: 0.8em;
+}
+
+// Apply to any heading to create the overline style
+.overline {
+  font-size: @small;
+  color: @accent_red;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.caption {
+  font-size: @x-small;
+  line-height: 135%;
+}
+
+// Used for name+title combinations under letters, in mag masthead, etc.
+// Use <p class='credit'> in combination with <span class='line'> to get stacked display
+.credit {
+  line-height: 130%;
+  margin: 16px 0;
+  &.alt {
+    font-family: @sans;
+    strong {
+      text-transform: uppercase;
+    }
+  }
+}
+
+// Image credits
+
+.caption {
+  .credit {
+    display: block;
+    font-family: @sans;
+    text-transform: uppercase;
+    font-weight: normal;
+    color: @light_text;
+    margin-top: 0;
+  }
+}
+
+.hascaption {
+  .credit {
+    // This is for the case where there is an inline image caption, and a credit.
+    // The credit was running right up against the caption.
+    margin-top: 4px;
+  }
+}
+
+// Utility for creating space around character separators (ie | , / , >)
+.sep {
+    margin: 0 7px;
+}
+
+// Utility for when a heading is preceded by an overline heading
+.hasoverline {
+    margin-top: 3px;
+}
+
+// Utility for when a heading is followed by a author heading
+.hasauthor, .hasunderline {
+    margin-bottom: 6px;
+}
+
+.author {
+  font-family: @sans;
+  font-size: @small;
+  font-weight: bold;
+  margin: 16px 0 16px;
+  clear: left;
+  b {
+    font-family: @serif;
+    font-weight: normal;
+  }
+}
+
+.subheadline {
+  font-size: @large;
+  font-weight: 100;
+  font-family: @sans;
+  line-height: 120%;
+}
+
+.summary {
+    font-family: @sans;
+    font-size: @small;
+}
+
+// Utility for stacking new lines
+.line {
+    display: block;
+    line-height: 130%;
+}
+// Epic Zoom JS plugin -- not the best place for this, but where?
+.epic-zoom {
+    position: relative;
+}
+
+
+// CSS3 Mixins
+.border-radius(@px: 3px) {
+  -webkit-border-radius: @px;
+     -moz-border-radius: @px;
+       -o-border-radius: @px;
+      -ms-border-radius: @px;
+          border-radius: @px;
+}
+
+.opacity (@opacity: 0.5) {
+    -webkit-opacity:  @opacity;
+    -moz-opacity:     @opacity;
+    opacity:    @opacity;
+}
+
+.border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
+    -webkit-border-top-right-radius:    @topright;
+    -webkit-border-bottom-right-radius: @bottomright;
+    -webkit-border-bottom-left-radius:  @bottomleft;
+    -webkit-border-top-left-radius:     @topleft;
+
+    -moz-border-radius-topright:        @topright;
+    -moz-border-radius-bottomright:     @bottomright;
+    -moz-border-radius-bottomleft:      @bottomleft;
+    -moz-border-radius-topleft:         @topleft;
+
+    border-top-right-radius:            @topright;
+    border-bottom-right-radius:         @bottomright;
+    border-bottom-left-radius:          @bottomleft;
+    border-top-left-radius:             @topleft;
+
+    -moz-background-clip:    padding; 
+    -webkit-background-clip: padding-box; 
+    background-clip:         padding-box; 
+}
+
+.transform (@property: none){
+  -webkit-transform:@property; /* Safari and Chrome */
+     -moz-transform:@property; /* Firefox */
+      -ms-transform:@property; /* IE 9 */
+       -o-transform:@property; /* Opera */
+          transform:@property;
+}
+
+.transition(@properties: all, @duration: 0.5s, @timing: ease-in-out) {
+  -webkit-transition-property: @properties;
+  -webkit-transition-duration: @duration;
+  -webkit-transition-timing-function: @timing;
+     -moz-transition-property: @properties;
+     -moz-transition-duration: @duration;
+     -moz-transition-timing-function: @timing;
+       -o-transition-property: @properties;
+       -o-transition-duration: @duration;
+       -o-transition-timing-function: @timing;
+      -ms-transition-property: @properties;
+      -ms-transition-duration: @duration;
+      -ms-transition-timing-function: @timing;
+          transition-property: @properties;
+          transition-duration: @duration;
+          transition-timing-function: @timing;
+}
+.transition-none() {
+    -webkit-transition: none;
+       -moz-transition: none;
+         -o-transition: color 0 ease-in;
+        -ms-transition: none;
+            transition: none;
+}
+
+.animation(@name: none, @duration:1s, @timing-function:ease, @delay:0s, @iteration-count:1, @direction:normal) {
+  -webkit-animation-name: @name;
+  -webkit-animation-duration: @duration;
+  -webkit-animation-timing-function: @timing-function;
+  -webkit-animation-delay: @delay;
+  -webkit-animation-iteration-count: @iteration-count;
+  -webkit-animation-direction: @direction;
+
+  -moz-animation-name: @name;
+  -moz-animation-duration: @duration;
+  -moz-animation-timing-function: @timing-function;
+  -moz-animation-delay: @delay;
+  -moz-animation-iteration-count: @iteration-count;
+  -moz-animation-direction: @direction;
+
+  -webkit-animation-name: @name;
+  -webkit-animation-duration: @duration;
+  -webkit-animation-timing-function: @timing-function;
+  -webkit-animation-delay: @delay;
+  -webkit-animation-iteration-count: @iteration-count;
+  -webkit-animation-direction: @direction;
+
+  -webkit-animation-name: @name;
+  -webkit-animation-duration: @duration;
+  -webkit-animation-timing-function: @timing-function;
+  -webkit-animation-delay: @delay;
+  -webkit-animation-iteration-count: @iteration-count;
+  -webkit-animation-direction: @direction;
+
+  -webkit-animation-name: @name;
+  -webkit-animation-duration: @duration;
+  -webkit-animation-timing-function: @timing-function;
+  -webkit-animation-delay: @delay;
+  -webkit-animation-iteration-count: @iteration-count;
+  -webkit-animation-direction: @direction;
+}
+
+
+.box-shadow (@px: 5px, @blur: 5px, @spread: 5px, @color: #888) {
+	-webkit-box-shadow: @px @blur @spread @color;
+     -moz-box-shadow: @px @blur @spread @color;
+       -o-box-shadow: @px @blur @spread @color;
+      -ms-box-shadow: @px @blur @spread @color;
+          box-shadow: @px @blur @spread @color;
+}
+
+.linear-gradient (@url:none, @location:center top, @start:#FFF, @end:#000) {
+  background-image:@url, -webkit-linear-gradient(@location, @start, @end);
+     background-image:@url, -moz-linear-gradient(@location, @start, @end);
+      background-image:@url, -ms-linear-gradient(@location, @start, @end);
+       background-image:@url, -o-linear-gradient(@location, @start, @end);
+          background-image:@url, linear-gradient(@location, @start, @end);
+}

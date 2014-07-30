@@ -1,0 +1,178 @@
+/* styling the forms
+-------------------------------------------------- */
+
+fieldset {
+	border: 0;
+	padding: 0;
+	margin: 0 0 30px 0;
+
+	legend {
+		display: block;
+		font-size: @medium;
+		width: 100%;
+		padding-bottom: 3px;
+		border-bottom: 1px solid @border_light;
+	}
+
+	/**
+	 * Fixes a bug in Safari that collapses
+	 * the margin below legend tags.
+	 */
+	legend + * {
+	    -webkit-margin-top-collapse: separate;
+	    margin-top: 25px;
+	}
+}
+
+.form_field {
+	padding-bottom: 20px;
+	clear: left;
+}
+
+
+label {
+	display: block;
+	margin-bottom: 3px;
+}
+
+input, select, textarea {
+	font-family: @sans;
+	font-size: 13px;
+	padding: 8px;
+	width: 90%;
+	border: 1px solid #bbb;
+}
+
+textarea {
+	height: 70px;
+}
+
+input[type=checkbox], input[type=radio] {
+	width: auto;
+}
+
+input[type=button], input[type=submit] {
+	width: auto;
+}
+
+.checkbox_group, .radio_group {
+	margin-top:5px;
+}
+
+.checkbox_group .checkbox, .radio_group .radio {
+	margin-bottom:3px;
+}
+
+.submit-helper {
+	color: @light_text;
+	padding: 5px;
+	float: left;
+	margin-left: 10px;
+}
+
+form .help {
+  color: @light_text; // lighten the text some for contrast
+  font-size: @x-small;
+  line-height: 130%;
+  margin: 5px 0 20px 0;
+  display: block
+}
+
+
+// horizontal oriented form
+form.horizontal {
+
+	input[type=submit] {
+		width: auto;
+	}
+
+	.submit {
+		float: left;
+		
+		input[type=submit] {
+			margin-left: 0;
+		}
+	}
+
+	.nofloat {
+		label {
+			float: none;
+			width: 90%;
+		}
+		input, select, textarea {
+			width: 90%;
+		}
+
+	}
+}
+
+
+/* suggest an article form
+-------------------------------------------------- */
+#submitArticle {
+	margin-top: 30px;
+}
+
+
+/* submit an event form
+-------------------------------------------------- */
+#submitEvent {
+	margin-top: 30px;
+	select {
+		width: auto;
+	}
+}
+
+
+
+/* alerts, warnings, errors, etc...
+-------------------------------------------------- */
+
+.alert {
+	padding: 20px;
+	margin-bottom: 18px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	background-color: #fcf8e3;
+	border: 1px solid #fbeed5;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color: #c09853;
+}
+
+.alert p {
+	padding: 0;
+	margin: 0;
+}
+
+.alert ul {
+	padding-bottom: 0;
+}
+
+.alert .alert-heading {
+	font-size: 15px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.alert-heading {
+	color: inherit;
+}
+
+.alert-success {
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+	color: #468847;
+}
+
+.alert-danger, .alert-error {
+	background-color: #f2dede;
+	border-color: #eed3d7;
+	color: #b94a48;
+}
+
+.alert-info {
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+	color: #3a87ad;
+}
