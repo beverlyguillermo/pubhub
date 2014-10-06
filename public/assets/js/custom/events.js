@@ -83,8 +83,16 @@ var hubevents = (function ($, lazy, _gaq) {
                         .animate({ opacity: 1 }, 1000);
 
                 });
-                 
+
             });
+
+            /*
+            $(".btn.events-subscribe").on("click", function(e) {
+              e.preventDefault();
+              var text = $(this).prop('href');
+              window.prompt ("Copy to url to clipboard: press Ctrl+C (or CMD+C on Mac) and then Enter to close", text);
+            });
+            */
 		},
 
         removeAll: function (callback) {
