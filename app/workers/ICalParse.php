@@ -86,23 +86,22 @@ class ICalParse
           $description = "";
           if (isset($event->registration_required) && $event->registration_required == 1)
           {
-            $description .= "REGISTRATION REQUIRED\r\n";
+            $description .= "<p>REGISTRATION REQUIRED</p>\n";
           }
           if (isset($event->featured) && $event->featured == 1)
           {
-            $description .= "FEATURED EVENT\r\n";
+            $description .= "<p>FEATURED EVENT</p>\n";
           }
           if (isset($event->description))
           {
-            $description .= strip_tags($event->description);
+            $description .= $event->description;
           }
-          $e->setDescription( $description );
+          $e->setDescription( strip_tags($description) );
 
           if (isset($event->url) && $event->url != "")
           {
             $e->setUrl( $event->url );
           }
-
           $the_locations = array();
           $the_geo = array();
           if (isset($event->supplemental_location_info))
