@@ -46,9 +46,12 @@ class EventsController extends \app\base\Controller
           $params['selected'] = 'This Week';
         break;
         case '.next-two-weeks':
-        default:
           $params['date'] = array(date('Y-m-d', $last_sunday), date('Y-m-d', $two_weeks));
           $params['selected'] = 'Next Two Weeks';
+        break;
+        default:
+          $params['selected'] = 'Custom Date';
+          // Use the custom date parameters
       }
       $this->model->findByCriteria2(array(
         'date' => $params['date'],

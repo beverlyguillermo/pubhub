@@ -62,6 +62,9 @@ class Events extends Model
 			$this->http->addQueryStringParam("slug", $this->slug);
 		}
 
+		// Get all data within the available date range
+		$this->http->addQueryStringParam("per_page", -1);
+
 		// Enable preview, if necessary
 		if ($this->preview) {
 			$this->http->addQueryStringParam("preview", true);
