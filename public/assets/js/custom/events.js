@@ -106,6 +106,8 @@ var hubevents = (function ($, lazy, _gaq) {
 
                 hubevents.removeAll();
 
+                hubevents.subscribe.filters({ date: hubevents.utility.convertDates(dates) });
+
                 var promise = lazy.createPromise({
                     type: "custom",
                     endpoint: "events",
@@ -183,6 +185,7 @@ var hubevents = (function ($, lazy, _gaq) {
                     hubevents.filtering.recalibrateFilters($target);
                     hubevents.filtering.filter(filters);
                     hubevents.filtering.track($target);
+                    hubevents.subscribe.filters(filters);
                 });
 
             },
@@ -314,6 +317,14 @@ var hubevents = (function ($, lazy, _gaq) {
                 });
             }
 
+        },
+
+        subscribe: {
+            filters: function(filter) {
+              var link = $('.events-subscribe').prop('href');
+              var params = $.param($.extend($.deparam.querystring(link), filters, filter));
+              $('.events-subscribe').prop('href', $.param.querystring(link, params));
+            }
         }
 
 	};

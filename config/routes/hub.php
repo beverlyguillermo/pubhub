@@ -61,6 +61,11 @@ $router->set("/events/:year/:month/:day/:slug(/)(/:preview(/))", function ($year
 	$router->dispatch("Events", "show", $options);
 });
 
+$router->set("/events_subscribe", function () use ($router) {
+	$options = array( "preview" => false );
+	$router->dispatch("Events", "subscribe", $options);
+});
+
 // Announcements
 $router->set("/announcements(/)", function () use ($router) {
 	$router->redirect("/");

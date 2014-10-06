@@ -18,7 +18,8 @@
         "johnshopkins/environment-finder": "1.0",
         "pimple/pimple": "v1.0.2",
         "jenwachter/html-form": "dev-master",
-        "johnshopkins/mailchimp": "dev-master"
+        "johnshopkins/mailchimp": "dev-master",
+        "eluceo/ical": "dev-master"
     },
     "authors": [
         {
@@ -26,7 +27,7 @@
             "email": "jwachter@jhu.edu"
         },
         {
-            "name": "Jason Rhodes", 
+            "name": "Jason Rhodes",
             "email": "jason.matthew.rhodes@gmail.com"
         }
     ],
