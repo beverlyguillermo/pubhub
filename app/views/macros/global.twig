@@ -799,11 +799,11 @@ Create an article teaser.
 					<span class="summary-text">{{ event.excerpt }}</p></span>
 				</div>
 			{% endif %}
-			<div class="meta">
+			<p>
 				<a class="btn"
 					title="Add this event to your calendar"
-					data-service="event-subscribe" href="{{ _self.eventSubscribeUrl(event.url) }}"><i class="icon icon-calendar"></i> Add event to calendar</a>
-			</div>
+					data-service="event-subscribe" href="{{ _self.eventSubscribeUrl(event.url) }}"><span><i class="icon icon-calendar"></i>&nbsp; Add event to calendar</span></a>
+			</p>
 		</div>
 
 	</div>
