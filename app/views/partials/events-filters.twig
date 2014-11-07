@@ -1,0 +1,88 @@
+{% if subscribe %}
+{% set prefix = "subscribe-" %}
+{% else %}
+{% set prefix = "" %}
+{% endif %}
+								<form id="{{ prefix }}filters">
+
+									<fieldset data-group="date" class="singleselect">
+										<legend>Date</legend>
+
+										{% for date in results.dates %}
+											{% set classes = ["form-field", date.slug] %}
+
+											{% if date.count == 0 %}
+												{% set classes = classes|merge(["hide"]) %}
+											{% endif %}
+
+											<div class="{{ classes|join(" ") }}">
+												<input name="{{prefix}}dategroup" type="radio" id="{{prefix}}{{ date.slug }}" value=".{{ date.slug }}"
+
+												{% if date.slug == "next-two-weeks" %}
+													checked="checked"
+												{% endif %}
+
+												>
+												<label for="{{prefix}}{{ date.slug }}">{{ date.name }}</label>
+											</div>
+										{% endfor %}
+
+										<div class="form-field">
+											<input name="{{prefix}}dategroup" type="radio" id="{{prefix}}range" value="range">
+											<label for="{{prefix}}range">Custom Range</label>
+										</div>
+
+									</fieldset>
+
+									{% if results.locations is not empty %}
+
+									<fieldset data-group="campus" class="multiselect">
+										<legend>Location</legend>
+
+										<div class="form-field">
+											<input type="checkbox" id="{{prefix}}all-locations" class="all" checked="checked">
+											<label for="{{prefix}}all-locations">All</label>
+										</div>
+
+										{% for location in results.locations %}
+
+											{% set classes = ["form-field", location.slug] %}
+
+											<div class="{{ classes|join(" ") }}">
+												<input type="checkbox" value=".{{ location.slug }}" id="{{prefix}}{{ location.slug }}">
+												<label for="{{prefix}}{{ location.slug }}">{{ location.name }}</label>
+											</div>
+
+										{% endfor %}
+
+									</fieldset>
+
+									{% endif %}
+
+									{% if results.topics is not empty %}
+
+									<fieldset data-group="topic" class="multiselect">
+										<legend>Topic</legend>
+
+										<div class="form-field">
+											<input type="checkbox" id="{{prefix}}all-topics" class="all" checked="checked">
+											<label for="{{prefix}}all-topics">All</label>
+										</div>
+
+										{% for topic in results.topics %}
+
+											{% set classes = ["form-field", topic.slug] %}
+
+											<div class="{{ classes|join(" ") }}">
+												<input type="checkbox" value=".{{ topic.slug }}" id="{{prefix}}{{ topic.slug }}">
+												<label for="{{prefix}}{{ topic.slug }}">{{ topic.name }}</label>
+											</div>
+
+										{% endfor %}
+
+									</fieldset>
+
+									{% endif %}
+
+								</form>
+

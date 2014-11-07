@@ -1,5 +1,12 @@
 {% extends "layouts/hub.twig" %}
 
+{% block stylesheet %}
+	{{ parent() }}
+	<style type="text/less">
+		{% include "partials/styles/developers.less" %}
+	</style>
+{% endblock %}
+
 {% block title %}
     {{ page_title }}
 {% endblock %}
@@ -23,7 +30,6 @@
 			<div class="center force page-header">
 				<h1 class="rail-title">{{ page_title }}</h1>
 				<p class="submit-event">
-					<a class="btn events-subscribe" href="{{request.rootUri}}/events_subscribe"><i class="icon icon-calendar"></i>&nbsp;&nbsp; Subscribe to Events</a>
 					<a class="btn" href="/submit-event"><i class="icon-plus"></i>&nbsp;&nbsp; Submit an Event</a>
 				</p>
 			</div>
@@ -47,88 +53,11 @@
 
 							<div class="section">
 
-								<form id="filters">
-									
-									<fieldset data-group="date" class="singleselect">
-										<legend>Date</legend>
-										
-										{% for date in results.dates %}
-											{% set classes = ["form-field", date.slug] %}
 
-											{% if date.count == 0 %}
-												{% set classes = classes|merge(["hide"]) %}
-											{% endif %}
 
-											<div class="{{ classes|join(" ") }}">
-												<input name="dategroup" type="radio" id="{{ date.slug }}" value=".{{ date.slug }}"
+                <p><button type="button" class="btn" data-toggle="modal" data-target="#subscribeModal"><i class="icon icon-calendar"></i> Subscribe to iCal</button></p>
 
-												{% if date.slug == "next-two-weeks" %}
-													checked="checked"
-												{% endif %}
-
-												>
-												<label for="{{ date.slug }}">{{ date.name }}</label>
-											</div>
-										{% endfor %}
-
-										<div class="form-field">
-											<input name="dategroup" type="radio" id="range" value="range">
-											<label for="range">Custom Range</label>
-										</div>
-
-									</fieldset>
-
-									{% if results.locations is not empty %}
-
-									<fieldset data-group="campus" class="multiselect">
-										<legend>Location</legend>
-										
-										<div class="form-field">
-											<input type="checkbox" id="all-locations" class="all" checked="checked">
-											<label for="all-locations">All</label>
-										</div>
-
-										{% for location in results.locations %}
-
-											{% set classes = ["form-field", location.slug] %}
-
-											<div class="{{ classes|join(" ") }}">
-												<input type="checkbox" value=".{{ location.slug }}" id="{{ location.slug }}">
-												<label for="{{ location.slug }}">{{ location.name }}</label>
-											</div>
-
-										{% endfor %}
-
-									</fieldset>
-
-									{% endif %}
-
-									{% if results.topics is not empty %}
-
-									<fieldset data-group="topic" class="multiselect">
-										<legend>Topic</legend>
-										
-										<div class="form-field">
-											<input type="checkbox" id="all-topics" class="all" checked="checked">
-											<label for="all-topics">All</label>
-										</div>
-
-										{% for topic in results.topics %}
-
-											{% set classes = ["form-field", topic.slug] %}
-
-											<div class="{{ classes|join(" ") }}">
-												<input type="checkbox" value=".{{ topic.slug }}" id="{{ topic.slug }}">
-												<label for="{{ topic.slug }}">{{ topic.name }}</label>
-											</div>
-
-										{% endfor %}
-
-									</fieldset>
-
-									{% endif %}
-
-								</form>
+								{% include "partials/events-filters.twig" with results %}
 
 							</div>
 
@@ -168,8 +97,31 @@
 
 		{% endif %}
 
-	</div>
+      <div class="events-subscribe-container modal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></a>
+              <h4>Subscribe to events:</h4>
+            </div>
+            <div class="modal-body">
+              <p>If you use Apple iCal, Google Calendar, or another program that supports
+              the iCalendar format, you can automatically add these events. Select the date range, locations, and topic, and then
+              click on the link below to subscribe.</p>
 
+              {% set subscribevars = { 'results': results, 'subscribe': true } %}
+
+              {% include "partials/events-filters.twig" with subscribevars %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <a class="btn btn-primary events-subscribe" href="{{ request.rootUri|replace({'https': 'webcal', 'http': 'webcal'}) }}/events_subscribe">Subscribe</a>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+	</div>
 {% endblock %}
 
 {% block footer %}
@@ -182,7 +134,9 @@
 	</script>
 
 	{{ parent() }}
-	
+
+  <script type="text/javascript" src="/assets/js/vendor/bootstrap/bootstrap-modal.js"></script>
+
 	<script type="text/javascript">
 	jQuery(document).ready(function ($) {
 		hubevents.init();

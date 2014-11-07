@@ -49,20 +49,21 @@ class Events extends Model
 		// allow for expired events to have their own page
 		->addQueryStringParam("expired", true);
 
-		if (isset($params['date'])) {
-			$startDate = vsprintf("%s,%s", $params['date']);
-			$this->http->addQueryStringParam("date", $startDate);
-		} else {
+
+		if (isset($this->year) && isset($this->month) && isset($this->day)) {
 			$startDate = $this->year . "-" . $this->month . "-" . $this->day;
 			$this->http->addQueryStringParam("start_date", $startDate);
+		} else if (isset($params['date'])) {
+			$startDate = vsprintf("%s,%s", $params['date']);
+			$this->http->addQueryStringParam("date", $startDate);
 		}
-
 
 		if (isset($this->slug)) {
 			$this->http->addQueryStringParam("slug", $this->slug);
 		}
 
 		// Get all data within the available date range
+		$this->http->addQueryStringParam("page", 1);
 		$this->http->addQueryStringParam("per_page", -1);
 
 		// Enable preview, if necessary

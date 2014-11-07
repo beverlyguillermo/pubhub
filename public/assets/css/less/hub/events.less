@@ -180,8 +180,69 @@
 			float: none;
 
 			.registration {
-	        	.registrationStyles;
-	        }
+						.registrationStyles;
+					}
 		}
+	}
+
+	.events-container.subscribing {
+		visibility: hidden;
+		opacity: 0;
+		filter: alpha(opacity=0);
+		zoom: 1;
+	}
+	.events-subscribe-container {
+		display: none;
+    form {
+      fieldset {
+        padding: 0;
+        margin: 0 0 15px 0;
+        border: none;
+        legend {
+          font-weight: bold;
+          margin-bottom: 5px;
+          font-size: @small;
+          border: 0;
+        }
+        legend + * {
+            margin-top: 0 !important; // reset safari bug fix
+        }
+      }
+      .form-field {
+        display: block;
+        float: left;
+        font-size: 14px;
+        margin-right: 15px;
+        input {
+          margin: 5px 5px 0 0;
+        }
+        label {
+          display: inline;
+          line-height: 120%;
+        }
+        &.hide {
+          display: none;
+        }
+      }
+      .date-range-selected > .ui-state-active, .date-range-selected > .ui-state-default {
+        background: none !important;
+        background-color: @hopkins_blue !important;
+        color: #fff;
+    }
+
+      .ui-datepicker {
+        position: relative;
+        z-index: 3;
+        font-size: @x-small;
+      }
+
+      // hide 'today' button
+      button.ui-datepicker-current {
+        display: none;
+      }
+    }
+	}
+	.subscribe-container a.events-subscribe {
+		text-decoration: underline;
 	}
 }

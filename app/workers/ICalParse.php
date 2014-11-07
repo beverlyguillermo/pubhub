@@ -14,16 +14,23 @@ class ICalParse
     $this->params = $params;
     $this->calendar = new \Eluceo\iCal\Component\Calendar('hub.jhu.edu/events');
 
-    $name = [];
-    if (!empty($this->params['selected']))
-      $name[] = $this->params['selected'];
-    if (!empty($this->params['topic']))
-      foreach ($this->params['topic'] as $topic)
-        $name[] = ucwords(trim(preg_replace('/[\.\s-]/', ' ', $topic)));
-    if (!empty($this->params['campus']))
-      foreach ($this->params['campus'] as $campus)
-        $name[] = ucwords(trim(preg_replace('/[\.\s-]/', ' ', $campus)));
-    $this->calendar->setName(sprintf('HUB JHU Events [%s]', implode($name, ' ')));
+    if (!empty($this->params['slug']))
+    {
+      $name = array_map('ucfirst', explode('-', $this->params['slug']));
+      $this->calendar->setName(sprintf('%s %s', implode($name, ' '), $this->params['date'] ));
+    }
+    else {
+      $name = [];
+      if (!empty($this->params['selected']))
+        $name[] = $this->params['selected'];
+      if (!empty($this->params['topic']))
+        foreach ($this->params['topic'] as $topic)
+          $name[] = ucwords(trim(preg_replace('/[\.\s-]/', ' ', $topic)));
+      if (!empty($this->params['campus']))
+        foreach ($this->params['campus'] as $campus)
+          $name[] = ucwords(trim(preg_replace('/[\.\s-]/', ' ', $campus)));
+      $this->calendar->setName(sprintf('HUB JHU Events [%s]', implode($name, ' ')));
+    }
   }
 
   public function parse($mapping = null )
@@ -35,29 +42,32 @@ class ICalParse
       $events = $mapping->_embedded->events;
       foreach ($events as $event)
       {
-        $found = false;
-        if (!empty($this->params['topic'])
-            && isset($event->_embedded)
-            && isset($event->_embedded->topics))
-        {
-          $topics = $event->_embedded->topics;
-          foreach($topics as $topic) {
-            // IF not already matching a topic or location, check it
-            if (!$found) $found = in_array(sprintf(".%s", $topic->slug), $this->params['topic']);
+        if (isset($event->_embedded) && (!empty($this->params['topic']) || !empty($this->params['campus']))) {
+          $found = false;
+          if (!empty($this->params['topic'])
+              && isset($event->_embedded->topics))
+          {
+            $topics = $event->_embedded->topics;
+            foreach($topics as $topic) {
+              // IF not already matching a topic or location, check it
+              if (!$found) $found = in_array(sprintf(".%s", $topic->slug), $this->params['topic']);
+            }
           }
-        }
-        if (!empty($this->params['campus'])
-            && isset($event->_embedded)
-            && isset($event->_embedded->locations))
-        {
-          $locations = $event->_embedded->locations;
-          foreach($locations as $location) {
-            // IF not already matching a topic or location, check it
-            if (!$found) $found = in_array(sprintf(".%s", $location->slug), $this->params['campus']);
+          if (!empty($this->params['campus'])
+              && isset($event->_embedded->locations))
+          {
+            $locations = $event->_embedded->locations;
+            foreach($locations as $location) {
+              // IF not already matching a topic or location, check it
+              if (!$found) 
+                $found = in_array(sprintf(".%s", $location->slug), $this->params['campus']);
+              // check parent
+              if (!$found && isset($location->parent) && isset($location->parent->slug))
+                $found = in_array(sprintf(".%s", $location->parent->slug), $this->params['campus']);
+            }
           }
+          if (!$found) continue;
         }
-        if ($found) continue;
-
         // check if multiple days
         $start_date = strtotime($event->start_date);
         $end_date = strtotime($event->end_date);
@@ -124,7 +134,7 @@ class ICalParse
               $the_geo[] = $location->longitude;
             }
           }
-          $e->setLocation(implode(" \n", array_filter($the_locations)), null, implode(',', array_filter($the_geo)));
+          $e->setLocation(implode(" \n", array_filter($the_locations)));
           $this->calendar->addEvent($e);
         } // Multiple Days
       } // Iterating over events
