@@ -6,6 +6,11 @@
 #Listen <%= @port %>
 #NameVirtualHost <%= @vhost_name %>:<%= @port %>
 <VirtualHost <%= @vhost_name %>:<%= @port %>>
+    <% if @port == '443' -%>
+        SSLEngine on
+        SSLCertificateFile /etc/pki/tls/certs/ca.crt
+        SSLCertificateKeyFile /etc/pki/tls/private/ca.key
+    <% end -%>
     ServerName <%= @srvname %>
     <% if @serveraliases.is_a? Array -%>
         <% @serveraliases.each do |name| -%>
@@ -21,6 +26,13 @@
         Order allow,deny
         allow from all
     </Directory>
+    <% if @shibboleth != '' -%>
+    <Location <%= @shibboleth %>>
+        AuthType Shibboleth
+        ShibRequestSetting requireSession 1
+        require valid-user
+    </Location>
+    <% end -%>
     ErrorLog <%= @logdir %>/<%= @name %>_error.log
     LogLevel warn
     CustomLog <%= @logdir %>/<%= @name %>_access.log combined

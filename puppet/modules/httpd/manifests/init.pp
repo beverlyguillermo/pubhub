@@ -1,6 +1,6 @@
 class httpd {
 
-    package { ["httpd", "mod_ssl", "postfix"]:
+    package { ["httpd", "mod_ssl", "openssl"]:
         ensure => present,
     }
 
@@ -11,23 +11,9 @@ class httpd {
         subscribe  => [Package["httpd", "mod_ssl"], File["/etc/httpd/conf/httpd.conf"]],
     }
 
-    service { "postfix":
-        enable      => true,
-        ensure     => running,
-        hasrestart => true,
-        subscribe  => [
-            Package["httpd"],
-            File["/etc/postfix/main.cf"]
-        ],
-    }
-
     exec { "/etc/init.d/httpd reload": 
         command      => "/etc/init.d/httpd reload", 
         refreshonly  => true, 
-    }
-
-    file { "/var/www/sites":
-        ensure => directory,
     }
 
     file { ["/usr/local/apache", "/usr/local/apache/htdocs"]:
@@ -43,6 +29,26 @@ class httpd {
 
     file { "/var/log/httpd":
         ensure => "directory",
+        owner => "root",
+        group => "root",
+        mode => 711, # allow loggers to write to logs
+    }
+
+    # users allowed to write to log files
+    group { "loggers":
+        ensure => "present",
+    }
+
+    # When a log is written from a CLI program
+    user { "vagrant":
+        ensure => "present",
+        groups => "loggers",
+    }
+
+    # When a log is written from the server (like PHP)
+    user { "apache":
+        ensure => "present",
+        groups => "loggers",
     }
 
     file { "/etc/httpd":
@@ -67,8 +73,8 @@ class httpd {
         mode   => 644,
     }
 
-    file { "/etc/postfix/main.cf":
-        source => "puppet:///modules/httpd/etc/postfix/main.cf",
+    file { "/etc/hosts":
+        source => "puppet:///modules/httpd/etc/hosts",
         owner  => "root",
         group  => "root",
         mode   => 644,
@@ -81,11 +87,25 @@ class httpd {
         mode   => 644,
     }
 
-    file { "/etc/hosts":
-        source => "puppet:///modules/httpd/etc/hosts",
+    file { "/etc/pki/tls/certs/ca.crt":
+        source => "puppet:///modules/httpd/etc/pki/tls/certs/ca.crt",
         owner  => "root",
         group  => "root",
         mode   => 644,
     }
 
+    file { "/etc/pki/tls/private/ca.csr":
+        source => "puppet:///modules/httpd/etc/pki/tls/private/ca.csr",
+        owner  => "root",
+        group  => "root",
+        mode   => 644,
+    }
+
+    file { "/etc/pki/tls/private/ca.key":
+        source => "puppet:///modules/httpd/etc/pki/tls/private/ca.key",
+        owner  => "root",
+        group  => "root",
+        mode   => 644,
+    }
+    
 }

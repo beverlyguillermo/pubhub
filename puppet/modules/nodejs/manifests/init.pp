@@ -10,9 +10,4 @@ class nodejs {
         require => Package['nodejs'],
     }
 
-    exec { "lessc":
-        command => "npm install -g less@1.3.3",
-        require => [Package['npm']],
-    }
-
 }
