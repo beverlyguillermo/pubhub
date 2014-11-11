@@ -146,6 +146,9 @@ var hubster = (function ($) {
                     offset: 15
                 });
             }
+            else if (service === "event-subscribe") {
+                window.location = href;
+            }
         },
         // Adjust times in feature area, using momentJS
         convertDates: function (format) {

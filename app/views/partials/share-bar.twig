@@ -12,7 +12,9 @@
 
 	{### Sharing Icons ###}
 	<div class="share-icons">
-
+		{% if event_id %}
+			<a data-service="event-subscribe" href="{{ globalMacros.eventSubscribeUrl(url) }}"><i class="icon icon-calendar"></i></a>
+		{% endif %}
 		{# Twitter #}
 		<a class="share-twitter" 
 			data-service="twitter" 

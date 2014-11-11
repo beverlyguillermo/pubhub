@@ -816,6 +816,11 @@ Create an article teaser.
 					<span class="summary-text">{{ event.excerpt }}</p></span>
 				</div>
 			{% endif %}
+			<p>
+				<a class="btn"
+					title="Add this event to your calendar"
+					data-service="event-subscribe" href="{{ _self.eventSubscribeUrl(event.url) }}"><span><i class="icon icon-calendar"></i>&nbsp; Add event to calendar</span></a>
+			</p>
 		</div>
 
 	</div>
@@ -1030,9 +1035,12 @@ Create an article teaser.
 
 {% endmacro %}
 
+{% macro eventSubscribeUrl(url) %}
+  {{ url|replace({'https': 'webcal', 'http': 'webcal'}) }}/-/subscribe
+{% endmacro %}
 
 {% macro eventMeta(event) %}
-	
+
 	{#
 	Find out if the event happened before today.
 	If so, add the robots:noindex meta tag.
