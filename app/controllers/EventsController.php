@@ -36,7 +36,7 @@ class EventsController extends \app\base\Controller
 			$one_week    = strtotime('+1 week', $today);
 			$two_weeks   = strtotime('+2 weeks', $today);
 			if (!isset($params['date']) || empty($params['date']))
-				$params['date'] =	array('.next-two-weeks');
+				$params['date'] =	array('.this-week');
 			switch($params['date'][0]) {
 				case '.today':
 					$params['date'] = array(date('Y-m-d', $today), date('Y-m-d', $today));
@@ -45,10 +45,6 @@ class EventsController extends \app\base\Controller
 				case '.this-week':
 					$params['date'] = array(date('Y-m-d', $today), date('Y-m-d', $one_week));
 					$params['selected'] = 'This Week';
-				break;
-				case '.next-two-weeks':
-					$params['date'] = array(date('Y-m-d', $today), date('Y-m-d', $two_weeks));
-					$params['selected'] = 'Next Two Weeks';
 				break;
 				default:
 					$params['selected'] = 'Custom Date';
