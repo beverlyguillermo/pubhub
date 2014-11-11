@@ -34,9 +34,19 @@
 			<h2><a href="<%= article.url %>"><%= article.alt_headline || article.headline %></a></h2>
 
 			<div class="force">
+
+
+			<% if (article.type == "magazine_article" || article.type == "gazette_article") { %>
+				
+				<span class="meta publish-date"><i class="icon icon-time"></i> <%= article.publication_content.issue.short_edition %> <%= article.publication_content.issue.year %></span>
+
+			<% } else { %>
+
 				<div style="white-space: nowrap;" class="publish-date" data-stamp="<%= m.format('MMMM D YYYY h:mm:s a') %>">
 					<i class="icon icon-time"></i> <%= pubDate %>
 				</div>
+
+			<% } %>
 
 				<div class="media-promo">
 					<% if (article._embedded.videos) { %>

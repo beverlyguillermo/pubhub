@@ -20,7 +20,7 @@
 
 {% block page_content %}
 	
-	<div class="media media-{{ media_page }} media-page page">
+	<div class="media media-{{ media_page }} media-page custom-page page">
 
 		<div class="body-content">
 
@@ -37,9 +37,9 @@
 
 				{% if featured is defined %}
 
-					<div class="media-feature-area force">
+					<div class="feature-area section force">
 
-						<div class="content count-{{ featured|length }}">
+						<div class="main-features">
 
 							{% for article in featured %}
 
@@ -58,10 +58,10 @@
 
 				{% endif %}
 
-				<div class="feed">
+				<div class="feed section">
 
 					<h3><span>Latest news from around Johns Hopkins</span></h3>
-					{{ hubMacros.displayFeed(feed) }}
+					{{ hubMacros.displayMediaFeed(feed) }}
 					<p><a href="/media/latest" class="btn">More releases &raquo;</a>
 
 				</div>
@@ -70,7 +70,11 @@
 
 		</div>
 
-		{% include "partials/media-sidebar.twig" %}
+		<div class="custom-sidebar media-sidebar sidebar col end">
+
+			{{ sidebar.html }}
+
+		</div>
 
 	</div>
 

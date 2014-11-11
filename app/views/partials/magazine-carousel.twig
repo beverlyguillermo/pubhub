@@ -37,7 +37,7 @@
 											{{ globalMacros.getImage(article._embedded.image_thumbnail[0], "thumbnail", false) }}
 										{% endif %}
 
-										<h5 class="hasunderline">{{ globalMacros.getHeadline(article) }}</h5>
+										<h5 class="hasunderline">{{ globalMacros.getHeadline(article, true) }}</h5>
 
 										{% if article.excerpt is not null %}
 											<p class="summary">{{ article.excerpt }}</p>

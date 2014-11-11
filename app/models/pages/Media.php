@@ -14,7 +14,7 @@ class Media extends \app\models\Pages
 		parent::getPageData();
 
 		$this->feed = new \app\models\feeds\Media(array());
-        $items = ($this->page_info["slug"] === "media/latest") ? 15 : 5;
-        $this->data["feed"] = $this->feed->getData($items);
+    $items = ($this->page_info["slug"] === "media/latest") ? 15 : 5;
+    $this->data["feed"] = $this->feed->getData($items);
 	}
 }

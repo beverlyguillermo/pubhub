@@ -5,6 +5,21 @@
 {% endblock %}
 
 {% block magazine_article %}
+
+    {# default editor to Catherine #}
+    {% set editorName = "Catherine Pierre" %}
+    {% set editorEmail = "cpierre@jhu.edu" %}
+    {% set editorImage = "CatherinePierre.png" %}
+    {% set editorSignatureImage = "Catherine_signature.png" %}
+
+    {# if another editor... #}
+    {% if (issue.editor == "Dale Keiger") %}
+        {% set editorName = "Dale Keiger" %}
+        {% set editorEmail = "dek@jhu.edu" %}
+        {% set editorImage = "DaleKeiger.png" %}
+        {% set editorSignatureImage = "Dale_signature.png" %}
+    {% endif %}
+
     {{ globalMacros.getEmphasis(results) }}
 
     <div class="body-content">
@@ -12,14 +27,14 @@
         {% block magazine_inset %}
             <div class="article-inset">
                 <div class="editor-bio">
-                <img src="/assets/img/magazine/CatherinePierre.png" alt="Catherine Pierre, editor" />
+                <img src="/assets/img/magazine/{{ editorImage }}" alt="{{ editorName }}, editor" />
                 <p class="credit alt">
-                    <span class="name line"><strong>Catherine Pierre</strong></span>
+                    <span class="name line"><strong>{{ editorName }}</strong></span>
                     <span class="title line">Editor</span>
                 </p>
                 </div>
                 
-                <p class="special-note">Give us your feedback by sending a letter to the editor via email to <a href="mailto:cpierre@jhu.edu">cpierre@jhu.edu</a>. (We reserve the right to edit letters for length, style, clarity, and civility.)</p>
+                <p class="special-note">Give us your feedback by sending a letter to the editor via email to <a href="mailto:{{ editorEmail }}">{{ editorEmail }}</a>. (We reserve the right to edit letters for length, style, clarity, and civility.)</p>
             </div>
         {% endblock %}
 
@@ -27,8 +42,8 @@
 
             {{ parent () }}
 
-            <img src="/assets/img/magazine/Catherine_signature.png" alt="Signed, Catherine Pierre" />
-            <p class="signature-title attribution"><span class="name line">Catherine Pierre</span> <span class="title line">Editor</span></p>
+            <img src="/assets/img/magazine/{{ editorSignatureImage }}" alt="Signed, {{ editorName }}" />
+            <p class="signature-title attribution"><span class="name line">{{ editorName }}</span> <span class="title line">Editor</span></p>
 
         {% endblock %}
 

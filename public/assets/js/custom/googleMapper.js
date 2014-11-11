@@ -82,6 +82,7 @@ var googleMapper = (function (google, $) {
 		 * @return string The compiled HTML
 		 */
 		locationHtml: function(location) {
+
 			var html = "<div class='mapsInfoWindow'>";
 
 			// name
@@ -113,6 +114,11 @@ var googleMapper = (function (google, $) {
 
 			// other deets
 			html += "<div class='otherContact'>";
+
+			if (location.latitude && location.longitude) {
+				html += "<p class='directions'><a href='https://www.google.com/maps/dir/Current+Location/" + location.latitude + "," + location.longitude + "'>Get directions &raquo;</a>";
+			}
+
 			if (location.website) {
 				html += "<p class='website'><a href='" + location.website + "'>Website &raquo;</a>";
 			}

@@ -47,6 +47,7 @@ class PagesController extends \app\base\Controller
         $params = $this->router->request()->params();
 
         $this->model->queryById($this->id);
+        $this->model->getSidebars();
 
         if (isset($params["cancel"])) {
             $this->router->redirect("/manager/pages", 302);

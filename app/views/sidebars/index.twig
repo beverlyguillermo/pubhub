@@ -1,0 +1,36 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+  <div class="page-header"><h1>{{ page_title }}</h1></div>
+
+  {% include "partials/messages.twig" %}
+
+  <div class="row add-new">
+    <a href="/manager/sidebars/create" class="btn">+ New Sidebar</a>
+  </div>
+
+  <div class="row">
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for sidebar in sidebars %}
+          <tr>
+            <td style='color: #999;'>{{ sidebar.id }}</td>
+            <td><strong><a href="/manager/sidebars/{{ sidebar.id }}/edit">{{ sidebar.name }}</a></strong></td>
+            <td><a href="/manager/sidebars/{{ sidebar.id }}/edit">Edit <i class="icon-chevron-right"></i></a></td>
+          </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+{% endblock content %}

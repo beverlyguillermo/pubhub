@@ -1,0 +1,158 @@
+{% extends "layouts/hub.twig" %}
+
+{% set ebola_page = slug|replace({ "ebola/": ""})|replace({ "ebola" : "home" }) %}
+
+{% block page_content %}
+  
+  <div class="ebola ebola-{{ ebola_page }} ebola-page custom-page page">
+
+    <div class="body-content">
+
+      {% include "partials/messages.twig" %}
+
+      <div class="col measure wide">
+
+        <h1>{{ page_title }}</h1>
+
+        <div class="text section" style="margin-bottom: 45px;">
+          {{ html }}
+        </div>
+
+        {% if featured is defined %}
+
+          <div class="feature-area section force">
+
+          <h5>Featured coverage</h5>
+
+            {% if ebola_page == "home" %}
+
+              {% set mainFeatures = featured|slice(0, 3) %}
+              {% set secondaryFeatures = featured|slice(3, 5) %}
+
+              <div class="main-features section force">
+
+                {% for article in mainFeatures %}
+
+                  {% set classes = ["col"] %}
+
+                  {% if loop.index == 3 %}
+                    {% set classes = classes|merge(["end"]) %}
+                  {% endif %}
+
+                  {{ globalMacros.articleTeaser(article, "topic", classes) }}
+
+                {% endfor %}
+
+              </div>
+
+              {% if secondaryFeatures is not empty %}
+
+                <div class="secondary-features section force col half">
+
+                  {% set classes = ["article", "teaser", "force"] %}
+
+                  {% for article in secondaryFeatures %}
+
+                    {% if loop.index == 4 %}
+                      </div>
+                      <div class="secondary-features col half end">
+                    {% endif %}
+
+                    {{ globalMacros.articleTeaser(article, "secondary", classes) }}
+
+                  {% endfor %}
+
+                  <div class="call-to-action">
+                    <a href="/tags/ebola" class="btn">More coverage &raquo;</a>
+                  </div>
+
+                </div>
+
+              {% endif %}
+
+            {% endif %}
+
+          </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+    <div class="custom-sidebar ebola-sidebar sidebar col end">
+
+      <div class="section">
+
+        <h3><span>Ebola experts</span></h3>
+        <p>Johns Hopkins faculty experts are working with the media to share their knowledge about the spread and treatment of Ebola.</p>
+
+
+        <div class="teaser article force article teaser force has-image">
+
+          <div class="teaser-text">
+            <h2><a href="http://www.nbcnews.com/storyline/ebola-virus-outbreak/mtpsummit-experts-u-s-prepared-handle-ebola-virus-n229161">Gabe Kelen on NBC's 'Meet the Press'</a></h2>
+          </div>
+
+          <div class="thumbnail">
+            <a href="http://www.nbcnews.com/storyline/ebola-virus-outbreak/mtpsummit-experts-u-s-prepared-handle-ebola-virus-n229161"><img src="http://api.hub.jhu.edu/factory/sites/default/files/kelen_mtp.jpg" alt="Dr. Gabor Kelen"></a>
+          </div>
+            
+          <div class="summary">Chair of Department of Emergency Medicine discusses Johns Hopkins Hospital’s readiness to deal with Ebola virus</div>
+
+        </div>
+
+        <ul>
+          <li><a href="/ebola/coverage">See more recent headlines &raquo;</a></li>        
+          <li><a href="http://releases.jhu.edu/2014/10/16/media-advisory-johns-hopkins-ebola-experts/">See list of faculty experts &raquo;</a></li>
+        </ul>
+        
+      </div>
+
+      <div class="section">
+        <h3><span>Ebola Resources</span></h3>
+        <ul>
+          <li><a href="http://hub.jhu.edu/2014/10/17/five-questions-about-ebola">Five common Ebola questions</a></li>
+          <li><a href="http://www.insidehopkinsmedicine.org/cepar/_docs/ebola2014/travel_guidance.pdf">Johns Hopkins travel guidance</a></li>
+          <li><a href="http://www.hopkins-cepar.org">Johns Hopkins Office of Critical Event Preparedness and Response</a></li>
+          <li><a href="http://www.cdc.gov/vhf/ebola/outbreaks/2014-west-africa/index.html">CDC Ebola updates</a></li>
+          <li><a href="http://www.who.int/csr/disease/ebola/en/">WHO Ebola updates</a></li>
+          <li><a href="http://www.cdc.gov/vhf/ebola/symptoms/index.html">Ebola signs and symptoms</a></li>
+          <li><a href="http://wwwnc.cdc.gov/travel/notices/warning/ebola-sierra-leone">CDC travel advisories</a></li>
+          <li><a href="http://www.cdcfoundation.org/ebola-outbreak">Ways to give</a></li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3><span>Featured Videos</span></h3>
+        <div class="video">
+
+          <a onclick="_gaq.push(['_trackEvent', 'Video', 'Play', '']);" href="https://www.youtube.com/watch?v=vQ-nNGNRuRo&list=PLnxJP601LarFeev8p6vUhvq4EimtrVbHI" class="videopow videopow-playlist">
+            <img src="http://api.hub.jhu.edu/factory/sites/default/files/styles/landscape/public/panel.jpg" alt="Ebola symposium panel">
+            <i class="icon icon-play"></i>
+          </a>
+
+          <div class="teaser" style="padding-top:10px;">
+            <div class="teaser-text">
+              <h2><a onclick="_gaq.push(['_trackEvent', 'Video', 'Play', '']);" href="https://www.youtube.com/watch?v=vQ-nNGNRuRo&list=PLnxJP601LarFeev8p6vUhvq4EimtrVbHI" class="videopow videopow-playlist">Johns Hopkins Ebola symposium</a></h2>
+              <div class="summary">Six-part video series from the Oct. 14 Ebola symposium, which brought together experts in microbiology, public health, bioethics, and emergency medicine. <a href="/2014/10/14/ebola-experts-johns-hopkins" style="display:inline;">Learn More</a></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+  {{ parent() }}
+  <script type="text/javascript">
+  jQuery(document).ready(function ($) {
+      hubster.convertDates();
+  });
+  </script>
+{% endblock %}

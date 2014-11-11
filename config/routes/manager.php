@@ -64,6 +64,10 @@ $router->set("/manager/hubpix(/)", function () use ($router) {
 /**
  * Main MVC automation routes
  */
-$router->set("/manager/:controller(/)(/:id/:action(/))", function ($controller, $id = null, $action = null) use ($router) {
+$router->set("/manager/:controller/create(/)", function ($controller) use ($router) {
+    $router->dispatch($controller, "create");
+});
+
+$router->set("/manager/:controller(/)(/:id)(/:action(/))", function ($controller, $id = null, $action = null) use ($router) {
     $router->dispatch($controller, $action, array("id" => $id));
 });

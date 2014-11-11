@@ -62,7 +62,7 @@
 				</div>
 
 				<div class="description">
-					{% if results.featured == true and results._embedded.image_inline is not null %}
+					{% if results._embedded.image_inline is not null %}
 						{{ globalMacros.getImage(results._embedded.image_inline[0], "medium", true, "inline event-inset-section inset-element" ) }}
 					{% endif %}
 

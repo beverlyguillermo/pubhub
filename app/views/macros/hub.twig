@@ -1,7 +1,7 @@
 {% macro makeRailSelector(rail) %}{{ rail.type }}-{{ rail.endpoint ? rail.endpoint|replace("/", "-") : rail.page.endpoint|replace("/", "-") }}{% endmacro %}
 
 
-{% macro displayFeed(feed) %}
+{% macro displayMediaFeed(feed) %}
 
 	<ul class="feed">
 

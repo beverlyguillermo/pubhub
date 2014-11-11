@@ -20,7 +20,7 @@
 
 {% block page_content %}
 	
-	<div class="media-{{ media_page }} media page">
+	<div class="media-{{ media_page }} media-page custom-page page">
 
 		<div class="body-content">
 
@@ -36,14 +36,18 @@
 				<h1>{{ page_title }}</h1>
 
 				<div class="section feed">
-					{{ hubMacros.displayFeed(feed) }}
+					{{ hubMacros.displayMediaFeed(feed) }}
 				</div>
 
 			</div>
 
 		</div>
 
-		{% include "partials/media-sidebar.twig" %}
+		<div class="custom-sidebar media-sidebar sidebar col end">
+
+			{{ sidebar.html }}
+
+		</div>
 
 	</div>
 

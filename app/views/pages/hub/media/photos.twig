@@ -20,7 +20,7 @@
 
 {% block page_content %}
 	
-	<div class="media-{{ media_page }} media page">
+	<div class="media-{{ media_page }} media-page custom-page page">
 
 		<div class="col measure wide">
 
@@ -35,13 +35,19 @@
 
 				<h1>{{ page_title }}</h1>
 
-				{{ html }}
+				<div class="text section">
+          {{ html }}
+        </div>
 
 			</div>
 
 		</div>
 
-		{% include "partials/media-sidebar.twig" %}
+		<div class="custom-sidebar media-sidebar sidebar col end">
+
+			{{ sidebar.html }}
+
+		</div>
 
 	</div>
 

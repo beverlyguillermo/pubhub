@@ -24,7 +24,10 @@
 					data-current_id="{{ results.id }}" 
 					data-per_page="4"
 					data-excluded_ids="{{ relatedContent|join(",") }}"
-					data-template="template-articles-related">
+					data-template="template-articles-related"
+					data-backup="true"
+					data-backup-endpoint="articles"
+					data-backup-type="recent">
 					
 					<div class="payload"></div>
 					

@@ -149,8 +149,10 @@ var hubster = (function ($) {
         },
         // Adjust times in feature area, using momentJS
         convertDates: function (format) {
+
             format = format || "MMMM-D-YYYY h-mm-s-a";
-            $(".publish-date").each( function (i, value) {
+
+            $(".publish-date.convert").each( function (i, value) {
 
                 var $val = $(value);
                 var dt = $val.text();
@@ -168,7 +170,9 @@ var hubster = (function ($) {
                 }
                 
             });
+
         },
+
         activateNewTrending: function () {
             // Load new/trending tabs
             lazy.load($(".quick-tabs").find(".tab"));

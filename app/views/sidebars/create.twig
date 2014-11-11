@@ -1,0 +1,22 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+  <div class="page-header">
+    <h1>{{ page_title }}</h1>
+  </div>
+
+  {% include "partials/messages.twig" %}
+
+  <form method="post" action="" class="form-vertical" id="newForm">
+
+    {{ forms.input("name", "Name", "", "text", "xxlarge") }}
+    {{ forms.input("html", "HTML", "<p></p>", "textarea", "xxlarge") }}
+
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit" name="submit" value="submit">Create</button>
+    </div>
+
+  </form>
+
+{% endblock content %}

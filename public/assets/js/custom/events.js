@@ -4,7 +4,7 @@ var hubevents = (function ($, lazy, _gaq) {
      * Holds the event data
      * @type {[type]}
      */
-	var $container = $(".events-container");
+    var $container = $(".events-container");
     
     var isotopeOptions = {
         layoutMode: "masonry",
@@ -49,9 +49,9 @@ var hubevents = (function ($, lazy, _gaq) {
      */
     var $lazyload;
 
-	return {
+    return {
 
-		init: function() {
+        init: function() {
 
             // turn off filters until they're setup
             $(".filters-col")
@@ -62,15 +62,15 @@ var hubevents = (function ($, lazy, _gaq) {
             $originalEvents = $($container.html());
 
             // wait until the images are loaded to initialize isotope
-			$container.imagesLoaded( function() {
+            $container.imagesLoaded( function() {
 
                 $container.isotope(isotopeOptions, function () {
 
                     hubevents.filtering.setupFilters();
 
-                    // setup rangepicker to run loadMore() when a date range is selected
+                    // setup rangepicker to run newRange() when a date range is selected
                     $("input#range").rangepicker(function (dates) {
-                        hubevents.loadMore(dates);
+                        hubevents.newRange(dates);
                     });
 
                     hubevents.filtering.setupFilterToggle();
@@ -85,15 +85,15 @@ var hubevents = (function ($, lazy, _gaq) {
                 });
                  
             });
-		},
+        },
 
         removeAll: function (callback) {
             $container.isotope("remove", $container.find(".event"));
         },
 
-        loadMore: function (dates) {
+        newRange: function (dates) {
 
-            var joinedDates = dates.join("-");
+            var joinedDates = dates.join(",");
 
             // new date range is the same as the previous, reload saved lazyload data
             if (joinedDates === previousDateRange && !dateRangeActive) {
@@ -105,29 +105,54 @@ var hubevents = (function ($, lazy, _gaq) {
             } else {
 
                 hubevents.removeAll();
-
-                var promise = lazy.createPromise({
-                    type: "custom",
-                    endpoint: "events",
-                    params: {
-                        date: hubevents.utility.convertDates(dates),
-                        per_page: -1
-                    }
-                });
-
-                promise.then(function (data) {
-
-                    $lazyload = $(lazy.compileTemplate(data, "template-events-home-more"));
-
-                    $lazyload.imagesLoaded( function() {
-                        $container.isotope("insert", $lazyload);
-                    });
-                    
-                });
+                hubevents.loadMore(hubevents.formatDates(dates), 1);
+                
             }
 
             previousDateRange = joinedDates;
             dateRangeActive = true;
+        },
+
+        /**
+         * Formats dates for the API
+         * @param  {array} dates Dates selected by rangepicker
+         * @return string
+         */
+        formatDates: function (dates) {
+            
+            dates = $.map(dates, function (date) {
+
+                var dateParts = date.split("/");
+                return dateParts[2] + "-" + dateParts[0] + "-" + dateParts[1];
+
+            });
+
+            return dates.join(",");
+
+        },
+
+        loadMore: function (dates, page) {
+
+            lazy.createPromise({
+
+                type: "custom",
+                endpoint: "events",
+                params: { per_page: 100 , page: page, date: dates }
+
+            }).then(function (data) {
+
+                $lazyload = $(lazy.compileTemplate(data, "template-events-home-more"));
+
+                $lazyload.imagesLoaded( function() {
+                    $container.isotope("insert", $lazyload);
+                });
+
+                if (data._links.next) {
+                    hubevents.loadMore(dates, page + 1);
+                }
+
+            });
+
         },
 
         resetEvents: function () {
@@ -316,6 +341,6 @@ var hubevents = (function ($, lazy, _gaq) {
 
         }
 
-	};
+    };
 
 })(jQuery, lazy, _gaq);

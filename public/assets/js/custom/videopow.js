@@ -1,11 +1,12 @@
 jQuery(document).ready( function ($) {
 	
-	$(".videopow").click( function () {
+	$(".videopow").on("click", function () {
 			
 		var qstring = new Array(), 
 			qpairs = new Array(), 
 			i, 
 			youtubeID = 0,
+			playlistId = 0,
 			iframe,
 			videopowHTML,
 			winHeight, winWidth,
@@ -16,9 +17,10 @@ jQuery(document).ready( function ($) {
 			wfit, hfit, wtoobig, htoobig,
 			widthOffset=100, heightOffset=180,
 			styleOverlay, styleFrame, styleIFrame, styleClose,
-			youTubePlayerOptions, youTubePlayerParams
+			youTubePlayerOptions, youTubePlayerParams,
+			playlist = $(this).hasClass("videopow-playlist")
 			;
-		
+
 		vidTargetWidth = this.getAttribute('data-maxwidth') || 1280;
 		vidTargetHeight = this.getAttribute('data-maxheight') || 720;
 		
@@ -71,9 +73,14 @@ jQuery(document).ready( function ($) {
 			var pair = new Array();
 			pair = qpairs[i].split("=");
 			
+			if ( pair[0] === "list" ) {
+				playlistId = pair[1];
+				continue;
+			}
+
 			if ( pair[0] === "v" ) {
 				youtubeID = pair[1];
-				break;
+				continue;
 			}
 			
 		}
@@ -96,9 +103,15 @@ jQuery(document).ready( function ($) {
 			"theme=light",
 			"enablejsapi=1",
 			"modestbranding=1",
-			"playerapiid=ytplayer"
+			"playerapiid=ytplayer",
+			"showinfo=1"
 		];
-		
+
+		if (playlist) {
+			youTubePlayerParams.push("listType=playlist");
+			youTubePlayerParams.push("list=" + playlistId);
+		}
+
 		iframe = '<iframe id="videopow-iframe" ' + styleIFrame + 'src="http://www.youtube.com/embed/' + youtubeID + '?' + youTubePlayerParams.join("&") + '" frameborder="0" allowfullscreen allowTransparency="true"></iframe>';
 				
 		videopowHTML = '<div id="videopow-overlay" '+styleOverlay+'><div class="videopow-frame" '+styleFrame+'>' + iframe + '<a id="videopow-close" href="#" '+styleClose+'>Close</a></div></div>';
@@ -135,4 +148,3 @@ jQuery(document).ready( function ($) {
 	});
 	
 });
-

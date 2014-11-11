@@ -133,20 +133,24 @@
 
 
 {# The whole damn form, in one droppable piece #}
-{% macro edit_form(version, version_type, page) %}
+{% macro edit_form(version, page) %}
 
 	<form method="post" action="" class="form-vertical" id="editForm">
 
 		<input type="hidden" name="template" value="{{ version.template }}" />
 
+		{% if "sidebar" in page.page_features %}
+
+			<fieldset>
+				<legend>Sidebar</legend>
+				{{ _self.select("sidebar", "Sidebar", version.sidebar, page.sidebars) }}
+			</fieldset>
+
+		{% endif %}
+
 		{% if "feature_queue" in page.page_features %}
 
-			{% set class = "articles" %}
-			{% if page.type == "events" %}
-				{% set class = "events" %}
-			{% endif %}
-
-			<fieldset data-endpoint="{{ class }}">
+			<fieldset class="load-previews" data-endpoint="articles">
 				<legend>Feature Queue</legend>
 
 				<script type="text/template" class="input-template">
@@ -167,7 +171,7 @@
 
 		{% if "tags" in page.page_features %}
 
-			<fieldset data-endpoint="tags">
+			<fieldset class="load-previews" data-endpoint="tags">
 				<legend>Tag Filters</legend>
 
 				<script type="text/template" class="input-template">
@@ -188,7 +192,7 @@
 
 		{% if "locations" in page.page_features %}
 
-			<fieldset data-endpoint="locations">
+			<fieldset class="load-previews" data-endpoint="locations">
 				<legend>Location Filters</legend>
 
 				<script type="text/template" class="input-template">
@@ -209,7 +213,7 @@
 
 		{% if "topics" in page.page_features %}
 
-			<fieldset data-endpoint="topics">
+			<fieldset class="load-previews" data-endpoint="topics">
 				<legend>Topic Filters</legend>
 
 				<script type="text/template" class="input-template">
@@ -273,21 +277,11 @@
 
 		{{ _self.input("id", "", version.id, "hidden") }}
 
-
-		{# live, scheduled, new, delete #}
 		<div class="form-actions">
-			{% if version_type == "live" %}
-				<button class="btn btn-primary" type="submit" name="submit" value="live">Update</button>
-			{% elseif version_type == "scheduled" %}
-				<button class="btn btn-primary" type="submit" name="submit" value="update">Update</button>
-				<button class="btn btn-danger" type="submit" name="submit" value="delete">Delete Version</button>
-			{% elseif version_type == "new" %}
-				<button class="btn btn-primary" type="submit" name="submit" value="new">Schedule</button>
-				{# <i class="icon-time"></i> #}
-				<input type="text" class="input-xlarge transparent" readonly id="published" name="published" size="10" style="width:150px">
-			{% endif %}
+				<button class="btn btn-primary" type="submit" name="submit" value="submit">Update</button>
 				<button class="btn" type="cancel" name="cancel" value="cancel">Exit Without Saving</button>
 		</div>
+
 	</form>
 
 {% endmacro %}

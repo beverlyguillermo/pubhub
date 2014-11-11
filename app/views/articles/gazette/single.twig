@@ -1,5 +1,7 @@
 {% extends "articles/global-article.twig" %}
 
+{% set department = "" %}
+
 {% if results.publication_content.department.parent is not null %}
 	{% set department = results.publication_content.department.parent.name %}
 {% else %}
@@ -7,7 +9,7 @@
 {% endif %}
 
 {% block title %}
-	{{ results.headline|striptags }} | {{ department }} | Gazette
+	{{ results.headline|striptags }} | {% if department is not empty %}{{ department }} |{% endif %} Gazette
 {% endblock %}
 
 {% block article_content %}
@@ -37,7 +39,6 @@
 		{#
 		We don't understand what this part is for so we are killing it for now until
 		someone discovers why it was necessary. JR and JW, 11-16-2012
-
 		{% if results.gazette.section.machine_name == "gallery" %}
 			{{ globalMacros.getGallery(results.galleries.0, "emphasized") }}
 		{% endif %}

@@ -2,6 +2,7 @@
 
 namespace app\models;
 use app\models\Versions;
+use app\models\Sidebars;
 use \app\workers\Messages;
 use \app\workers\Router;
 use \app\workers\Database;
@@ -58,6 +59,13 @@ class Pages extends Model
      */
     protected $page_info = array();
 
+    /**
+     * Information about a page's active version
+     * from the "Versions" DB table
+     * @var array
+     */
+    protected $version_info = array();
+
     protected $versionColumns = array(
         "id",
         "template",
@@ -66,7 +74,8 @@ class Pages extends Model
         "tags",
         "html",
         "form",
-        "locations"
+        "locations",
+        "sidebar"
     );
 
 
@@ -93,25 +102,46 @@ class Pages extends Model
      * @param $id integer representing the ID of the
      * page whose data to retrieve
      */
-    public function queryById($id)
+    public function findById($id)
     {
         // get active page data
         $fields = array("id" => $id);
-        $page_data = parent::findByField($fields);
-        $page_data = array_shift($page_data);
+        $result = parent::findByField($fields);
+        $this->data["page_data"] = array_shift($result);
 
         // unserialize the page_features array
-        $page_data["page_features"] = unserialize($page_data["page_features"]);
+        $this->data["page_data"]["page_features"] = unserialize($this->data["page_data"]["page_features"]);
 
-        // get versions
-        $this->versions = new Versions();
-        $this->versions->findVersions($id);
+        return $this;
+    }
 
-        // put it all together (do the hokey pokey)
-        $this->data["page_data"] = $page_data;
-        $this->data["versions"] = $this->versions->data;
+    public function findActiveVersionById($id)
+    {
+        $versionGetter = new Versions();
+        $this->data["active_version"] = $versionGetter->findActiveVersion($id);
 
-        return $this->data;
+        return $this;
+    }
+
+    public function findAvailableSidebars()
+    {
+        if (in_array("sidebar", $this->data["page_data"]["page_features"])) {
+
+            $sidebarsModel = new Sidebars();
+            $sidebarsModel->findAll();
+
+            $this->data["page_data"]["sidebars"] = array_map(function ($sidebar) {
+
+                return array(
+                    "value" => $sidebar["id"],
+                    "label" => $sidebar["name"]
+                );
+
+            }, $sidebarsModel->data["sidebars"]);
+
+            array_unshift($this->data["page_data"]["sidebars"], array("value" => null, "label" => "None"));
+            
+        }
     }
 
     /**
@@ -141,8 +171,8 @@ class Pages extends Model
     }
 
     /**
-     * Find all records in this model's database table. Sorts
-     * the results by the 'title' field ascending.
+     * Find all pages that have not been deleted.
+     * @return self
      */
     public function findAll()
     {
@@ -151,25 +181,16 @@ class Pages extends Model
         $this->pdo->prepared = $this->pdo->prepare($sql);
         $this->pdo->prepared->execute();
 
-        $pages = $this->pdo->prepared->fetchAll(PDO::FETCH_ASSOC);
+        $this->data["pages"] = $this->pdo->prepared->fetchAll(PDO::FETCH_ASSOC);
 
-        $versions = new Versions();
-
-        foreach ($pages as &$page) {
-            $page["active_version"] = $versions->findActiveVersion($page["id"]);
-        }
-
-        $this->data["pages"] = $pages;
-
-        return $this->data;
+        return $this;
     }
 
     /**
      * Sort pages alphabetically but move "Home" to the top
-     * Rel: mananger
-     * @return  array
+     * @return array
      */
-    function sortPages()
+    function sortForManager()
     {
         usort($this->data["pages"], function ($a, $b) {
             if ($a["type"] === "home") {
@@ -180,6 +201,8 @@ class Pages extends Model
             }
             return strcmp($a["title"], $b["title"]);
         });
+
+        return $this;
     }
 
     /**
@@ -223,29 +246,13 @@ class Pages extends Model
 
         $this->setProcessingVariables($page_id, $values);
 
-        if ($this->action == "delete") {
-            $this->delete($this->form_values["id"]);
-            Messages::push("success", "The version was successfully deleted.");
-            $this->router->redirect("/manager/pages");
-        }
-
         $this->setValuesforUpdate($page_id);
 
         $title = $this->data["page_data"]["title"];
 
-        if ($this->action == "live") {
-            $this->create($this->updateValues);
-            Messages::push("success", "The {$title} page was successfully edited. Good job!");
-
-        } elseif ($this->action == "new") {
-            $this->create($this->updateValues);
-            Messages::push("success", "The {$title} page was successfully scheduled. Good job!");
-        }
-
-        elseif ($this->action == "update") {
-            $this->update($this->form_values["id"], $this->updateValues);
-            Messages::push("success", "The {$title} page was successfully edited. Good job!");
-        }
+        // create a new version
+        $this->create($this->updateValues);
+        Messages::push("success", "The {$title} page was successfully edited. Good job!");
 
         $this->router->redirect("/manager/pages");
     }
@@ -257,8 +264,6 @@ class Pages extends Model
      */
     protected function setProcessingVariables($page_id, $values)
     {
-        $this->action = $values["submit"];
-
         $columns = array_fill_keys($this->versionColumns, "");
         $this->form_values = array_intersect_key($values, $columns);
     }
@@ -275,6 +280,10 @@ class Pages extends Model
 
         if (in_array("feature_queue", $pageFeatures) && !empty($this->form_values["feature_queue"])) {
             $this->updateValues["feature_queue"] = serialize($this->form_values["feature_queue"]);
+        }
+
+        if (in_array("sidebar", $pageFeatures) && !empty($this->form_values["sidebar"])) {
+            $this->updateValues["sidebar"] = $this->form_values["sidebar"];
         }
 
         if (in_array("rails", $pageFeatures) && !empty($this->form_values["rails"])) {
@@ -301,20 +310,10 @@ class Pages extends Model
             $this->updateValues["template"] = $this->form_values["template"];
         }
 
-        if ($this->action == "new" || $this->action == "live") {
+        // publish now
+        $this->updateValues["page_id"] = $page_id;
+        $this->updateValues["published"] = date('Y-m-d H:i:s');
 
-            $this->updateValues["page_id"] = $page_id;
-            $this->updateValues["published"] = date('Y-m-d H:i:s');
-
-            if (isset($this->form_values["published"]) && $this->form_values["published"] != "Now") {
-                $date_to_publish = strtotime($this->form_values["published"]);
-                $this->updateValues["published"] = date('Y-m-d H:i:s', $date_to_publish);
-            }
-        }
-
-        elseif ($this->action == "update") {
-            $this->updateValues["page_id"] = $page_id;
-        }
     }
 
     
@@ -326,12 +325,16 @@ class Pages extends Model
     {
         $this->findPageBySlug();
 
-        $this->versions = new Versions();
-        $this->versions->findActiveVersion($this->page_info["id"]);
+        $id = $this->page_info["id"];
+        $this->findActiveVersionById($id);
 
         $this->data["page_title"] = $this->page_info["title"];
 
         $pageFeaturesToSet = $this->page_info["page_features"] ? $this->page_info["page_features"] : array();
+
+        if (in_array("sidebar", $pageFeaturesToSet)) {
+            $this->setSidebar();
+        }
 
         if (in_array("feature_queue", $pageFeaturesToSet)) {
             $this->setFeatureQueue();
@@ -349,7 +352,7 @@ class Pages extends Model
             $this->setForm();
         }
 
-        if ($this->versions->data["active"]["template"] === "issues") {
+        if ($this->data["active_version"]["template"] === "issues") {
             $this->setPastIssues();
         }
 
@@ -360,6 +363,18 @@ class Pages extends Model
         }
     }
 
+    protected function setSidebar()
+    {
+        $active = $this->data["active_version"];
+
+        if (is_null($active["sidebar"])) return;
+
+        $sidebarsModel = new Sidebars();
+        $sidebarsModel->findById($active["sidebar"]);
+
+        $this->data["sidebar"] = $sidebarsModel->data["sidebar_data"];
+    }
+
 
     /**
      * Set featue queue data to the data object. It is up
@@ -367,7 +382,7 @@ class Pages extends Model
      */
     protected function setFeatureQueue()
     {
-        $active = $this->versions->data["active"];
+        $active = $this->data["active_version"];
         
         if (empty($active["feature_queue"])) {
             return;
@@ -400,29 +415,30 @@ class Pages extends Model
      */
     protected function setRails()
     {
-        $active = $this->versions->data["active"];
+        $active = $this->data["active_version"];
 
         if (empty($active["rails"])) {
             return;
         }
 
-        $versionGetter = new Versions();
         $pageGetter = new self();
 
         $topicRails = array();
         $otherRails = array();
 
+        $versionGetter = new Versions();
+
         foreach ($active["rails"] as &$rail) {
             $rail["type"] = "page";
-            $pageGetter->queryById($rail["page"]);
+            $pageGetter->findById($rail["page"]);
 
             $rail["page"] = $pageGetter->data["page_data"];
             $rail["page"]["active"] = $versionGetter->findActiveVersion((int) $rail["page"]["id"]);
 
             $rail["site_path"] = $rail["page"]["slug"];
+
             $topicRails[] = $rail;
         }
-
         
         $this->data["rails"] = $active["rails"];
         $this->data["rail_groups"] = array("topics" => $topicRails, "other" => $otherRails);
@@ -434,7 +450,7 @@ class Pages extends Model
      */
     protected function setHtml()
     {
-        $active = $this->versions->data["active"];
+        $active = $this->data["active_version"];
         $html = $active["html"];
 
         if (empty($html)) {
@@ -450,7 +466,7 @@ class Pages extends Model
 
     protected function setForm()
     {
-        $active = $this->versions->data["active"];
+        $active = $this->data["active_version"];
         $formId = $active["form"];
 
         $formName = preg_split("/(-|_)/", $formId);
@@ -492,7 +508,7 @@ class Pages extends Model
 
     protected function setSupportingItems($item = "articles", $num = 25)
     {
-        $active = $this->versions->data["active"];
+        $active = $this->data["active_version"];
 
         $feature_queue = "";
         $feature_queue_chopped = array();
@@ -535,7 +551,7 @@ class Pages extends Model
      */
     protected function getFilters($filter = "tags", $getAll = true)
     {
-        $active = $this->versions->data["active"];
+        $active = $this->data["active_version"];
 
         // the filters designated in the manager, if any
         $filtersFromManager = isset($active[$filter]) ? $active[$filter] : null;
@@ -635,7 +651,7 @@ class Pages extends Model
         // The rest are in the manager database
         $this->data["layout"] = $section = $this->page_info["section"];
         $type = $this->page_info["type"];
-        $template = $this->versions->data["active"]["template"];
+        $template = $this->data["active_version"]["template"];
         
         if ($this->page == "not-found" || $this->page_info["section"] == "hub" && $this->page_info["type"] == "static") {
 

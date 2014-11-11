@@ -1,0 +1,25 @@
+{% extends "layouts/manager.twig" %}
+
+{% block content %}
+
+  <div class="page-header">
+    <h1>Edit Sidebar: {{ sidebar_data.title }}</h1>
+  </div>
+
+  {% include "partials/messages.twig" %}
+
+  <form method="post" action="" class="form-vertical" id="editForm">
+
+    <fieldset>
+      <br />
+      <legend>HTML Body</legend>
+      <textarea name="html" class="wysiwyg" style="width:100%; height:600px;">{{ sidebar_data.html }}</textarea>
+    </fieldset>
+
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit" name="submit" value="submit">Update</button>
+        <button class="btn" type="cancel" name="cancel" value="cancel">Exit Without Saving</button>
+    </div>
+  </form>
+
+{% endblock content %}

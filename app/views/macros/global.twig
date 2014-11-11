@@ -75,9 +75,23 @@
 {% endmacro %}
 
 
-{% macro getPublishDate(article) %}
-	{% set stamp = article.publish_date|date("F j, Y g:i:s a") %}
-	<span class="meta publish-date" data-stamp="{{ stamp }}">{{ stamp }}</span>
+{% macro getPublishDate(article, icon) %}
+
+	{% if icon is not defined or icon is null %}
+		{% set icon = true %}
+	{% endif %}
+
+	{% if article.type == "magazine_article" or article.type == "gazette_article" %}
+		
+		<span class="meta publish-date">{% if icon == true %}<i class='icon icon-time'></i> {% endif %}{{ article.publication_content.issue.short_edition }} {{ article.publication_content.issue.year }}</span>
+
+	{% else %}
+
+		{% set stamp = article.publish_date|date("F j, Y g:i:s a") %}
+		<span class="meta publish-date convert">{{ stamp }}</span>
+
+	{% endif %}
+
 {% endmacro %}
 
 
@@ -124,7 +138,7 @@
 {% macro getAuthorDateTopicLine(article, authorPrefix) %}
 	<p class="author pubdate topics tags">
 		{{ _self.getAuthor(article, authorPrefix) }}
-		{{ article.publish_date|date("F j, Y") }}
+		{{ _self.getPublishDate(article, false) }}
 		{{ _self.getTopics(article) }}
 		{{ _self.getTags(article) }}
 	</p>	
@@ -405,26 +419,29 @@ Create an article teaser.
 	{% if video is not null %}
 
 		<div class="article-inset-video article-inset-section">
-			{{ video._embedded.image_thumbnail.sizes.thumbnail }}
-			<h5><i class="icon icon-play-circle"></i> Video{% if video.headline is not null %}: {{ video.headline }}{% endif %}</h5>
-			<div class="video">
-				<a onclick="_gaq.push(['_trackEvent', 'Video', 'Play', '{{ label }}']);" href="http://www.youtube.com/watch?v={{ video.youtube_id }}" class="videopow">
 
+			{{ video._embedded.image_thumbnail.sizes.thumbnail }}
+
+			<h5><i class="icon icon-play-circle"></i> Video{% if video.headline is not null %}: {{ video.headline }}{% endif %}</h5>
+			
+			<div class="video">
+
+				<a onclick="_gaq.push(['_trackEvent', 'Video', 'Play', '{{ label }}']);" href="http://www.youtube.com/watch?v={{ video.youtube_id }}" class="videopow">
 					<img src="{{ video._embedded.image_thumbnail.0.sizes.thumbnail }}" alt="{{ video.headline }}" />
 					<i class="icon icon-play"></i>
-				
 				</a>
-				{#
-
-				We could just play the video small here and let users click 'Watch on YouTube'
-				to watch it larger, but Dave doesn't want that so he's going to assign a
-				video thumbnail image to every inset video or the video will not show up.
-
-				<iframe style="position: relative; z-index: 99;" width="420" height="315" src="http://www.youtube.com/embed/{{ video.youTubeId }}" frameborder="0" allowfullscreen></iframe>
-
-				#}
 
 			</div>
+
+			{% if video.credit is not null %}
+        <p class="caption">
+
+          {% if video.credit is not null %}
+            <b class="credit"><span class="prefix">Video: </span>{{ video.credit }}</b>
+          {% endif %}
+
+        </p>
+      {% endif %}
 
 		</div>
 
@@ -1049,5 +1066,33 @@ Create an article teaser.
 	{% if expired == true %}
 		<meta name="robots" content="noindex">
 	{% endif %}
+
+{% endmacro %}
+
+
+{% macro displayHubFeed(feed) %}
+
+	<ul class="feed">
+
+		{% for article in feed %}
+
+			<li class="teaser article">
+
+				<h2><a href="{{ article.url }}">{{ _self.getHeadline(article, true) }}</a></h2>
+
+				{% if article.excerpt is not empty %}
+					<div class="summary">{{ article.excerpt }} {{ _self.getSourceLine(article) }}</div>
+				{% endif %}
+
+				<div class="force">
+					<div>{{ _self.getPublishDate(article) }}</div>
+					{{ _self.multimediaPromo(article) }}
+				</div>
+
+			</li>
+
+		{% endfor %}
+
+	</ul>
 
 {% endmacro %}

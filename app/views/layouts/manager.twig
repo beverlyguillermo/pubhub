@@ -29,6 +29,7 @@
                     {# Only show these nav items if the user is logged in #}
                     <ul class="nav">
                         <li{% if section == "pages" %} class="active"{% endif %}><a href="/manager/pages">Pages</a></li>
+                        <li{% if section == "sidebars" %} class="active"{% endif %}><a href="/manager/sidebars">Sidebars</a></li>
                         <li{% if section == "hubpix" %} class="active"{% endif %}><a href="/manager/hubpix">Pix</a></li>
                         
                         {% if user.role == "admin" %} 
