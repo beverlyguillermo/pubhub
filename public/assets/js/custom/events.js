@@ -503,7 +503,9 @@ var hubevents = (function ($, lazy, _gaq) {
 
             /* Set up subscribe events */
             setupFilters: function() {
-              $('input#subscribe-range').rangepicker();
+              $('input#subscribe-range').rangepicker(function (dates) {
+                hubevents.subscribe.filters({date: dates});
+              });
               $("form#subscribe-filters").on("change", function (e) {
                   var $target = $(e.target);
                   var fieldset = $target.parents("fieldset");
