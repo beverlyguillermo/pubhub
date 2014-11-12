@@ -101,16 +101,17 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></a>
               <h4>Add Events to your Calendar:</h4>
             </div>
             <div class="modal-body">
               <p>
                If you use Apple iCal, Google Calendar, or another program that supports the iCalendar format, you can automatically add these events. Select the date range, location(s), and topic(s) then click &quot;Add Events.&quot;
               </p>
-
+              <p class="download-link">
+                Or copy the following link to manually add the calendar:<br />
+                <input type="text" class="show-link events-subscribe" value="{{ request.rootUri }}/events_subscribe" />
+              </p>
               {% set subscribevars = { 'results': results, 'subscribe': true } %}
-
               {% include "partials/events-filters.twig" with subscribevars %}
             </div>
             <div class="modal-footer">

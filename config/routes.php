@@ -49,6 +49,34 @@ function checkPreview($preview)
 	}
 }
 
+/**
+ * Analyze the text that was passed into the `subscribe`
+ * variable of a route to determine if the route is
+ * in subscribe mode.
+ * @param  string $subscribe Text
+ * @return boolean TRUE if in subscribe mode; FALSE if not.
+ */
+function checkSubscribe($subscribe)
+{
+	if (!is_null($subscribe)) {
+
+		// enable subscribe on this route
+		if ($subscribe == "subscribe") {
+			return true;
+
+		// something was entered into the subscribe variable slot that
+		// isn't "subscribe" -- try and find another route
+		} else {
+			$router = Router::getInstance();
+			$router->pass();
+		}
+
+	// no subscribe on this route
+	} else {
+		return false;
+	}
+}
+
 
 
 // Not found handler

@@ -44,13 +44,20 @@ $router->set("/:year/:month/:day/:slug(/)(/:preview(/))", function ($year, $mont
 
 
 // Events
-$router->set("/event/:year/:month/:day/:slug(/)(/:preview(/))", function ($year, $month, $day, $slug, $preview = null) use ($router) {
+$router->set("/event/:year/:month/:day/:slug(/)(/:preview(/))(/:subscribe(/))", function ($year, $month, $day, $slug, $preview = null, $subscribe = null) use ($router) {
+	if (checkSubscribe($subscribe)) {
+		$router->redirect("/events_subscribe/{$year}/{$month}/{$day}/{$slug}");
+	} else {
 	// redirect /event/... to /events/...
 	$preview = checkPreview($preview) ? "/preview" : "";
 	$router->redirect("/events/{$year}/{$month}/{$day}/{$slug}{$preview}");
+	}
 });
-$router->set("/events/:year/:month/:day/:slug(/)(/:preview(/))", function ($year, $month, $day, $slug, $preview = null) use ($router) {
 
+$router->set("/events/:year/:month/:day/:slug(/)(/:preview(/))(/:subscribe(/))", function ($year, $month, $day, $slug, $preview = null, $subscribe = null) use ($router) {
+	if (checkSubscribe($subscribe)) {
+		$router->redirect("/events_subscribe/{$year}/{$month}/{$day}/{$slug}");
+	} else {
 	$options = array(
 		"year" => $year,
 		"month" => $month,
@@ -59,10 +66,17 @@ $router->set("/events/:year/:month/:day/:slug(/)(/:preview(/))", function ($year
 		"preview" => checkPreview($preview)
 	);
 	$router->dispatch("Events", "show", $options);
+	}
 });
 
-$router->set("/events_subscribe", function () use ($router) {
-	$options = array( "preview" => false );
+$router->set("/events_subscribe(/:year/)(:month/)(:day/)(:slug(/))", function ($year = null, $month = null, $day = null, $slug = null) use ($router) {
+	$options = array(
+		"year" => $year,
+		"month" => $month,
+		"day" => $day,
+		"slug" => $slug,
+		"preview" => false
+	);
 	$router->dispatch("Events", "subscribe", $options);
 });
 

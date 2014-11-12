@@ -490,22 +490,35 @@ var hubevents = (function ($, lazy, _gaq) {
             },
             /* Modify subscription event links */
             filters: function(filter) {
-              var link = $('.events-subscribe').prop('href');
+              var subscribe_links = $('.events-subscribe');
+              $.each(subscribe_links, function(i,v) {
+                var o = $(v);
+                var link = o.prop('href');
+                if (typeof link == 'undefined') {
+                  link = o.val();
+                }
               var original_params = $.deparam.querystring(link);
-              if (link.indexOf("?")>-1){
+
+                if (link && link.indexOf("?")>-1){
                 link = link.substr(0,link.indexOf("?"));
               }
               if (typeof original_params[link] != 'undefined') delete original_params[link];
               if (typeof original_params['p'] != 'undefined')  delete original_params['p'];
               var params = $.deparam.querystring($.param($.extend(original_params, filters, filter)));
-              $('.events-subscribe').prop('href', $.param.querystring(link, { "p": hubevents.subscribe.Base64.encode(JSON.stringify(params)) } ));
+                o.prop('href', $.param.querystring(link, { "p": hubevents.subscribe.Base64.encode(JSON.stringify(params)) } ));
+                if (o.hasClass('show-link')) {
+                  o.val($.param.querystring(link, { "p": hubevents.subscribe.Base64.encode(JSON.stringify(params)) } ));
+                }
+              });
             },
 
             /* Set up subscribe events */
             setupFilters: function() {
-              $('input#subscribe-range').rangepicker(function (dates) {
-                hubevents.subscribe.filters({date: dates});
+
+              $('input#subscribe-range').rangepicker(function(dates) {
+                hubevents.subscribe.filters({date: hubevents.utility.convertDates(dates)});
               });
+
               $("form#subscribe-filters").on("change", function (e) {
                   var $target = $(e.target);
                   var fieldset = $target.parents("fieldset");
@@ -548,6 +561,10 @@ var hubevents = (function ($, lazy, _gaq) {
                       }
                   }
                   hubevents.subscribe.filters(subscription_filters);
+              });
+
+              $('input.show-link.events-subscribe').on('click', function() {
+                this.setSelectionRange(0, this.value.length);
               });
             }
         }
